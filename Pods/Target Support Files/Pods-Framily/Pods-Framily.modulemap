@@ -1,0 +1,6 @@
+framework module Pods_Framily {
+  umbrella header "Pods-Framily-umbrella.h"
+
+  export *
+  module * { export * }
+}
