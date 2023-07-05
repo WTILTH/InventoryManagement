@@ -12,7 +12,7 @@ class SignUpViewController: UIViewController {
     
     @IBOutlet weak var phoneNoTxt: UITextField!
     @IBOutlet weak var companyNameTxt: UITextField!
-    
+    @IBOutlet weak var emailIDTxt: UITextField!
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -22,12 +22,13 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         guard let phoneNumber = phoneNoTxt.text,
-              let companyName = companyNameTxt.text else {
+              let companyName = companyNameTxt.text,
+              let emailID = emailIDTxt.text else {
             return
         }
         
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "phoneNumber == %@ AND companyName == %@", phoneNumber, companyName)
+        fetchRequest.predicate = NSPredicate(format: "phoneNumber == %@ AND companyName == %@ AND emailID == %@",phoneNumber, companyName,emailID)
         
         do {
             let matchingUsers = try managedContext.fetch(fetchRequest)
@@ -37,6 +38,7 @@ class SignUpViewController: UIViewController {
                 let User = User(context: managedContext)
                User.phoneNumber = phoneNumber
                 User.companyName = companyName
+                User.emailID = emailID
                 User.deviceID = UIDevice.current.identifierForVendor?.uuidString
                 User.sessionID = UUID().uuidString
                 
@@ -46,12 +48,13 @@ class SignUpViewController: UIViewController {
                     
                     phoneNoTxt.text = ""
                     companyNameTxt.text = ""
+                    emailIDTxt.text = ""
                     
                     print("Phone Number: \(User.phoneNumber ?? "")")
                     print("Company Name: \(User.companyName ?? "")")
                     print("Device ID: \(User.deviceID ?? "")")
                     print("Session ID: \(User.sessionID ?? "")")
-                    
+                    print("Email ID: \(User.emailID ?? "")")
                     
                     
                 } catch let error as NSError {
@@ -64,10 +67,12 @@ class SignUpViewController: UIViewController {
                 
                 phoneNoTxt.text = ""
                 companyNameTxt.text = ""
+                emailIDTxt.text = ""
             }
             
         } catch let error as NSError {
             print("Error fetching data: \(error), \(error.userInfo)")
         }
+        performSegue(withIdentifier: "SignUpToEmailOTP", sender: nil)
     }
   }
