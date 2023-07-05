@@ -57,6 +57,7 @@ class SignUpViewController: UIViewController {
                 } catch let error as NSError {
                     print("Error saving data: \(error), \(error.userInfo)")
                 }
+          
                 
             } else {
                 showCustomAlertWith(message: "User with the same phone number and company name already exists.", descMsg: "")

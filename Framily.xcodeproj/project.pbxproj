@@ -21,6 +21,7 @@
 		4AB2DFE52A4EF4630008D5AA /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB2DFE42A4EF4630008D5AA /* Subscription.swift */; };
 		63B013C42BD42510A40552D8 /* Pods_Framily_FramilyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5650E6682D6D87BD20704750 /* Pods_Framily_FramilyUITests.framework */; };
 		63BC570C77505D4D84A45D55 /* Pods_Framily.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FAAE01DAB8F3585163877D0 /* Pods_Framily.framework */; };
+		D8022E022A5575CE009A879B /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8022E012A5575CE009A879B /* SignInViewController.swift */; };
 		D80531692A42DFE60080DC16 /* CommonAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80531672A42DFE60080DC16 /* CommonAlertVC.swift */; };
 		D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D805316A2A42E0030080DC16 /* UIViewExtension.swift */; };
 		D8A32ED12A41742D0070CF4A /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */; };
@@ -88,6 +89,7 @@
 		6846251BEEC6EB62669691B3 /* Pods-FramilyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FramilyTests.debug.xcconfig"; path = "Target Support Files/Pods-FramilyTests/Pods-FramilyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6E150DF4E04B680034D6E2DE /* Pods-Framily-FramilyUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Framily-FramilyUITests.release.xcconfig"; path = "Target Support Files/Pods-Framily-FramilyUITests/Pods-Framily-FramilyUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A576941FB136B14E59E9A788 /* Pods-Framily.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Framily.release.xcconfig"; path = "Target Support Files/Pods-Framily/Pods-Framily.release.xcconfig"; sourceTree = "<group>"; };
+		D8022E012A5575CE009A879B /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		D80531672A42DFE60080DC16 /* CommonAlertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonAlertVC.swift; sourceTree = "<group>"; };
 		D805316A2A42E0030080DC16 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
@@ -257,6 +259,7 @@
 				4AB010592A53FB99000549A1 /* Login */,
 				4AA127CB2A55513200F1BA31 /* OtpViewController.swift */,
 				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
+				D8022E012A5575CE009A879B /* SignInViewController.swift */,
 				4AB036722A4C36E00086A1B8 /* User.xcdatamodeld */,
 				D8A99CCA2A40304100B9803D /* SimpleViewController.swift */,
 				D8A99CCD2A40304200B9803D /* ViewController.swift */,
@@ -544,6 +547,7 @@
 				D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */,
 				4AA5F60C2A45B27900006003 /* SecurityViewController.swift in Sources */,
 				D8A99CD12A40304200B9803D /* ViewController.swift in Sources */,
+				D8022E022A5575CE009A879B /* SignInViewController.swift in Sources */,
 				D8A32ED72A41742D0070CF4A /* VendorsViewController.swift in Sources */,
 				D8A32ED92A41742D0070CF4A /* ProfileViewController.swift in Sources */,
 				4AA172B92A53F81000C4834A /* CommonViewController.swift in Sources */,
