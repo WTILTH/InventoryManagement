@@ -26,6 +26,9 @@
 		D8022E062A557969009A879B /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */; };
 		D80531692A42DFE60080DC16 /* CommonAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80531672A42DFE60080DC16 /* CommonAlertVC.swift */; };
 		D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D805316A2A42E0030080DC16 /* UIViewExtension.swift */; };
+		D88845A42A5BE8C300219226 /* ForgetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */; };
+		D88845A62A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */; };
+		D88845A82A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */; };
 		D8A32ED12A41742D0070CF4A /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */; };
 		D8A32ED22A41742D0070CF4A /* SideMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC62A41742D0070CF4A /* SideMenuModel.swift */; };
 		D8A32ED32A41742D0070CF4A /* SideMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8A32EC82A41742D0070CF4A /* SideMenuCell.xib */; };
@@ -96,6 +99,9 @@
 		D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		D80531672A42DFE60080DC16 /* CommonAlertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonAlertVC.swift; sourceTree = "<group>"; };
 		D805316A2A42E0030080DC16 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordViewController.swift; sourceTree = "<group>"; };
+		D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordOTPViewController.swift; sourceTree = "<group>"; };
+		D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		D8A32EC62A41742D0070CF4A /* SideMenuModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuModel.swift; sourceTree = "<group>"; };
 		D8A32EC82A41742D0070CF4A /* SideMenuCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuCell.xib; sourceTree = "<group>"; };
@@ -183,11 +189,21 @@
 			children = (
 				4AA295672A4064BB0009198E /* LoginViewController.swift */,
 				4AB2DFE42A4EF4630008D5AA /* Subscription.swift */,
-				D80531672A42DFE60080DC16 /* CommonAlertVC.swift */,
 				4AA896D22A4AD49E00C32E13 /* CommonAlertVC.xib */,
 				D805316A2A42E0030080DC16 /* UIViewExtension.swift */,
+				D80531672A42DFE60080DC16 /* CommonAlertVC.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		D88845A92A5BF4A800219226 /* Sign Up */ = {
+			isa = PBXGroup;
+			children = (
+				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
+				D8022E032A557953009A879B /* EmailOTPViewController.swift */,
+				D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */,
+			);
+			path = "Sign Up";
 			sourceTree = "<group>";
 		};
 		D8A32EC42A41742D0070CF4A /* SideMenu */ = {
@@ -232,6 +248,16 @@
 			path = VendorsList;
 			sourceTree = "<group>";
 		};
+		D8AC7F712A56CABA00433D9C /* ForgotPassword */ = {
+			isa = PBXGroup;
+			children = (
+				D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */,
+				D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */,
+				D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */,
+			);
+			path = ForgotPassword;
+			sourceTree = "<group>";
+		};
 		D8BCEA332A401C9100EAF04B = {
 			isa = PBXGroup;
 			children = (
@@ -261,11 +287,10 @@
 				D8BCEA3F2A401C9200EAF04B /* AppDelegate.swift */,
 				D8BCEA412A401C9200EAF04B /* SceneDelegate.swift */,
 				4AB010592A53FB99000549A1 /* Login */,
-				4AA127CB2A55513200F1BA31 /* OtpViewController.swift */,
-				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
 				D8022E012A5575CE009A879B /* SignInViewController.swift */,
-				D8022E032A557953009A879B /* EmailOTPViewController.swift */,
-				D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */,
+				4AA127CB2A55513200F1BA31 /* OtpViewController.swift */,
+				D88845A92A5BF4A800219226 /* Sign Up */,
+				D8AC7F712A56CABA00433D9C /* ForgotPassword */,
 				4AB036722A4C36E00086A1B8 /* User.xcdatamodeld */,
 				D8A99CCA2A40304100B9803D /* SimpleViewController.swift */,
 				D8A99CCD2A40304200B9803D /* ViewController.swift */,
@@ -546,6 +571,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AA295682A4064BB0009198E /* LoginViewController.swift in Sources */,
+				D88845A42A5BE8C300219226 /* ForgetPasswordViewController.swift in Sources */,
 				D8A73EFA2A4C10D3002A7ADF /* VendorsListTableViewCell.swift in Sources */,
 				D8A32ED82A41742D0070CF4A /* BooksViewController.swift in Sources */,
 				D8BCEA4A2A401C9200EAF04B /* Framily.xcdatamodeld in Sources */,
@@ -562,6 +588,7 @@
 				D8022E062A557969009A879B /* ConfirmPasswordViewController.swift in Sources */,
 				4AA5F6082A45B21800006003 /* ChatViewController.swift in Sources */,
 				4AA5F60A2A45B25A00006003 /* BrowserViewController.swift in Sources */,
+				D88845A62A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift in Sources */,
 				4AA127CC2A55513200F1BA31 /* OtpViewController.swift in Sources */,
 				D8A32ED22A41742D0070CF4A /* SideMenuModel.swift in Sources */,
 				4AB2DFE52A4EF4630008D5AA /* Subscription.swift in Sources */,
@@ -571,6 +598,7 @@
 				D8A32ED12A41742D0070CF4A /* SideMenuViewController.swift in Sources */,
 				4AB036762A4C53F40086A1B8 /* VendorsDetailsViewController.swift in Sources */,
 				D80531692A42DFE60080DC16 /* CommonAlertVC.swift in Sources */,
+				D88845A82A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift in Sources */,
 				4AA172B72A53F5C800C4834A /* SignUpViewController.swift in Sources */,
 				D8BCEA422A401C9200EAF04B /* SceneDelegate.swift in Sources */,
 				D8A32ED42A41742D0070CF4A /* SideMenuCell.swift in Sources */,
@@ -754,7 +782,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HLPW89W645;
+				DEVELOPMENT_TEAM = GTUD59FHKK;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Framily/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -787,7 +815,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HLPW89W645;
+				DEVELOPMENT_TEAM = GTUD59FHKK;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Framily/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

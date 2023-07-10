@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
 
@@ -19,7 +20,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     
     var iconClick = false
     let imageIcon = UIImageView()
-    
+    let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
         loginBtn.layer.cornerRadius=10.0
@@ -71,12 +72,47 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @objc func submitButtonTapped() {
         if validatePasswords() {
             errorLbl.isHidden = true
-           performSegue(withIdentifier: "credentialToPasswordUpdated", sender: nil)
+           performSegue(withIdentifier: "passwordToLogin", sender: nil)
         } else {
             errorLbl.isHidden = false
             errorLbl.text = "Passwords do not match"
            
         }
+      /*  let confirmPassword = confirmPasswordTxt.text, confirmPassword
+        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "confirmPassword == %@",confirmPassword)
+        
+        do {
+            let matchingUsers = try managedContext.fetch(fetchRequest)
+            
+            if matchingUsers.isEmpty {
+                
+                let User = User(context: managedContext)
+                User.confirmPassword = confirmPassword
+
+                do {
+                    try managedContext.save()
+                    print("Data saved successfully!")
+                    
+                    confirmPasswordTxt.text = ""
+                    
+                    print("confirmPassword: \(User.confirmPassword ?? "")")
+        
+                } catch let error as NSError {
+                    print("Error saving data: \(error), \(error.userInfo)")
+                }
+          
+                
+            } else {
+               
+                confirmPasswordTxt.text = ""
+                
+            }
+            
+        } catch let error as NSError {
+            print("Error fetching data: \(error), \(error.userInfo)")
+        }*/
+        
     }
    
     func validatePasswords() -> Bool {
@@ -92,7 +128,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     }
         
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "credentialToPasswordUpdated"{
+        if segue.identifier == "passwordToLogin"{
         
         }
     }

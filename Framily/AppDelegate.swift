@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
       
         
-      //  UIViewController.commonAlertImage = UIImage(named: "Framily Logo")
+        UIViewController.commonAlertImage = UIImage(named: "Framily Logo")
 
         // Request permission to display notifications
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in
