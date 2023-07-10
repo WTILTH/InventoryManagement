@@ -70,6 +70,9 @@ class ReminderViewController: UIViewController, CLLocationManagerDelegate {
             "address": location4.address
         ])
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let location = getLocation(from: region) {

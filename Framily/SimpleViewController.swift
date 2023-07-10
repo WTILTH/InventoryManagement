@@ -20,4 +20,7 @@ class SimpleViewController: UIViewController {
         testLabel.text = "Screen \(text ?? "")"
         view.backgroundColor = backgroundColor
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }

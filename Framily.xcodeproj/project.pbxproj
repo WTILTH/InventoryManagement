@@ -29,6 +29,7 @@
 		D88845A42A5BE8C300219226 /* ForgetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */; };
 		D88845A62A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */; };
 		D88845A82A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */; };
+		D88845AB2A5C158D00219226 /* VKCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845AA2A5C158D00219226 /* VKCheckbox.swift */; };
 		D8A32ED12A41742D0070CF4A /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */; };
 		D8A32ED22A41742D0070CF4A /* SideMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC62A41742D0070CF4A /* SideMenuModel.swift */; };
 		D8A32ED32A41742D0070CF4A /* SideMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8A32EC82A41742D0070CF4A /* SideMenuCell.xib */; };
@@ -102,6 +103,7 @@
 		D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordViewController.swift; sourceTree = "<group>"; };
 		D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordOTPViewController.swift; sourceTree = "<group>"; };
 		D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassConfirmPasswordViewController.swift; sourceTree = "<group>"; };
+		D88845AA2A5C158D00219226 /* VKCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKCheckbox.swift; sourceTree = "<group>"; };
 		D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		D8A32EC62A41742D0070CF4A /* SideMenuModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuModel.swift; sourceTree = "<group>"; };
 		D8A32EC82A41742D0070CF4A /* SideMenuCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuCell.xib; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
 				D8022E032A557953009A879B /* EmailOTPViewController.swift */,
 				D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */,
+				D88845AA2A5C158D00219226 /* VKCheckbox.swift */,
 			);
 			path = "Sign Up";
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				D8BCEA4A2A401C9200EAF04B /* Framily.xcdatamodeld in Sources */,
 				D8A99CCE2A40304200B9803D /* SimpleViewController.swift in Sources */,
 				D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */,
+				D88845AB2A5C158D00219226 /* VKCheckbox.swift in Sources */,
 				4AA5F60C2A45B27900006003 /* SecurityViewController.swift in Sources */,
 				D8A99CD12A40304200B9803D /* ViewController.swift in Sources */,
 				D8022E022A5575CE009A879B /* SignInViewController.swift in Sources */,

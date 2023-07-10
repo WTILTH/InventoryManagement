@@ -21,6 +21,9 @@ class ForgetPasswordViewController: UIViewController {
             fetchUser()
         
     }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     @IBAction func VerifyBtnPressed(_ sender: Any) {
         
         

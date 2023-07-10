@@ -10,6 +10,8 @@ import StoreKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var emailIdText: UITextField!
+    @IBOutlet weak var passwordText: UITextField!
     
     
     override func viewDidLoad() {
@@ -21,6 +23,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
 }
+
 extension UIViewController {
     static var commonAlertImage: UIImage?
     

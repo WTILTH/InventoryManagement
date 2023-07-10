@@ -11,12 +11,14 @@ import CoreData
 class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
 
     @IBOutlet weak var newPasswordTxt: UITextField!
-    
+    @IBOutlet weak var groupNameTxt: UITextField!
     @IBOutlet weak var confirmPasswordTxt: UITextField!
-    
+    @IBOutlet weak var firstNameTxt: UITextField!
     @IBOutlet weak var errorLbl: UILabel!
-    
+    @IBOutlet weak var lastNameTxt: UITextField!
+    @IBOutlet weak var userNameTxt: UITextField!
     @IBOutlet weak var loginBtn: UIButton!
+    @IBOutlet weak var customCheckbox: VKCheckbox!
     
     var iconClick = false
     let imageIcon = UIImageView()
@@ -61,7 +63,19 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                     confirmPasswordTxt.isSecureTextEntry = true
                     
                 }
+                customCheckbox.line             = .thin
+                customCheckbox.bgColorSelected  = UIColor(red: 46/255, green: 119/255, blue: 217/255, alpha: 1)
+                customCheckbox.bgColor          = UIColor.gray
+                customCheckbox.color            = UIColor.white
+                customCheckbox.borderColor      = UIColor.white
+                customCheckbox.borderWidth      = 2
+                customCheckbox.cornerRadius     = customCheckbox.frame.height / 2
                 
+                // Handle custom checkbox callback
+                customCheckbox.checkboxValueChangedBlock = {
+                    isOn in
+                    print("Custom checkbox is \(isOn ? "ON" : "OFF")")
+                }
             
     }
    
@@ -70,6 +84,24 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     }
     
     @objc func submitButtonTapped() {
+        guard let groupName = groupNameTxt.text, !groupName.isEmpty,
+              
+                let firstName = firstNameTxt.text, !firstName.isEmpty,
+              
+                let lastName = lastNameTxt.text, !lastName.isEmpty,
+              
+                let userName = userNameTxt.text,!userName.isEmpty,
+              
+                let newPassword = newPasswordTxt.text,!newPassword.isEmpty,
+              
+                let confirmPassword = confirmPasswordTxt.text,!confirmPassword.isEmpty
+        else {
+            
+            errorLbl.text = "All fields must be filled."
+            
+            return
+            
+        }
         if validatePasswords() {
             errorLbl.isHidden = true
            performSegue(withIdentifier: "passwordToLogin", sender: nil)
