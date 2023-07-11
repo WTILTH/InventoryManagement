@@ -247,16 +247,14 @@ extension MainViewController: SideMenuViewControllerDelegate {
                 let storyboardID: String
                 switch row {
                 case 0:
-                    storyboardID = "Home"
+                    storyboardID = "Vendor"
                 case 1:
-                    storyboardID = "Music"
+                    storyboardID = "Scanning"
                 case 2:
-                    storyboardID = "Movies"
+                    storyboardID = "VendorsList"
                 case 3:
                     storyboardID = "Books"
                 case 4:
-                    storyboardID = "Profile"
-                case 5:
                     storyboardID = "Settings"
                 default:
                     return

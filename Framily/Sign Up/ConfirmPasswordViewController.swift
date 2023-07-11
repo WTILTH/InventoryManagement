@@ -19,7 +19,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @IBOutlet weak var userNameTxt: UITextField!
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var customCheckbox: VKCheckbox!
-    
+    @IBOutlet weak var infoPasswordBtn: UIButton!
     var iconClick = false
     let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -83,33 +83,49 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         self.view.endEditing(true)
     }
     
+    @IBAction func infoPasswordBtnPressed(_ sender: Any) {
+            let alertController = UIAlertController(title: "Required", message: "Min. 8 to 14 characters long, A combination of uppercase letters, lowercase letters, numbers, and symbols.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            
+            present(alertController, animated: true, completion: nil)
+        
+        
+    }
     @objc func submitButtonTapped() {
         guard let groupName = groupNameTxt.text, !groupName.isEmpty,
+        let firstName = firstNameTxt.text, !firstName.isEmpty,
+        let lastName = lastNameTxt.text, !lastName.isEmpty,
+        let userName = userNameTxt.text, !userName.isEmpty,
+        let newPassword = newPasswordTxt.text, !newPassword.isEmpty,
+        let confirmPassword = confirmPasswordTxt.text, !confirmPassword.isEmpty else {
+      
+      errorLbl.text = "All fields must be filled."
+      return
+  }
+  
+  if !customCheckbox.isOn {
+      errorLbl.isHidden = false
+      errorLbl.text = "Please read and accept the terms and conditions."
+      return
+  }
+  
+  if validatePasswords() {
+      errorLbl.isHidden = true
+      let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
+      
+      let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                  self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
+              }
+              alertController.addAction(okAction)
               
-                let firstName = firstNameTxt.text, !firstName.isEmpty,
-              
-                let lastName = lastNameTxt.text, !lastName.isEmpty,
-              
-                let userName = userNameTxt.text,!userName.isEmpty,
-              
-                let newPassword = newPasswordTxt.text,!newPassword.isEmpty,
-              
-                let confirmPassword = confirmPasswordTxt.text,!confirmPassword.isEmpty
-        else {
-            
-            errorLbl.text = "All fields must be filled."
-            
-            return
-            
-        }
-        if validatePasswords() {
-            errorLbl.isHidden = true
-           performSegue(withIdentifier: "passwordToLogin", sender: nil)
-        } else {
-            errorLbl.isHidden = false
-            errorLbl.text = "Passwords do not match"
-           
-        }
+              present(alertController, animated: true, completion: nil)
+      
+  } else {
+      errorLbl.isHidden = false
+      errorLbl.text = "Passwords do not match"
+  }
       /*  let confirmPassword = confirmPasswordTxt.text, confirmPassword
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "confirmPassword == %@",confirmPassword)
@@ -152,12 +168,23 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
               let confirmPassword = confirmPasswordTxt.text else {
             return false
         }
+       
+      //  if newPassword.count < 8 || newPassword.count > 14 {
+        //    return false
+       // }
+       // let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,14}$"
+        //let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
+       // if !passwordPredicate.evaluate(with: newPassword) {
+       //     return false
+       // }
         
         if newPassword != confirmPassword {
             return false
         }
+        
         return true
     }
+
         
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "passwordToLogin"{
@@ -166,3 +193,4 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     }
    
 }
+

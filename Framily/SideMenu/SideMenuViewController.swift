@@ -14,7 +14,7 @@ protocol SideMenuViewControllerDelegate {
 class SideMenuViewController: UIViewController {
     @IBOutlet var headerImageView: UIImageView!
     @IBOutlet var sideMenuTableView: UITableView!
-    @IBOutlet var footerLabel: UILabel!
+  
 
     var delegate: SideMenuViewControllerDelegate?
 
@@ -25,9 +25,7 @@ class SideMenuViewController: UIViewController {
         SideMenuModel(icon: UIImage(systemName: "music.note")!, title: "Scanning"),
         SideMenuModel(icon: UIImage(systemName: "film.fill")!, title: "Vendors List"),
         SideMenuModel(icon: UIImage(systemName: "book.fill")!, title: "Books"),
-        SideMenuModel(icon: UIImage(systemName: "person.fill")!, title: "Profile"),
-        SideMenuModel(icon: UIImage(systemName: "slider.horizontal.3")!, title: "Settings"),
-        SideMenuModel(icon: UIImage(systemName: "hand.thumbsup.fill")!, title: "Like us on facebook")
+        SideMenuModel(icon: UIImage(systemName: "slider.horizontal.3")!, title: "Settings")
     ]
 
     override func viewDidLoad() {
@@ -44,11 +42,6 @@ class SideMenuViewController: UIViewController {
             let defaultRow = IndexPath(row: self.defaultHighlightedCell, section: 0)
             self.sideMenuTableView.selectRow(at: defaultRow, animated: false, scrollPosition: .none)
         }
-
-        // Footer
-        self.footerLabel.textColor = UIColor.white
-        self.footerLabel.font = UIFont.systemFont(ofSize: 12, weight: .bold)
-        self.footerLabel.text = "Developed by WTILTH"
 
         // Register TableView Cell
         self.sideMenuTableView.register(SideMenuCell.nib, forCellReuseIdentifier: SideMenuCell.identifier)

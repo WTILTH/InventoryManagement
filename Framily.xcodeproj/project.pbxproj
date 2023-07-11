@@ -38,7 +38,6 @@
 		D8A32ED62A41742D0070CF4A /* VendorsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECC2A41742D0070CF4A /* VendorsListViewController.swift */; };
 		D8A32ED72A41742D0070CF4A /* VendorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */; };
 		D8A32ED82A41742D0070CF4A /* BooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECE2A41742D0070CF4A /* BooksViewController.swift */; };
-		D8A32ED92A41742D0070CF4A /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECF2A41742D0070CF4A /* ProfileViewController.swift */; };
 		D8A32EDA2A41742D0070CF4A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */; };
 		D8A73EFA2A4C10D3002A7ADF /* VendorsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A73EF92A4C10D3002A7ADF /* VendorsListTableViewCell.swift */; };
 		D8A99CCE2A40304200B9803D /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A99CCA2A40304100B9803D /* SimpleViewController.swift */; };
@@ -112,7 +111,6 @@
 		D8A32ECC2A41742D0070CF4A /* VendorsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VendorsListViewController.swift; sourceTree = "<group>"; };
 		D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VendorsViewController.swift; sourceTree = "<group>"; };
 		D8A32ECE2A41742D0070CF4A /* BooksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooksViewController.swift; sourceTree = "<group>"; };
-		D8A32ECF2A41742D0070CF4A /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D8A73EF92A4C10D3002A7ADF /* VendorsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorsListTableViewCell.swift; sourceTree = "<group>"; };
 		D8A99CCA2A40304100B9803D /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
@@ -235,7 +233,6 @@
 				D8A73EF82A4C10A5002A7ADF /* VendorsList */,
 				D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */,
 				D8A32ECE2A41742D0070CF4A /* BooksViewController.swift */,
-				D8A32ECF2A41742D0070CF4A /* ProfileViewController.swift */,
 				D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */,
 			);
 			path = Views;
@@ -585,7 +582,6 @@
 				D8A99CD12A40304200B9803D /* ViewController.swift in Sources */,
 				D8022E022A5575CE009A879B /* SignInViewController.swift in Sources */,
 				D8A32ED72A41742D0070CF4A /* VendorsViewController.swift in Sources */,
-				D8A32ED92A41742D0070CF4A /* ProfileViewController.swift in Sources */,
 				4AA172B92A53F81000C4834A /* CommonViewController.swift in Sources */,
 				D8022E042A557953009A879B /* EmailOTPViewController.swift in Sources */,
 				D8A32ED62A41742D0070CF4A /* VendorsListViewController.swift in Sources */,
