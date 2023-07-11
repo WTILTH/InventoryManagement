@@ -20,11 +20,25 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var customCheckbox: VKCheckbox!
     @IBOutlet weak var infoPasswordBtn: UIButton!
+    var companyName: String?
+    var phoneNumber: String?
+    var emailID: String?
     var iconClick = false
     let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var user: User?
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let user = user {
+          
+            let phoneNumber = user.phoneNumber
+            let companyName = user.companyName
+            let emailID = user.emailID
+            let deviceID = user.deviceID
+            let sessionID = user.sessionID
+        }
+        
         loginBtn.layer.cornerRadius=10.0
         loginBtn.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
         imageIcon.image = UIImage(named: "closeEye")
@@ -99,7 +113,9 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         let lastName = lastNameTxt.text, !lastName.isEmpty,
         let userName = userNameTxt.text, !userName.isEmpty,
         let newPassword = newPasswordTxt.text, !newPassword.isEmpty,
-        let confirmPassword = confirmPasswordTxt.text, !confirmPassword.isEmpty else {
+        let confirmPassword = confirmPasswordTxt.text, !confirmPassword.isEmpty,
+        let user = user
+        else {
       
       errorLbl.text = "All fields must be filled."
       return
@@ -113,6 +129,26 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
   
   if validatePasswords() {
       errorLbl.isHidden = true
+      user.groupName = groupName
+      user.firstName = firstName
+      user.lastName = lastName
+      user.userName = userName
+      user.password = newPassword
+
+      do {
+          try managedContext.save()
+          print("Data saved successfully!")
+          confirmPasswordTxt.text = ""
+          userNameTxt.text = ""
+          newPasswordTxt.text = ""
+          lastNameTxt.text = ""
+          firstNameTxt.text = ""
+          groupNameTxt.text = ""
+
+          printSavedData()
+      } catch let error as NSError {
+          print("Error saving data: \(error), \(error.userInfo)")
+      }
       let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
       
       let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -189,6 +225,25 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "passwordToLogin"{
         
+        }
+    }
+    func printSavedData() {
+        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+        
+        do {
+            let savedUsers = try managedContext.fetch(fetchRequest)
+            for user in savedUsers {
+               
+                print("Group Name: \(user.groupName ?? "")")
+                print("First Name: \(user.firstName ?? "")")
+                print("Last Name: \(user.lastName ?? "")")
+                print("User Name: \(user.userName ?? "")")
+                print("Password: \(user.password ?? "")")
+                
+              
+            }
+        } catch let error as NSError {
+            print("Error fetching data: \(error), \(error.userInfo)")
         }
     }
    

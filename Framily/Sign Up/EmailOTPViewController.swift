@@ -19,7 +19,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumberTxt3: UITextField!
     @IBOutlet weak var emailOTPBtn: UIButton!
     @IBOutlet weak var phoneNumberOTPBtn: UIButton!
-    
+    var user: User?
     var correctOTP1: String = ""
     var otpDigits1: [String] = []
     var correctOTP2: String = ""
@@ -172,7 +172,16 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
 
             }
 
-            
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "OTPToConfirmPassword" {
+            if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
+                confirmPasswordVC.user = user
+                confirmPasswordVC.companyName = user?.companyName
+                confirmPasswordVC.phoneNumber = user?.phoneNumber
+                confirmPasswordVC.emailID = user?.emailID
+            }
+        }
+    }
 
             func generateOTP1() {
 

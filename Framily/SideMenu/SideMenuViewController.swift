@@ -24,7 +24,7 @@ class SideMenuViewController: UIViewController {
         SideMenuModel(icon: UIImage(systemName: "house.fill")!, title: "Vendor"),
         SideMenuModel(icon: UIImage(systemName: "music.note")!, title: "Scanning"),
         SideMenuModel(icon: UIImage(systemName: "film.fill")!, title: "Vendors List"),
-        SideMenuModel(icon: UIImage(systemName: "book.fill")!, title: "Books"),
+        SideMenuModel(icon: UIImage(systemName: "book.fill")!, title: "BarcodeScanner"),
         SideMenuModel(icon: UIImage(systemName: "slider.horizontal.3")!, title: "Settings")
     ]
 

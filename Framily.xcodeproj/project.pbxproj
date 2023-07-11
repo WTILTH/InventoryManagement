@@ -37,7 +37,7 @@
 		D8A32ED52A41742D0070CF4A /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECB2A41742D0070CF4A /* CameraViewController.swift */; };
 		D8A32ED62A41742D0070CF4A /* VendorsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECC2A41742D0070CF4A /* VendorsListViewController.swift */; };
 		D8A32ED72A41742D0070CF4A /* VendorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */; };
-		D8A32ED82A41742D0070CF4A /* BooksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECE2A41742D0070CF4A /* BooksViewController.swift */; };
+		D8A32ED82A41742D0070CF4A /* BarcodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECE2A41742D0070CF4A /* BarcodeScannerViewController.swift */; };
 		D8A32EDA2A41742D0070CF4A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */; };
 		D8A73EFA2A4C10D3002A7ADF /* VendorsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A73EF92A4C10D3002A7ADF /* VendorsListTableViewCell.swift */; };
 		D8A99CCE2A40304200B9803D /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A99CCA2A40304100B9803D /* SimpleViewController.swift */; };
@@ -110,7 +110,7 @@
 		D8A32ECB2A41742D0070CF4A /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		D8A32ECC2A41742D0070CF4A /* VendorsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VendorsListViewController.swift; sourceTree = "<group>"; };
 		D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VendorsViewController.swift; sourceTree = "<group>"; };
-		D8A32ECE2A41742D0070CF4A /* BooksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BooksViewController.swift; sourceTree = "<group>"; };
+		D8A32ECE2A41742D0070CF4A /* BarcodeScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeScannerViewController.swift; sourceTree = "<group>"; };
 		D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D8A73EF92A4C10D3002A7ADF /* VendorsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorsListTableViewCell.swift; sourceTree = "<group>"; };
 		D8A99CCA2A40304100B9803D /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 				D8A32ECB2A41742D0070CF4A /* CameraViewController.swift */,
 				D8A73EF82A4C10A5002A7ADF /* VendorsList */,
 				D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */,
-				D8A32ECE2A41742D0070CF4A /* BooksViewController.swift */,
+				D8A32ECE2A41742D0070CF4A /* BarcodeScannerViewController.swift */,
 				D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */,
 			);
 			path = Views;
@@ -573,7 +573,7 @@
 				4AA295682A4064BB0009198E /* LoginViewController.swift in Sources */,
 				D88845A42A5BE8C300219226 /* ForgetPasswordViewController.swift in Sources */,
 				D8A73EFA2A4C10D3002A7ADF /* VendorsListTableViewCell.swift in Sources */,
-				D8A32ED82A41742D0070CF4A /* BooksViewController.swift in Sources */,
+				D8A32ED82A41742D0070CF4A /* BarcodeScannerViewController.swift in Sources */,
 				D8BCEA4A2A401C9200EAF04B /* Framily.xcdatamodeld in Sources */,
 				D8A99CCE2A40304200B9803D /* SimpleViewController.swift in Sources */,
 				D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */,

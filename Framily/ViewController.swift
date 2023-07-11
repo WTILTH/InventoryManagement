@@ -253,7 +253,7 @@ extension MainViewController: SideMenuViewControllerDelegate {
                 case 2:
                     storyboardID = "VendorsList"
                 case 3:
-                    storyboardID = "Books"
+                    storyboardID = "BarcodeScanner"
                 case 4:
                     storyboardID = "Settings"
                 default:

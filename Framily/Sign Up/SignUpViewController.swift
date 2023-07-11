@@ -18,9 +18,6 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var phoneNumberStatusLabel: UILabel!
     @IBOutlet weak var emailIdStatusLabel: UILabel!
     
-    
-   
-
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -32,79 +29,54 @@ class SignUpViewController: UIViewController {
     }
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         guard let companyName = companyNameTxt.text, !companyName.isEmpty,
-              
-                let phoneNumber = phoneNoTxt.text, !phoneNumber.isEmpty,
-              
-                let emailID = emailIDTxt.text, !emailID.isEmpty  else {
-            
-            statusLabel.text = "All fields must be filled."
-            
-            return
-            
+            let phoneNumber = phoneNoTxt.text, !phoneNumber.isEmpty,
+            let emailID = emailIDTxt.text, !emailID.isEmpty else {
+                statusLabel.text = "All fields must be filled."
+                return
         }
-        
+
         resetStatusLabels()
         if !isValidEmail(emailID) {
-                   emailIdStatusLabel.text = "Invalid email"
-                   return
-               }
-               
-               if !isValidPhoneNumber(phoneNumber) {
-                   phoneNumberStatusLabel.text = "Invalid phone number"
-                   return
-               }
-        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "phoneNumber == %@ AND companyName == %@ AND emailID == %@",phoneNumber, companyName,emailID)
-        
-        do {
-            let matchingUsers = try managedContext.fetch(fetchRequest)
-            
-            if matchingUsers.isEmpty {
-                
-                let User = User(context: managedContext)
-                User.phoneNumber = phoneNumber
-                User.companyName = companyName
-                User.emailID = emailID
-                User.deviceID = UIDevice.current.identifierForVendor?.uuidString
-                User.sessionID = UUID().uuidString
-                
-                do {
-                    try managedContext.save()
-                    print("Data saved successfully!")
-                    
-                    phoneNoTxt.text = ""
-                    companyNameTxt.text = ""
-                    emailIDTxt.text = ""
-                    
-                    print("Phone Number: \(User.phoneNumber ?? "")")
-                    print("Company Name: \(User.companyName ?? "")")
-                    print("Device ID: \(User.deviceID ?? "")")
-                    print("Session ID: \(User.sessionID ?? "")")
-                    print("Email ID: \(User.emailID ?? "")")
-                    
-                    
-                } catch let error as NSError {
-                    print("Error saving data: \(error), \(error.userInfo)")
-                }
-          
-                
-            } else {
-                showCustomAlertWith(message: "User with the same phone number and company name already exists.", descMsg: "")
-                
-                phoneNoTxt.text = ""
-                companyNameTxt.text = ""
-                emailIDTxt.text = ""
-            }
-            
-        } catch let error as NSError {
-            print("Error fetching data: \(error), \(error.userInfo)")
+            emailIdStatusLabel.text = "Invalid email"
+            return
         }
-        performSegue(withIdentifier: "SignUpToEmailOTP", sender: nil)
-        
-        
-        // Assuming you have instantiated the ConfirmPasswordViewController from the storyboard
+
+        if !isValidPhoneNumber(phoneNumber) {
+            phoneNumberStatusLabel.text = "Invalid phone number"
+            return
+        }
+
+        let newUser = User(context: managedContext)
+        newUser.phoneNumber = phoneNumber
+        newUser.companyName = companyName
+        newUser.emailID = emailID
+        newUser.deviceID = UIDevice.current.identifierForVendor?.uuidString
+        newUser.sessionID = UUID().uuidString
+
+        performSegue(withIdentifier: "SignUpToEmailOTP", sender: newUser)
+
         
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SignUpToEmailOTP" {
+            if let otpVC = segue.destination as? EmailOTPViewController {
+                let newUser = sender as? User
+                otpVC.user = newUser
+            }
+        }
+        else if segue.identifier == "OTPToConfirmPassword" {
+            if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
+                let newUser = sender as? User
+                confirmPasswordVC.user = newUser
+                confirmPasswordVC.companyName = newUser?.companyName
+                confirmPasswordVC.phoneNumber = newUser?.phoneNumber
+                confirmPasswordVC.emailID = newUser?.emailID
+        
+            }
+        }
+    }
+    
     func resetStatusLabels() {
 
         companyNameStatusLabel.text = ""

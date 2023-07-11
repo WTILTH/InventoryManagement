@@ -13,6 +13,8 @@ target 'Framily' do
    pod 'Firebase/Auth'
    pod 'Firebase/Storage'
    pod 'Firebase/Firestore'
+  
+
   # Pods for Framily
 
   target 'FramilyTests' do
