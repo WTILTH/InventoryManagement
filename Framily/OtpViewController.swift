@@ -23,7 +23,7 @@ class OtpViewController: UIViewController, UITextFieldDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        self.navigationItem.setHidesBackButton(true, animated: false)
         
         
         let shadowColor = UIColor.black.cgColor

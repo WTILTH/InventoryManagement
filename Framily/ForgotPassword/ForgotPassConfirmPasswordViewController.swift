@@ -6,21 +6,22 @@
 //
 
 import UIKit
+import CoreData
 
 class ForgotPasswordConfirmPassViewController: UIViewController {
     
     @IBOutlet weak var confirmBtn: UIButton!
     @IBOutlet weak var FPConfirmPasswordTxt: UITextField!
     @IBOutlet weak var FPCreatePasswordTxt: UITextField!
-    
     @IBOutlet weak var errorLabel: UILabel!
+    var user: User?
     var iconClick = false
     let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
         confirmBtn.layer.cornerRadius=10.0
-        confirmBtn.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
+       
         imageIcon.image = UIImage(named: "closeEye")
         let contentView = UIView()
         contentView.addSubview(imageIcon)
@@ -78,40 +79,105 @@ class ForgotPasswordConfirmPassViewController: UIViewController {
         
         
     }
-    @IBAction func ConfirmButtonPressed(_ sender: Any) {
-        performSegue(withIdentifier: "FPtoMAIN", sender: "")
-        showCustomAlertWith(message: "Password Updated", descMsg: "")
-    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
-    @objc func submitButtonTapped() {
-        if validatePasswords() {
-            errorLabel.isHidden = true
-            performSegue(withIdentifier: "FPtoMAIN", sender: nil)
-        } else {
+    @IBAction func ConfirmButtonPressed(_ sender: Any) {
+        guard validatePasswords() else {
             errorLabel.isHidden = false
             errorLabel.text = "Passwords do not match"
-            
+            return
         }
-        func validatePasswords() -> Bool {
-            guard let newPassword = FPCreatePasswordTxt.text,
-                  let confirmPassword = FPConfirmPasswordTxt.text else {
-                return false
-            }
-            
-            if newPassword != confirmPassword {
-                return false
-            }
-            return true
+
+        guard let newPassword = FPCreatePasswordTxt.text, !newPassword.isEmpty else {
+            showCustomAlertWith(message: "Please enter a new password", descMsg: "")
+            return
+        }
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
         }
         
-        func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "FPtoMAIN"{
-                
-            }
-        }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
         
+        do {
+            let users = try managedContext.fetch(fetchRequest)
+            for user in users {
+                user.password = newPassword
+            }
+            
+            try managedContext.save()
+            performSegue(withIdentifier: "FPtoMAIN", sender: nil)
+            showCustomAlertWith(message: "Password Updated", descMsg: "")
+            
+        } catch {
+            print("Failed to update password: \(error)")
+        }
     }
+
+
+
+func validatePasswords() -> Bool {
+    guard let newPassword = FPCreatePasswordTxt.text,
+          let confirmPassword = FPConfirmPasswordTxt.text else {
+        return false
+    }
+    
+    if newPassword != confirmPassword {
+        return false
+    }
+    return true
 }
+}
+
+
+
+
+/*@IBAction func updateButtonTapped(_ sender: Any) {
+if validatePasswords() {
+errorLabel.isHidden = true
+
+guard let newPassword = FPConfirmPasswordTxt.text,
+    let user = user else {
+    return
+}
+
+
+guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+    return
+}
+
+let managedContext = appDelegate.persistentContainer.viewContext
+let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+
+do {
+    let users = try managedContext.fetch(fetchRequest)
+    
+   
+    let passwordExists = users.contains { $0.password == newPassword }
+    
+    if passwordExists {
+        showCustomAlertWith(message: "Password Already Exists", descMsg: "Please choose a different password.")
+    } else {
+   
+        user.password = newPassword
+        
+        do {
+            try managedContext.save()
+            
+            performSegue(withIdentifier: "FPtoMAIN", sender: nil)
+            showCustomAlertWith(message: "Password Updated", descMsg: "")
+        } catch {
+            print("Failed to update password: \(error)")
+        }
+    }
+} catch {
+    print("Failed to fetch user data: \(error)")
+}
+} else {
+errorLabel.isHidden = false
+errorLabel.text = "Passwords do not match"
+}
+}*/
+

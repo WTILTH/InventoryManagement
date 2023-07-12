@@ -7,6 +7,7 @@
 
 import UIKit
 import UserNotifications
+import CoreData
 
 class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     
@@ -23,7 +24,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     
     var correctOTP1: String = ""
     var otpDigits1: [String] = []
-    
+    var user: User?
     var correctOTP2: String = ""
     var otpDigits2: [String] = []
     
@@ -151,7 +152,15 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         performSegue(withIdentifier: "FPOtpToConfirmPass", sender: nil)
         
     }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "FPOtpToConfirmPass" {
+            if let confirmPassViewController = segue.destination as? ForgotPasswordConfirmPassViewController,
+                let validatedUser = user {
+                confirmPassViewController.user = validatedUser
+            }
+        }
+    }
+
     func generateOTP1() {
         let otpDigits = (0..<3).map { _ in String(Int.random(in: 0...9)) }
         correctOTP1 = otpDigits.joined()

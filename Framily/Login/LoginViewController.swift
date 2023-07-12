@@ -12,12 +12,82 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailIdText: UITextField!
     @IBOutlet weak var passwordText: UITextField!
+    
+    var managedObjectContext: NSManagedObjectContext!
     var iconClick = false
     let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     override func viewDidLoad() {
+
         super.viewDidLoad()
+        self.navigationItem.setHidesBackButton(true, animated: false)
         printSavedData()
+
+        setupCoreDataStack()
+
+        
+
+        let startDateString = "2023-07-12"
+
+        let endDateString = "2023-07-12"
+
+        
+
+        let dateFormatter = DateFormatter()
+
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+
+        
+
+        if let startDate = dateFormatter.date(from: startDateString),
+
+            let endDate = dateFormatter.date(from: endDateString) {
+
+            
+
+            let currentDate = Date()
+
+            if currentDate >= startDate && currentDate <= endDate {
+
+                let calendar = Calendar.current
+
+                let dateComponents = calendar.dateComponents([.day], from: currentDate, to: endDate)
+
+                
+
+                if let numberOfDays = dateComponents.day {
+
+                    let unit = SKProduct.PeriodUnit.day
+
+                    let formattedPeriod = PeriodFormatter.formatSubscriptionPeriod(unit: unit, numberOfUnits: numberOfDays)
+
+                    
+
+                    if let currentUser = getCurrentUser() {
+
+                        let dueAmount = currentUser.dueAmount
+
+                        showAlert(for: formattedPeriod, dueAmount: dueAmount)
+
+                    } else {
+
+                        showAlert(for: formattedPeriod, dueAmount: nil)
+
+                    }
+
+                }
+
+            } else {
+
+                showAlert(for: "Trial Period Expired", dueAmount: nil)
+
+            }
+
+        }
+
+    
+
         imageIcon.image = UIImage(named: "closeEye")
                 let contentView = UIView()
                 contentView.addSubview(imageIcon)
@@ -33,6 +103,41 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 imageIcon.addGestureRecognizer(tapGestureRecognizer)
                 
             }
+    
+    func showAlert(for subscriptionPeriod: String?, dueAmount: Double?) {
+        let message: String
+        if let period = subscriptionPeriod, let amount = dueAmount {
+            message = "Your subscription period is \(period). Due amount: \(amount)"
+        } else if let period = subscriptionPeriod, let amount = dueAmount{
+            message = "\(period). Due amount: \(amount)"
+        } else {
+            message = "Invalid subscription period"
+        }
+        
+        let alert = UIAlertController(title: "Subscription Alert", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    private func getCurrentUser() -> User? {
+
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        fetchRequest.fetchLimit = 1
+
+        do {
+            let fetchedUsers = try managedObjectContext?.fetch(fetchRequest) as! [User]
+            if let currentUser = fetchedUsers.first {
+              
+                currentUser.dueAmount = 59.99
+                try managedObjectContext?.save()
+                return currentUser
+            }
+        } catch let error as NSError {
+            print("Failed to fetch user details: \(error), \(error.userInfo)")
+        }
+        
+        return nil
+    }
             
             
             @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer)
@@ -59,7 +164,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-
+    @IBAction func forgotPasswordBtnPressed(_ sender: Any) {
+        
+        guard let loginInput = emailIdText.text, !loginInput.isEmpty
+        else {
+            showCustomAlertWith(message: "Please enter your Username or Email ID or Phone number", descMsg: "Please enter your Username or Email ID or Phone number")
+            return
+    }
+        
+    }
+    
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         
         guard let loginInput = emailIdText.text, !loginInput.isEmpty,
@@ -106,22 +220,32 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let savedUsers = try managedContext.fetch(fetchRequest)
             for user in savedUsers {
                 print("User Data:")
-                print("Phone Number: \(user.phoneNumber ?? "")")
-                print("Company Name: \(user.companyName ?? "")")
-                print("Email ID: \(user.emailID ?? "")")
-                print("Device ID: \(user.deviceID ?? "")")
-                print("Session ID: \(user.sessionID ?? "")")
-                print("Group Name: \(user.groupName ?? "")")
-                print("First Name: \(user.firstName ?? "")")
+            print("Phone Number: \(user.phoneNumber ?? "")")
+        print("Company Name: \(user.companyName ?? "")")
+            print("Email ID: \(user.emailID ?? "")")
+            print("Device ID: \(user.deviceID ?? "")")
+            print("Session ID: \(user.sessionID ?? "")")
+            print("Group Name: \(user.groupName ?? "")")
+            print("First Name: \(user.firstName ?? "")")
                 print("Last Name: \(user.lastName ?? "")")
-                print("User Name: \(user.userName ?? "")")
-                print("Password: \(user.password ?? "")")
+            print("User Name: \(user.userName ?? "")")
+            print("Password: \(user.password ?? "")")
                 print("--*------*-----*-----*---")
             }
         } catch let error as NSError {
             print("Error fetching data: \(error), \(error.userInfo)")
         }
     }
+    
+
+
+    private func setupCoreDataStack() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        managedObjectContext = appDelegate.persistentContainer.viewContext
+    }
+
 }
 
 
