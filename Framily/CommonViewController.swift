@@ -19,7 +19,7 @@ class CommonViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCoreDataStack()
-        
+ self.navigationItem.setHidesBackButton(true, animated: false)
         let startDateString = "2023-07-03"
         let endDateString = "2023-07-05"
         
