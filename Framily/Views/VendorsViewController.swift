@@ -18,7 +18,6 @@ class VendorsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationController?.navigationBar.tintColor = .white
         
         sideMenuBtn.target = revealViewController()

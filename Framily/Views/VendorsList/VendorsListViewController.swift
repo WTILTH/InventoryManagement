@@ -17,7 +17,6 @@ class VendorsListViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         sideMenuBtn.target = self.revealViewController()
         sideMenuBtn.action = #selector(revealViewController()?.revealSideMenu)
         

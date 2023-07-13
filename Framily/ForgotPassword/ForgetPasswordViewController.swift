@@ -11,62 +11,76 @@ import CoreData
 class ForgetPasswordViewController: UIViewController {
 
     @IBOutlet weak var veriftBtn: UIButton!
-    @IBOutlet weak var FPUserNameTxt: UITextField!
-    @IBOutlet weak var FPGroupNameTxt: UITextField!
+    @IBOutlet weak var FPEmailIDTxt: UITextField!
+    @IBOutlet weak var FPPhoneNumberTxt: UITextField!
     
     var users: [User] = []
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+
+            super.viewDidLoad()
+
             fetchUser()
-        
-    }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    @IBAction func VerifyBtnPressed(_ sender: Any) {
-        guard let userName = FPUserNameTxt.text, !userName.isEmpty,
-            let groupName = FPGroupNameTxt.text, !groupName.isEmpty else {
-         
-            showCustomAlertWith(message: "Fill all the fields", descMsg: "Please enter both user name and group name.")
-            return
+
         }
 
-       
-        let hasMatchingUser = users.contains { $0.userName == userName && $0.groupName == groupName }
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
-        if hasMatchingUser {
-                performSegue(withIdentifier: "forgetToFPotp", sender: nil)
-        } else {
+            self.view.endEditing(true)
+
+        }
+        @IBAction func verifyBtnPressed(_ sender: Any) {
+            guard let emailID = FPEmailIDTxt.text, !emailID.isEmpty,
+
+                  let phoneNumber = FPPhoneNumberTxt.text, !phoneNumber.isEmpty else
+            {
+                showCustomAlertWith(message: "Fill all the fields", descMsg: "Please enter both Email ID and phone number.")
+                return
+
+            }
+
+            let hasMatchingUser = users.contains { $0.emailID == emailID && $0.phoneNumber == phoneNumber }
+
             
-            showCustomAlertWith(message: "Invalid user", descMsg: "No user found with the provided user name and group name.")
+
+            if hasMatchingUser {
+
+                performSegue(withIdentifier: "forgetToFPotp", sender: nil)
+            } else {
+
+                showCustomAlertWith(message: "Invalid user", descMsg: "No user found with the provided Email ID and phone number.")
         }
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "forgetToFPotp" {
-            if let otpViewController = segue.destination as? ForgotPasswordOtpViewController,
-                let validatedUser = sender as? User {
+
+        }
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+            if segue.identifier == "forgetToFPotp" {
+
+                if let otpViewController = segue.destination as?
+                    ForgotPasswordOtpViewController,
+                   let validatedUser = sender as? User {
                 otpViewController.user = validatedUser
+
+                }
+            }
+        }
+        func fetchUser() {
+
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+
+                return
+
+            }
+let managedContext = appDelegate.persistentContainer.viewContext
+
+            let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+            
+            do {
+                users = try managedContext.fetch(fetchRequest)
+            } catch {
+            print("Failed to fetch users: \(error)")
+
             }
         }
     }
-
-
-
-    func fetchUser() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-        
-        do {
-            users = try managedContext.fetch(fetchRequest)
-            
-        } catch {
-            print("Failed to fetch vendors: \(error)")
-        }
-    }
-}
 

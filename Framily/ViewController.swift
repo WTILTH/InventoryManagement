@@ -238,66 +238,109 @@ extension MainViewController: NSVAnimatedTabControllerDelegate {
    
     }
 
-
-
 extension MainViewController: SideMenuViewControllerDelegate {
-   
-        func selectedCell(_ row: Int) {
-                
-                let storyboardID: String
-                switch row {
-                case 0:
-                    storyboardID = "Vendor"
-                case 1:
-                    storyboardID = "Scanning"
-                case 2:
-                    storyboardID = "VendorsList"
-                case 3:
-                    storyboardID = "BarcodeScanner"
-                case 4:
-                    storyboardID = "Settings"
-                default:
-                    return
-                }
-                showViewController(viewController: UINavigationController.self, storyboardId: storyboardID)
-            
-                sideMenuState(expanded: false)
-            }
-    
+
     
 
-    func showViewController<T: UIViewController>(viewController: T.Type, storyboardId: String) {
-      
+    func selectedCell(_ row: Int) {
+
+        let storyboardID: String
+
+        switch row {
+
+        case 0:
+
+            storyboardID = "Vendor"
+
+        case 1:
+
+            storyboardID = "Scanning"
+
+        case 2:
+
+            storyboardID = "VendorsList"
+
+        case 3:
+
+            storyboardID = "BarcodeScanner"
+
+        case 4:
+
+            storyboardID = "Settings"
+
+        default:
+
+            return
+
+        }
+
+        showViewController(storyboardId: storyboardID)
+
+        
+
+        sideMenuState(expanded: false)
+
+    }
+
+    
+
+    
+
+    func showViewController(storyboardId: String) {
+
         view.subviews.filter { $0.tag == 99 }.forEach { $0.removeFromSuperview() }
 
         
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: storyboardId) as! T
-        vc.view.tag = 99
-        view.insertSubview(vc.view, at: self.revealSideMenuOnTop ? 0 : 1)
-        addChild(vc)
-        DispatchQueue.main.async {
-            vc.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                vc.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                vc.view.topAnchor.constraint(equalTo: self.view.topAnchor),
-                vc.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                vc.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-            ])
-        }
-        if !self.revealSideMenuOnTop {
-            if isExpanded {
-                vc.view.frame.origin.x = self.sideMenuRevealWidth
-            }
-            if self.sideMenuShadowView != nil {
-                vc.view.addSubview(self.sideMenuShadowView)
-            }
-        }
-        vc.didMove(toParent: self)
-    }
-}
 
+        let vc = storyboard.instantiateViewController(withIdentifier: storyboardId)
+
+        vc.view.tag = 99
+
+        view.insertSubview(vc.view, at: self.revealSideMenuOnTop ? 0 : 1)
+
+        addChild(vc)
+
+        DispatchQueue.main.async {
+
+            vc.view.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+
+                vc.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+
+                vc.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+
+                vc.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+
+                vc.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+
+            ])
+
+        }
+
+        if !self.revealSideMenuOnTop {
+
+            if isExpanded {
+
+                vc.view.frame.origin.x = self.sideMenuRevealWidth
+
+            }
+
+            if self.sideMenuShadowView != nil {
+
+                vc.view.addSubview(self.sideMenuShadowView)
+
+            }
+
+        }
+
+        vc.didMove(toParent: self)
+
+    }
+
+}
 extension MainViewController: UIGestureRecognizerDelegate {
     @objc func TapGestureRecognizer(sender: UITapGestureRecognizer) {
         if sender.state == .ended {

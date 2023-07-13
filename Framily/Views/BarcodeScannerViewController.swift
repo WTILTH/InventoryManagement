@@ -12,7 +12,6 @@ class BarcodeScannerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Menu Button Tint Color
         navigationController?.navigationBar.tintColor = .white
 
         sideMenuBtn.target = revealViewController()
