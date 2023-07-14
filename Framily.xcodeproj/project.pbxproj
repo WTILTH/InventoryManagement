@@ -51,6 +51,8 @@
 		D8BCEA5A2A401C9300EAF04B /* FramilyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BCEA592A401C9300EAF04B /* FramilyTests.swift */; };
 		D8BCEA642A401C9300EAF04B /* FramilyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BCEA632A401C9300EAF04B /* FramilyUITests.swift */; };
 		D8BCEA662A401C9300EAF04B /* FramilyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BCEA652A401C9300EAF04B /* FramilyUITestsLaunchTests.swift */; };
+		D8C71C302A610E2300FEC62B /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C71C2F2A610E2300FEC62B /* GlobalConstants.swift */; };
+		D8C71C342A61514A00FEC62B /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C71C332A61514A00FEC62B /* AppearanceManager.swift */; };
 		D8ED9ACD2A42BAF400101711 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ED9ACC2A42BAF400101711 /* ReminderViewController.swift */; };
 		DAE65722BF12505024FDC5F6 /* Pods_FramilyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC738E3737A225F5845DECE /* Pods_FramilyTests.framework */; };
 /* End PBXBuildFile section */
@@ -127,6 +129,8 @@
 		D8BCEA5F2A401C9300EAF04B /* FramilyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FramilyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8BCEA632A401C9300EAF04B /* FramilyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramilyUITests.swift; sourceTree = "<group>"; };
 		D8BCEA652A401C9300EAF04B /* FramilyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramilyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D8C71C2F2A610E2300FEC62B /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
+		D8C71C332A61514A00FEC62B /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		D8ED9ACC2A42BAF400101711 /* ReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
 		F74347344A4D2F5F36AE8823 /* Pods-FramilyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FramilyTests.release.xcconfig"; path = "Target Support Files/Pods-FramilyTests/Pods-FramilyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -198,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
+				D8C71C2F2A610E2300FEC62B /* GlobalConstants.swift */,
 				D8022E032A557953009A879B /* EmailOTPViewController.swift */,
 				D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */,
 				D88845AA2A5C158D00219226 /* VKCheckbox.swift */,
@@ -283,6 +288,7 @@
 			children = (
 				4AA5F6052A45AAC500006003 /* GoogleService-Info.plist */,
 				4AB036722A4C36E00086A1B8 /* User.xcdatamodeld */,
+				D8C71C332A61514A00FEC62B /* AppearanceManager.swift */,
 				D8BCEA3F2A401C9200EAF04B /* AppDelegate.swift */,
 				D8BCEA412A401C9200EAF04B /* SceneDelegate.swift */,
 				4AB010592A53FB99000549A1 /* Login */,
@@ -580,6 +586,7 @@
 				D8A32ED72A41742D0070CF4A /* VendorsViewController.swift in Sources */,
 				4AA172B92A53F81000C4834A /* CommonViewController.swift in Sources */,
 				D8022E042A557953009A879B /* EmailOTPViewController.swift in Sources */,
+				D8C71C342A61514A00FEC62B /* AppearanceManager.swift in Sources */,
 				D8A32ED62A41742D0070CF4A /* VendorsListViewController.swift in Sources */,
 				D8022E062A557969009A879B /* ConfirmPasswordViewController.swift in Sources */,
 				4AA5F6082A45B21800006003 /* ChatViewController.swift in Sources */,
@@ -599,6 +606,7 @@
 				D8BCEA422A401C9200EAF04B /* SceneDelegate.swift in Sources */,
 				D8A32ED42A41742D0070CF4A /* SideMenuCell.swift in Sources */,
 				D8A32EDA2A41742D0070CF4A /* SettingsViewController.swift in Sources */,
+				D8C71C302A610E2300FEC62B /* GlobalConstants.swift in Sources */,
 				D8ED9ACD2A42BAF400101711 /* ReminderViewController.swift in Sources */,
 				4AB036742A4C36E00086A1B8 /* User.xcdatamodeld in Sources */,
 			);

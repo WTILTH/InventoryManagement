@@ -15,6 +15,7 @@ class VendorsDetailsViewController: UIViewController {
     @IBOutlet weak var nameLbl: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
 
         // Do any additional setup after loading the view.
     }

@@ -25,7 +25,7 @@ class ReminderViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-     
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
         databaseRef = Database.database().reference()
 
        

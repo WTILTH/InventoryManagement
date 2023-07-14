@@ -16,12 +16,13 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var FPEOtpTxt2: UITextField!
     @IBOutlet weak var FPEOtpTxt3: UITextField!
     @IBOutlet weak var generateOtp1: UIButton!
-    
     @IBOutlet weak var FPPOtpTxt1: UITextField!
     @IBOutlet weak var FPPOtpTxt2: UITextField!
     @IBOutlet weak var FPPOtpTxt3: UITextField!
     @IBOutlet weak var generateOtp2: UIButton!
+    @IBOutlet weak var ForgotPasswordOTPView: UIView!
     
+    @IBOutlet weak var FPOTPnextBtn: UIButton!
     var correctOTP1: String = ""
     var otpDigits1: [String] = []
     var user: User?
@@ -30,11 +31,29 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        ForgotPasswordOTPView.layer.cornerRadius = 20.0
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
+        FPEOtpTxt1.backgroundColor = UIColor.clear
+       FPEOtpTxt1.borderStyle = .none
+        FPEOtpTxt2.backgroundColor = UIColor.clear
+       FPEOtpTxt2.borderStyle = .none
+        FPEOtpTxt3.backgroundColor = UIColor.clear
+       FPEOtpTxt3.borderStyle = .none
+        FPPOtpTxt1.backgroundColor = UIColor.clear
+       FPPOtpTxt1.borderStyle = .none
+        FPPOtpTxt2.backgroundColor = UIColor.clear
+       FPPOtpTxt2.borderStyle = .none
+        FPPOtpTxt3.backgroundColor = UIColor.clear
+       FPPOtpTxt3.borderStyle = .none
         let shadowColor = UIColor.black.cgColor
-        let shadowOpacity: Float = 1.5
-        let shadowOffset = CGSize(width: 0, height: 2)
-        let shadowRadius: CGFloat = 4
+        let shadowOpacity: Float = 2.0
+        let shadowOffset = CGSize(width: 0, height: 3)
+        let shadowRadius: CGFloat = 5
+        
+        ForgotPasswordOTPView.layer.shadowColor = shadowColor
+        ForgotPasswordOTPView.layer.shadowOpacity = shadowOpacity
+       ForgotPasswordOTPView.layer.shadowOffset = shadowOffset
+        ForgotPasswordOTPView.layer.shadowRadius = shadowRadius
         
         generateOtp1.layer.shadowColor = shadowColor
         generateOtp1.layer.shadowOpacity = shadowOpacity
@@ -98,7 +117,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         FPPOtpTxt1.keyboardType = .numberPad
         FPPOtpTxt2.keyboardType = .numberPad
         FPPOtpTxt3.keyboardType = .numberPad
-        
+        FPOTPnextBtn.layer.cornerRadius = 10.0
         FPEOtpTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPEOtpTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPEOtpTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -113,6 +132,32 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         FPPOtpTxt1.addGestureRecognizer(tapGesture2)
         
         otpDigits1 = Array(arrayLiteral: String(correctOTP1))
+        
+        let underlineLayer = CALayer()
+        underlineLayer.frame = CGRect(x: 0, y: FPEOtpTxt1.frame.size.height - 1, width: FPEOtpTxt1.frame.size.width, height: 1)
+        underlineLayer.backgroundColor = UIColor.white.cgColor
+        FPEOtpTxt1.layer.addSublayer(underlineLayer)
+        let underlineLayer1 = CALayer()
+        underlineLayer1.frame = CGRect(x: 0, y: FPEOtpTxt2.frame.size.height - 1, width: FPEOtpTxt2.frame.size.width, height: 1)
+        underlineLayer1.backgroundColor = UIColor.white.cgColor
+        FPEOtpTxt2.layer.addSublayer(underlineLayer1)
+        let underlineLayer2 = CALayer()
+        underlineLayer2.frame = CGRect(x: 0, y: FPEOtpTxt3.frame.size.height - 1, width: FPEOtpTxt3.frame.size.width, height: 1)
+        underlineLayer2.backgroundColor = UIColor.white.cgColor
+        FPEOtpTxt3.layer.addSublayer(underlineLayer2)
+        let underlineLayer3 = CALayer()
+        underlineLayer3.frame = CGRect(x: 0, y: FPPOtpTxt1.frame.size.height - 1, width: FPPOtpTxt1.frame.size.width, height: 1)
+        underlineLayer3.backgroundColor = UIColor.white.cgColor
+        FPPOtpTxt1.layer.addSublayer(underlineLayer3)
+        let underlineLayer4 = CALayer()
+        underlineLayer4.frame = CGRect(x: 0, y: FPPOtpTxt2.frame.size.height - 1, width: FPPOtpTxt2.frame.size.width, height: 1)
+        underlineLayer4.backgroundColor = UIColor.white.cgColor
+        FPPOtpTxt2.layer.addSublayer(underlineLayer4)
+        let underlineLayer5 = CALayer()
+        underlineLayer5.frame = CGRect(x: 0, y: FPPOtpTxt3.frame.size.height - 1, width: FPPOtpTxt3.frame.size.width, height: 1)
+        underlineLayer5.backgroundColor = UIColor.white.cgColor
+        FPPOtpTxt3.layer.addSublayer(underlineLayer5)
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

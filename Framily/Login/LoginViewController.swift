@@ -10,8 +10,11 @@ import StoreKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var signUpBtn: UIButton!
+    @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var emailIdText: UITextField!
     @IBOutlet weak var passwordText: UITextField!
+    @IBOutlet weak var loginView: UIView!
     
     var managedObjectContext: NSManagedObjectContext!
     var iconClick = false
@@ -19,20 +22,39 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
-
         super.viewDidLoad()
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
         self.navigationItem.setHidesBackButton(true, animated: false)
         printSavedData()
-
         setupCoreDataStack()
-
+        loginView.layer.cornerRadius = 20.0
+        loginBtn.layer.cornerRadius = 10.0
+        signUpBtn.layer.cornerRadius = 10.0
+        emailIdText.backgroundColor = UIColor.clear
+       emailIdText.borderStyle = .none
+        passwordText.backgroundColor = UIColor.clear
+       passwordText.borderStyle = .none
+        let shadowColor = UIColor.black.cgColor
+        let shadowOpacity: Float = 2.0
+        let shadowOffset = CGSize(width: 0, height: 3)
+        let shadowRadius: CGFloat = 5
         
-
+        signUpBtn.layer.shadowColor = shadowColor
+        signUpBtn.layer.shadowOpacity = shadowOpacity
+       signUpBtn.layer.shadowOffset = shadowOffset
+        signUpBtn.layer.shadowRadius = shadowRadius
+        
+        loginBtn.layer.shadowColor = shadowColor
+        loginBtn.layer.shadowOpacity = shadowOpacity
+       loginBtn.layer.shadowOffset = shadowOffset
+        loginBtn.layer.shadowRadius = shadowRadius
+        loginView.layer.shadowColor = shadowColor
+        loginView.layer.shadowOpacity = shadowOpacity
+       loginView.layer.shadowOffset = shadowOffset
+        loginView.layer.shadowRadius = shadowRadius
         let startDateString = "2023-07-12"
 
         let endDateString = "2023-07-12"
-
-        
 
         let dateFormatter = DateFormatter()
 
@@ -44,8 +66,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
             let endDate = dateFormatter.date(from: endDateString) {
 
-            
-
             let currentDate = Date()
 
             if currentDate >= startDate && currentDate <= endDate {
@@ -53,10 +73,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 let calendar = Calendar.current
 
                 let dateComponents = calendar.dateComponents([.day], from: currentDate, to: endDate)
-
-                
-
-                if let numberOfDays = dateComponents.day {
+      if let numberOfDays = dateComponents.day {
 
                     let unit = SKProduct.PeriodUnit.day
 
@@ -86,8 +103,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
         }
 
-    
-
         imageIcon.image = UIImage(named: "closeEye")
                 let contentView = UIView()
                 contentView.addSubview(imageIcon)
@@ -101,7 +116,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
                 imageIcon.isUserInteractionEnabled = true
                 imageIcon.addGestureRecognizer(tapGestureRecognizer)
-                
+        let underlineLayer = CALayer()
+        underlineLayer.frame = CGRect(x: 0, y: emailIdText.frame.size.height - 1, width: emailIdText.frame.size.width, height: 1)
+        underlineLayer.backgroundColor = UIColor.white.cgColor
+        emailIdText.layer.addSublayer(underlineLayer)
+        let underlineLayer1 = CALayer()
+        underlineLayer1.frame = CGRect(x: 0, y: passwordText.frame.size.height - 1, width: passwordText.frame.size.width, height: 1)
+        underlineLayer1.backgroundColor = UIColor.white.cgColor
+        passwordText.layer.addSublayer(underlineLayer1)
             }
     
     func showAlert(for subscriptionPeriod: String?, dueAmount: Double?) {
@@ -176,9 +198,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         
-        guard let loginInput = emailIdText.text, !loginInput.isEmpty,
+        guard let email = emailIdText.text, !email.isEmpty else {
+             showCustomAlertWith(message: "Please enter Email Id or Phone number", descMsg: "")
+             return
+         }
+         
+         guard let password = passwordText.text, !password.isEmpty else {
+             showCustomAlertWith(message: "Please enter password", descMsg: "")
+             return
+         }
+        
+     
+        
+        guard let email = emailIdText.text, !email.isEmpty,
                     let password = passwordText.text, !password.isEmpty else {
-                        showCustomAlertWith(message: "Please enter both login and password", descMsg: "Please enter both login and password.")
+                        showCustomAlertWith(message: "Please enter both Email Id and password", descMsg: "")
                         return
                 }
   
@@ -192,27 +226,41 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 do {
                     let result = try managedContext.fetch(fetchRequest)
                     let filteredUsers = result.compactMap { $0 as? User }.filter {
-                        $0.userName == loginInput || $0.phoneNumber == loginInput
+                        $0.emailID == email || $0.phoneNumber == email
                     }
                     
                     if let user = filteredUsers.first {
-                       
-                        performSegue(withIdentifier: "loginToOtp", sender: nil)
+                        if user.password == password {
+                            performSegue(withIdentifier: "loginToOtp", sender: nil)
+                        } else {
+                            showCustomAlertWith(message: "Invalid password", descMsg: "")
+                        }
                     } else {
-                        showCustomAlertWith(message: "Invalid login credentials", descMsg: "Invalid login credentials.")
+                        showCustomAlertWith(message: "Invalid email or Phone number. Please Sign up", descMsg: "")
                     }
                 } catch {
-                   
-                    showCustomAlertWith(message: "An error occurred during login", descMsg: "An error occurred during login.")
+                    showCustomAlertWith(message: "An error occurred during login", descMsg: "")
                 }
             }
-    
+   
+
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "loginToOtp" {
             
         }
     }
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
+    }
+    
+    func isValidPhoneNumber(_ phoneNumber: String) -> Bool {
+            let phoneRegex = "[0-9]{10}"
+            let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+            return phonePredicate.evaluate(with: phoneNumber)
+        }
     func printSavedData() {
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
 

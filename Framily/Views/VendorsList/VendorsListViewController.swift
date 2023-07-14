@@ -17,6 +17,7 @@ class VendorsListViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
         sideMenuBtn.target = self.revealViewController()
         sideMenuBtn.action = #selector(revealViewController()?.revealSideMenu)
         

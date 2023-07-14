@@ -20,6 +20,7 @@ class CameraViewController: UIViewController {
     var photoOutput: AVCapturePhotoOutput!
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
         self.sideMenuBtn.target = revealViewController()
         self.sideMenuBtn.action = #selector(self.revealViewController()?.revealSideMenu)
         setupCameraView()

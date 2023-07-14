@@ -19,6 +19,13 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var phoneNumberTxt3: UITextField!
     @IBOutlet weak var emailOTPBtn: UIButton!
     @IBOutlet weak var phoneNumberOTPBtn: UIButton!
+    @IBOutlet weak var timerLabel: UILabel!
+        @IBOutlet weak var resendButton: UIButton!
+    @IBOutlet weak var nextBtn: UIButton!
+    @IBOutlet weak var emailOTPView: UIView!
+    
+    var timer: Timer?
+        var timeRemaining = 10
     var user: User?
     var correctOTP1: String = ""
     var otpDigits1: [String] = []
@@ -26,13 +33,32 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     var otpDigits2: [String] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
+        emailOTPView.layer.cornerRadius = 20.0
+        emailOTPTxt1.backgroundColor = UIColor.clear
+       emailOTPTxt1.borderStyle = .none
+        emailOTPTxt2.backgroundColor = UIColor.clear
+       emailOTPTxt2.borderStyle = .none
+        emailOTPTxt3.backgroundColor = UIColor.clear
+       emailOTPTxt3.borderStyle = .none
+        phoneNumberTxt1.backgroundColor = UIColor.clear
+       phoneNumberTxt1.borderStyle = .none
+        phoneNumberTxt2.backgroundColor = UIColor.clear
+       phoneNumberTxt2.borderStyle = .none
+        phoneNumberTxt3.backgroundColor = UIColor.clear
+       phoneNumberTxt3.borderStyle = .none
         let shadowColor = UIColor.black.cgColor
-        let shadowOpacity: Float = 1.5
-        let shadowOffset = CGSize(width: 0, height: 2)
-        let shadowRadius: CGFloat = 4
-        
-        
+        let shadowOpacity: Float = 2.0
+        let shadowOffset = CGSize(width: 0, height: 3)
+        let shadowRadius: CGFloat = 5
+        nextBtn.layer.shadowColor = shadowColor
+       nextBtn.layer.shadowOpacity = shadowOpacity
+        nextBtn.layer.shadowOffset = shadowOffset
+        nextBtn.layer.shadowRadius = shadowRadius
+        emailOTPView.layer.shadowColor = shadowColor
+       emailOTPView.layer.shadowOpacity = shadowOpacity
+        emailOTPView.layer.shadowOffset = shadowOffset
+        emailOTPView.layer.shadowRadius = shadowRadius
         emailOTPTxt1.layer.shadowColor = shadowColor
         emailOTPTxt1.layer.shadowOpacity = shadowOpacity
         emailOTPTxt1.layer.shadowOffset = shadowOffset
@@ -90,10 +116,34 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
                 
 
                 otpDigits1 = Array(arrayLiteral: String(correctOTP1))
-
+        resendButton.isHidden = true
+        startTimer()
+        let underlineLayer = CALayer()
+        underlineLayer.frame = CGRect(x: 0, y: emailOTPTxt1.frame.size.height - 1, width: emailOTPTxt1.frame.size.width, height: 1)
+        underlineLayer.backgroundColor = UIColor.white.cgColor
+        emailOTPTxt1.layer.addSublayer(underlineLayer)
+        let underlineLayer1 = CALayer()
+        underlineLayer1.frame = CGRect(x: 0, y: emailOTPTxt2.frame.size.height - 1, width: emailOTPTxt2.frame.size.width, height: 1)
+        underlineLayer1.backgroundColor = UIColor.white.cgColor
+        emailOTPTxt2.layer.addSublayer(underlineLayer1)
+        let underlineLayer2 = CALayer()
+        underlineLayer2.frame = CGRect(x: 0, y: emailOTPTxt3.frame.size.height - 1, width: emailOTPTxt3.frame.size.width, height: 1)
+        underlineLayer2.backgroundColor = UIColor.white.cgColor
+        emailOTPTxt3.layer.addSublayer(underlineLayer2)
+        let underlineLayer3 = CALayer()
+        underlineLayer3.frame = CGRect(x: 0, y: phoneNumberTxt1.frame.size.height - 1, width: phoneNumberTxt1.frame.size.width, height: 1)
+        underlineLayer3.backgroundColor = UIColor.white.cgColor
+        phoneNumberTxt1.layer.addSublayer(underlineLayer3)
+        let underlineLayer4 = CALayer()
+        underlineLayer4.frame = CGRect(x: 0, y: phoneNumberTxt2.frame.size.height - 1, width: phoneNumberTxt2.frame.size.width, height: 1)
+        underlineLayer4.backgroundColor = UIColor.white.cgColor
+        phoneNumberTxt2.layer.addSublayer(underlineLayer4)
+        let underlineLayer5 = CALayer()
+        underlineLayer5.frame = CGRect(x: 0, y: phoneNumberTxt3.frame.size.height - 1, width: phoneNumberTxt3.frame.size.width, height: 1)
+        underlineLayer5.backgroundColor = UIColor.white.cgColor
+        phoneNumberTxt3.layer.addSublayer(underlineLayer5)
+        
             }
-
-            
 
             override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
@@ -101,7 +151,29 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
 
             }
 
+    func startTimer() {
+       
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    @objc func updateTimer() {
+        timeRemaining -= 1
+        timerLabel.text = "\(timeRemaining) seconds remaining"
+        if timeRemaining <= 0 {
+        
+            timer?.invalidate()
             
+            resendButton.isHidden = false
+        }
+    }
+
+    @IBAction func resendButtonTapped(_ sender: UIButton) {
+       
+        timeRemaining = 10
+        resendButton.isHidden = true
+
+        startTimer()
+    }
 
             @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
 

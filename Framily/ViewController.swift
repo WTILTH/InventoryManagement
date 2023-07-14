@@ -32,6 +32,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
         fetchUser()
         self.navigationItem.setHidesBackButton(true, animated: false)
         controller.delegate = self

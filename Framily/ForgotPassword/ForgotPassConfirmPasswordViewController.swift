@@ -8,18 +8,25 @@
 import UIKit
 import CoreData
 
-class ForgotPasswordConfirmPassViewController: UIViewController {
+class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDelegate{
     
     @IBOutlet weak var confirmBtn: UIButton!
     @IBOutlet weak var FPConfirmPasswordTxt: UITextField!
     @IBOutlet weak var FPCreatePasswordTxt: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var forgotPasswordConfirmPassView: UIView!
     var user: User?
     var iconClick = false
     let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
+        forgotPasswordConfirmPassView.layer.cornerRadius = 20.0
+        FPCreatePasswordTxt.backgroundColor = UIColor.clear
+       FPCreatePasswordTxt.borderStyle = .none
+        FPConfirmPasswordTxt.backgroundColor = UIColor.clear
+       FPConfirmPasswordTxt.borderStyle = .none
+        view.backgroundColor = BackgroundManager.shared.backgroundColor
         confirmBtn.layer.cornerRadius=10.0
        
         imageIcon.image = UIImage(named: "closeEye")
@@ -37,9 +44,14 @@ class ForgotPasswordConfirmPassViewController: UIViewController {
         imageIcon.addGestureRecognizer(tapGestureRecognizer)
         
         let shadowColor = UIColor.black.cgColor
-        let shadowOpacity: Float = 1.5
-        let shadowOffset = CGSize(width: 0, height: 2)
-        let shadowRadius: CGFloat = 4
+        let shadowOpacity: Float = 2.0
+        let shadowOffset = CGSize(width: 0, height: 3)
+        let shadowRadius: CGFloat = 5
+        
+        forgotPasswordConfirmPassView.layer.shadowColor = shadowColor
+        forgotPasswordConfirmPassView.layer.shadowOpacity = shadowOpacity
+        forgotPasswordConfirmPassView.layer.shadowOffset = shadowOffset
+        forgotPasswordConfirmPassView.layer.shadowRadius = shadowRadius
         
         FPConfirmPasswordTxt.layer.shadowColor = shadowColor
         FPConfirmPasswordTxt.layer.shadowOpacity = shadowOpacity
@@ -55,7 +67,14 @@ class ForgotPasswordConfirmPassViewController: UIViewController {
         confirmBtn.layer.shadowOpacity = shadowOpacity
         confirmBtn.layer.shadowOffset = shadowOffset
         confirmBtn.layer.shadowRadius = shadowRadius
-        
+        let underlineLayer = CALayer()
+        underlineLayer.frame = CGRect(x: 0, y: FPCreatePasswordTxt.frame.size.height - 1, width: FPCreatePasswordTxt.frame.size.width, height: 1)
+        underlineLayer.backgroundColor = UIColor.white.cgColor
+        FPCreatePasswordTxt.layer.addSublayer(underlineLayer)
+        let underlineLayer1 = CALayer()
+        underlineLayer1.frame = CGRect(x: 0, y: FPConfirmPasswordTxt.frame.size.height - 1, width: FPConfirmPasswordTxt.frame.size.width, height: 1)
+        underlineLayer1.backgroundColor = UIColor.white.cgColor
+        FPConfirmPasswordTxt.layer.addSublayer(underlineLayer1)
     }
     @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer)
     {
@@ -93,6 +112,10 @@ class ForgotPasswordConfirmPassViewController: UIViewController {
             showCustomAlertWith(message: "Please enter a new password", descMsg: "")
             return
         }
+        guard let confirmPassword = FPConfirmPasswordTxt.text, !confirmPassword.isEmpty else {
+            showCustomAlertWith(message: "Please enter a confirm Password", descMsg: "")
+            return
+        }
 
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -115,6 +138,8 @@ class ForgotPasswordConfirmPassViewController: UIViewController {
             print("Failed to update password: \(error)")
         }
     }
+
+
 
 
 
