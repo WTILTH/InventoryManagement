@@ -1,6 +1,7 @@
 ${PODS_ROOT}/Target Support Files/Pods-Framily/Pods-Framily-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/AnimatedGradientView/AnimatedGradientView.framework
 ${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework
+${BUILT_PRODUCTS_DIR}/DialCountries/DialCountries.framework
 ${BUILT_PRODUCTS_DIR}/FirebaseAppCheckInterop/FirebaseAppCheckInterop.framework
 ${BUILT_PRODUCTS_DIR}/FirebaseAuth/FirebaseAuth.framework
 ${BUILT_PRODUCTS_DIR}/FirebaseAuthInterop/FirebaseAuthInterop.framework
