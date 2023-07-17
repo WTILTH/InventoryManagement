@@ -23,6 +23,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @IBOutlet weak var confirmPasswordView: UIView!
     var companyName: String?
     var phoneNumber: String?
+    var countryCode: String?
     var emailID: String?
     var iconClick = false
     let imageIcon = UIImageView()
@@ -47,6 +48,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         if let user = user {
           
             let phoneNumber = user.phoneNumber
+            let countryCode = user.countryCode
             let companyName = user.companyName
             let emailID = user.emailID
             let deviceID = user.deviceID
@@ -157,119 +159,148 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @objc func submitButtonTapped() {
         
         guard let groupName = groupNameTxt.text, !groupName.isEmpty else {
-            errorLbl.text = "Please enter group Name"
-            return
-        }
-        guard let firstName = firstNameTxt.text, !firstName.isEmpty else {
-            errorLbl.text = "Please enter first Name"
-            return
-        }
-        guard let lastName = lastNameTxt.text, !lastName.isEmpty else {
-            errorLbl.text = "Please enter last Name"
-            return
-        }
-        guard let userName = userNameTxt.text, !userName.isEmpty else {
-            errorLbl.text = "Please enter user Name"
-            return
-        }
-        guard let newPassword = newPasswordTxt.text, !newPassword.isEmpty else {
-            errorLbl.text = "Please enter new Password"
-            return
-        }
-        guard let confirmPassword = confirmPasswordTxt.text, !confirmPassword.isEmpty else {
-            errorLbl.text = "Please enter confirm Password"
-            return
-        }
-    
-        guard  let user = user
-                
-        else {
-      
-      errorLbl.text = "All fields must be filled."
-      return
-  }
-  
- 
-  if validatePasswords() {
-      errorLbl.isHidden = true
-      user.groupName = groupName
-      user.firstName = firstName
-      user.lastName = lastName
-      user.userName = userName
-      user.password = newPassword
 
-      do {
-          try managedContext.save()
-          print("Data saved successfully!")
-          confirmPasswordTxt.text = ""
-          userNameTxt.text = ""
-          newPasswordTxt.text = ""
-          lastNameTxt.text = ""
-          firstNameTxt.text = ""
-          groupNameTxt.text = ""
+                    errorLbl.text = "Please enter group Name"
 
-          printSavedData()
-      } catch let error as NSError {
-          print("Error saving data: \(error), \(error.userInfo)")
-      }
-      let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
-      
-      let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                  self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
-              }
-              alertController.addAction(okAction)
-              
-              present(alertController, animated: true, completion: nil)
-      
-  } else {
-      errorLbl.isHidden = false
-      errorLbl.text = "Passwords do not match"
-  }
- 
+                    return
 
-        if !customCheckbox.isOn {
-            errorLbl.isHidden = false
-            errorLbl.text = "Please read and accept the terms and conditions."
-            return
-        }
-    }
-      /*  let confirmPassword = confirmPasswordTxt.text, confirmPassword
-        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "confirmPassword == %@",confirmPassword)
-        
-        do {
-            let matchingUsers = try managedContext.fetch(fetchRequest)
-            
-            if matchingUsers.isEmpty {
-                
-                let User = User(context: managedContext)
-                User.confirmPassword = confirmPassword
-
-                do {
-                    try managedContext.save()
-                    print("Data saved successfully!")
-                    
-                    confirmPasswordTxt.text = ""
-                    
-                    print("confirmPassword: \(User.confirmPassword ?? "")")
-        
-                } catch let error as NSError {
-                    print("Error saving data: \(error), \(error.userInfo)")
                 }
-          
+
+                guard let firstName = firstNameTxt.text, !firstName.isEmpty else {
+
+                    errorLbl.text = "Please enter first Name"
+
+                    return
+
+                }
+
+                guard let lastName = lastNameTxt.text, !lastName.isEmpty else {
+
+                    errorLbl.text = "Please enter last Name"
+
+                    return
+
+                }
+
+                guard let userName = userNameTxt.text, !userName.isEmpty else {
+
+                    errorLbl.text = "Please enter user Name"
+
+                    return
+
+                }
+
+                guard let newPassword = newPasswordTxt.text, !newPassword.isEmpty else {
+
+                    errorLbl.text = "Please enter new Password"
+
+                    return
+
+                }
+
+                guard let confirmPassword = confirmPasswordTxt.text, !confirmPassword.isEmpty else {
+
+                    errorLbl.text = "Please enter confirm Password"
+
+                    return
+
+                }
+
                 
-            } else {
-               
-                confirmPasswordTxt.text = ""
+
+                guard let user = user else {
+
+                    errorLbl.text = "All fields must be filled."
+
+                    return
+
+                }
+
                 
+
+                if validatePasswords() {
+
+                    if !customCheckbox.isOn {
+
+                        errorLbl.isHidden = false
+
+                        errorLbl.text = "Please read and accept the terms and conditions."
+
+                        return
+
+                    }
+
+                    
+
+                    errorLbl.isHidden = true
+
+                    user.groupName = groupName
+
+                    user.firstName = firstName
+
+                    user.lastName = lastName
+
+                    user.userName = userName
+
+                    user.password = newPassword
+
+                    
+
+                    do {
+
+                        try managedContext.save()
+
+                        print("Data saved successfully!")
+
+                        confirmPasswordTxt.text = ""
+
+                        userNameTxt.text = ""
+
+                        newPasswordTxt.text = ""
+
+                        lastNameTxt.text = ""
+
+                        firstNameTxt.text = ""
+
+                        groupNameTxt.text = ""
+
+                        
+
+                        printSavedData()
+
+                        
+
+                        let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
+
+                        
+
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+
+                            self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
+
+                        }
+
+                        alertController.addAction(okAction)
+
+                        
+
+                        present(alertController, animated: true, completion: nil)
+
+                    } catch let error as NSError {
+
+                        print("Error saving data: \(error), \(error.userInfo)")
+
+                    }
+
+                } else {
+
+                    errorLbl.isHidden = false
+
+                    errorLbl.text = "Passwords do not match"
+
+                }
+
             }
-            
-        } catch let error as NSError {
-            print("Error fetching data: \(error), \(error.userInfo)")
-        }*/
-        
-    
-   
     func validatePasswords() -> Bool {
         guard let newPassword = newPasswordTxt.text,
               let confirmPassword = confirmPasswordTxt.text else {

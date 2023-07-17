@@ -7,17 +7,16 @@
 
 import UIKit
 import CoreData
+import DialCountries
 
 class SignUpViewController: UIViewController {
     
     var countryCodes = [[String]]()
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var phoneNoTxt: UITextField!
-    
     @IBOutlet weak var signUpView: UIView!
     @IBOutlet weak var nextBtn: UIButton!
     @IBOutlet weak var countryCodeTxtField: UITextField!
-    
     @IBOutlet weak var companyNameTxt: UITextField!
     @IBOutlet weak var emailIDTxt: UITextField!
     @IBOutlet weak var companyNameStatusLabel: UILabel!
@@ -28,6 +27,9 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showDialCountriesController))
+        countryCodeTxtField.addGestureRecognizer(tapGesture)
+        countryCodeTxtField.isUserInteractionEnabled = true
         signUpView.layer.cornerRadius = 20.0
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         self.countryCodes = getAllCountryCodes()
@@ -74,6 +76,11 @@ class SignUpViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+    @objc func showDialCountriesController() {
+        let cv = DialCountriesController(locale: Locale(identifier: "en"))
+        cv.delegate = self
+        cv.show(vc: self)
+    }
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         guard let companyName = companyNameTxt.text, !companyName.isEmpty else {
             companyNameStatusLabel.text = "Please enter company name"
@@ -115,6 +122,7 @@ class SignUpViewController: UIViewController {
         }
         let newUser = User(context: managedContext)
         newUser.phoneNumber = phoneNumber
+        newUser.countryCode = countryCode
         newUser.companyName = companyName
         newUser.emailID = emailID
         newUser.deviceID = UIDevice.current.identifierForVendor?.uuidString
@@ -157,6 +165,7 @@ class SignUpViewController: UIViewController {
                 confirmPasswordVC.user = newUser
                 confirmPasswordVC.companyName = newUser?.companyName
                 confirmPasswordVC.phoneNumber = newUser?.phoneNumber
+                confirmPasswordVC.countryCode = newUser?.countryCode
                 confirmPasswordVC.emailID = newUser?.emailID
         
             }
@@ -207,5 +216,11 @@ extension SignUpViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let code = countryCodes[row]
         countryCodeTxtField.text = "+\(code[1])"
+    }
+}
+extension SignUpViewController: DialCountriesControllerDelegate {
+    func didSelected(with country: Country) {
+        // Update the text field with the selected country code
+        countryCodeTxtField.text = country.dialCode
     }
 }

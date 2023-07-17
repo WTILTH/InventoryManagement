@@ -148,6 +148,15 @@ func validatePasswords() -> Bool {
           let confirmPassword = FPConfirmPasswordTxt.text else {
         return false
     }
+    //  if newPassword.count < 8 || newPassword.count > 14 {
+      //    return false
+     // }
+     // let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,14}$"
+      //let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
+     // if !passwordPredicate.evaluate(with: newPassword) {
+     //     return false
+     // }
+      
     
     if newPassword != confirmPassword {
         return false

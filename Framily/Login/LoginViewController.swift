@@ -127,20 +127,91 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
     
     func showAlert(for subscriptionPeriod: String?, dueAmount: Double?) {
-        let message: String
-        if let period = subscriptionPeriod, let amount = dueAmount {
-            message = "Your subscription period is \(period). Due amount: \(amount)"
-        } else if let period = subscriptionPeriod, let amount = dueAmount{
-            message = "\(period). Due amount: \(amount)"
-        } else {
-            message = "Invalid subscription period"
+
+            let message: String
+
+            if let period = subscriptionPeriod, let amount = dueAmount {
+
+                message = "Your subscription period is \(period). Due amount: \(amount)"
+
+            } else if let period = subscriptionPeriod, let amount = dueAmount {
+
+                message = "\(period). Due amount: \(amount)"
+
+            } else {
+
+                message = "Subscription period got over"
+
+            }
+
+            
+
+            if subscriptionPeriod != nil {
+
+                let alert = UIAlertController(title: "Subscription Alert", message: message, preferredStyle: .alert)
+
+                
+
+              
+
+                let payAction = UIAlertAction(title: "Pay Now", style: .default) { [weak self] (_) in
+
+                    self?.navigateToPaymentViewController()
+
+                }
+
+                
+
+                alert.addAction(payAction)
+
+                
+
+                if subscriptionPeriod != nil {
+
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+                    alert.addAction(cancelAction)
+
+                }
+
+                
+
+                present(alert, animated: true, completion: nil)
+
+            } else {
+
+                let alert = UIAlertController(title: "Subscription Alert", message: message, preferredStyle: .alert)
+
+                
+
+                let payAction = UIAlertAction(title: "Pay Now", style: .default) { [weak self] (_) in
+
+                    self?.navigateToPaymentViewController()
+
+                }
+
+                
+
+                alert.addAction(payAction)
+
+                
+
+                present(alert, animated: true, completion: nil)
+
+            }
+
         }
-        
-        let alert = UIAlertController(title: "Subscription Alert", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        
-        present(alert, animated: true, completion: nil)
-    }
+
+
+
+
+        func navigateToPaymentViewController() {
+
+         
+
+            performSegue(withIdentifier: "paymentSegue", sender: nil)
+
+        }
     private func getCurrentUser() -> User? {
 
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
@@ -190,7 +261,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         guard let loginInput = emailIdText.text, !loginInput.isEmpty
         else {
-            showCustomAlertWith(message: "Please enter your Username or Email ID or Phone number", descMsg: "Please enter your Username or Email ID or Phone number")
+            showCustomAlertWith(message: "Please enter your Username or Email ID or Phone number", descMsg: "")
             return
     }
         
@@ -207,36 +278,27 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
              showCustomAlertWith(message: "Please enter password", descMsg: "")
              return
          }
-        
-     
-        
-        guard let email = emailIdText.text, !email.isEmpty,
-                    let password = passwordText.text, !password.isEmpty else {
-                        showCustomAlertWith(message: "Please enter both Email Id and password", descMsg: "")
-                        return
-                }
-  
                 guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
                     return
                 }
-                let managedContext = appDelegate.persistentContainer.viewContext
+                
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-                fetchRequest.predicate = NSPredicate(format: "password == %@", password)
+                fetchRequest.predicate = NSPredicate(format: "emailID == %@", email)
 
                 do {
-                    let result = try managedContext.fetch(fetchRequest)
+                    let result = try appDelegate.persistentContainer.viewContext.fetch(fetchRequest)
                     let filteredUsers = result.compactMap { $0 as? User }.filter {
-                        $0.emailID == email || $0.phoneNumber == email
+                        $0.emailID == email
                     }
                     
                     if let user = filteredUsers.first {
                         if user.password == password {
                             performSegue(withIdentifier: "loginToOtp", sender: nil)
                         } else {
-                            showCustomAlertWith(message: "Invalid password", descMsg: "")
+                            showCustomAlertWith(message: "Incorrect password", descMsg: "")
                         }
                     } else {
-                        showCustomAlertWith(message: "Invalid email or Phone number. Please Sign up", descMsg: "")
+                        showCustomAlertWith(message: "Email is not registered", descMsg: "")
                     }
                 } catch {
                     showCustomAlertWith(message: "An error occurred during login", descMsg: "")
@@ -269,13 +331,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             for user in savedUsers {
                 print("User Data:")
             print("Phone Number: \(user.phoneNumber ?? "")")
+                print("Country Code: \(user.countryCode ?? "")")
         print("Company Name: \(user.companyName ?? "")")
             print("Email ID: \(user.emailID ?? "")")
             print("Device ID: \(user.deviceID ?? "")")
             print("Session ID: \(user.sessionID ?? "")")
             print("Group Name: \(user.groupName ?? "")")
             print("First Name: \(user.firstName ?? "")")
-                print("Last Name: \(user.lastName ?? "")")
+            print("Last Name: \(user.lastName ?? "")")
             print("User Name: \(user.userName ?? "")")
             print("Password: \(user.password ?? "")")
                 print("--*------*-----*-----*---")
@@ -292,9 +355,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         managedObjectContext = appDelegate.persistentContainer.viewContext
+        
     }
-
-}
+    }
 
 
 extension UIViewController {

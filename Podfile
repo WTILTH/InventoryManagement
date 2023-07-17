@@ -13,7 +13,7 @@ target 'Framily' do
    pod 'Firebase/Auth'
    pod 'Firebase/Storage'
    pod 'Firebase/Firestore'
-  
+   pod 'DialCountries'
 
   # Pods for Framily
 

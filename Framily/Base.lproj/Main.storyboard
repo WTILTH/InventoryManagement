@@ -722,7 +722,7 @@
             <objects>
                 <viewController storyboardIdentifier="ViewController" id="gbh-Ey-FcY" customClass="SimpleViewController" customModule="Framily" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="V1m-DR-qFH">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Oy-jl-Mo2">
@@ -736,6 +736,7 @@
                         <viewLayoutGuide key="safeArea" id="hcZ-PQ-vTn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="5ko-Bb-vOp"/>
                     <connections>
                         <outlet property="testLabel" destination="5Oy-jl-Mo2" id="bi4-Qv-CY6"/>
                     </connections>
@@ -897,6 +898,15 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kEh-zI-UHq">
+                                        <rect key="frame" x="127" y="461" width="75" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                        <connections>
+                                            <segue destination="sgj-OL-DCP" kind="show" id="GGt-f6-esN"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.6182800531" green="0.11210168149999999" blue="0.25080922249999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -1022,7 +1032,7 @@
                                         <rect key="frame" x="56" y="361" width="203" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nmG-Au-ROc">
@@ -1067,6 +1077,7 @@
                         <outlet property="resendButton" destination="nmG-Au-ROc" id="gtv-1U-RXz"/>
                         <outlet property="timerLabel" destination="Y4x-7q-RYe" id="8qb-wq-emf"/>
                         <segue destination="Tnh-lv-hcS" kind="show" identifier="OTPToConfirmPassword" id="Lgx-o2-3e6"/>
+                        <segue destination="BFV-QO-flB" kind="show" identifier="LoginViewController" id="Sb1-gS-whW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9lh-RR-cEJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1172,6 +1183,7 @@
                         <outlet property="passwordText" destination="wrR-4m-eeM" id="NY5-jK-6fV"/>
                         <outlet property="signUpBtn" destination="Xw6-uh-qAJ" id="aUV-7O-nbE"/>
                         <segue destination="Jry-k9-8Ug" kind="show" identifier="loginToOtp" id="aYS-au-iuN"/>
+                        <segue destination="gbh-Ey-FcY" kind="show" identifier="paymentSegue" id="diB-S6-otc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fc7-bD-Nvy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1377,6 +1389,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="re-send"/>
                                         <connections>
+                                            <action selector="resendButtonTapped:" destination="Ybo-gP-Sfn" eventType="touchUpInside" id="KdE-cs-tRK"/>
                                             <action selector="resendButtonTapped:" destination="sgj-OL-DCP" eventType="touchUpInside" id="ZZV-rA-qKS"/>
                                         </connections>
                                     </button>
@@ -1400,6 +1413,8 @@
                         <outlet property="continueBtn" destination="FDy-AW-rSA" id="Sal-4P-OdE"/>
                         <outlet property="generateOtp1" destination="2ik-rj-QR5" id="nhn-O3-cWn"/>
                         <outlet property="generateOtp2" destination="Kl5-nd-Fwe" id="wyk-EP-I2k"/>
+                        <outlet property="resendButton" destination="Ifa-Dw-4ao" id="C5E-0K-yOf"/>
+                        <outlet property="timerLabel" destination="9ir-e5-JjR" id="hKd-s7-oEu"/>
                         <segue destination="NpR-n6-FXI" kind="show" identifier="FPOtpToConfirmPass" id="M79-tR-D1t"/>
                     </connections>
                 </viewController>
@@ -1566,7 +1581,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="sC3-Og-UxU"/>
+        <segue reference="8ns-hj-IlC"/>
+        <segue reference="Sb1-gS-whW"/>
+        <segue reference="COb-sQ-p4I"/>
         <segue reference="jlN-Ea-LKr"/>
     </inferredMetricsTieBreakers>
     <resources>

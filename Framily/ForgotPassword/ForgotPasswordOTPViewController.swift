@@ -21,8 +21,12 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var FPPOtpTxt3: UITextField!
     @IBOutlet weak var generateOtp2: UIButton!
     @IBOutlet weak var ForgotPasswordOTPView: UIView!
-    
     @IBOutlet weak var FPOTPnextBtn: UIButton!
+    @IBOutlet weak var resendButton: UIButton!
+    @IBOutlet weak var timerLabel: UILabel!
+    
+    var timer: Timer?
+        var timeRemaining = 10
     var correctOTP1: String = ""
     var otpDigits1: [String] = []
     var user: User?
@@ -162,6 +166,29 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    func startTimer() {
+       
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    @objc func updateTimer() {
+        timeRemaining -= 1
+        timerLabel.text = "\(timeRemaining) seconds remaining"
+        if timeRemaining <= 0 {
+        
+            timer?.invalidate()
+            
+            resendButton.isHidden = false
+        }
+    }
+
+    @IBAction func resendButtonTapped(_ sender: UIButton) {
+       
+        timeRemaining = 10
+        resendButton.isHidden = true
+
+        startTimer()
     }
     
     @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
