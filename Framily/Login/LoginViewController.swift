@@ -83,7 +83,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
                     if let currentUser = getCurrentUser() {
 
-                        let dueAmount = currentUser.dueAmount
+                        let dueAmount = currentUser.due_Amount
 
                         showAlert(for: formattedPeriod, dueAmount: dueAmount)
 
@@ -221,7 +221,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let fetchedUsers = try managedObjectContext?.fetch(fetchRequest) as! [User]
             if let currentUser = fetchedUsers.first {
               
-                currentUser.dueAmount = 59.99
+                currentUser.due_Amount = 59.99
                 try managedObjectContext?.save()
                 return currentUser
             }
@@ -283,12 +283,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-                fetchRequest.predicate = NSPredicate(format: "emailID == %@", email)
+                fetchRequest.predicate = NSPredicate(format: "email_ID == %@", email)
 
                 do {
                     let result = try appDelegate.persistentContainer.viewContext.fetch(fetchRequest)
                     let filteredUsers = result.compactMap { $0 as? User }.filter {
-                        $0.emailID == email
+                        $0.email_ID == email
                     }
                     
                     if let user = filteredUsers.first {
@@ -330,16 +330,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let savedUsers = try managedContext.fetch(fetchRequest)
             for user in savedUsers {
                 print("User Data:")
-            print("Phone Number: \(user.phoneNumber ?? "")")
-                print("Country Code: \(user.countryCode ?? "")")
-        print("Company Name: \(user.companyName ?? "")")
-            print("Email ID: \(user.emailID ?? "")")
-            print("Device ID: \(user.deviceID ?? "")")
-            print("Session ID: \(user.sessionID ?? "")")
-            print("Group Name: \(user.groupName ?? "")")
-            print("First Name: \(user.firstName ?? "")")
-            print("Last Name: \(user.lastName ?? "")")
-            print("User Name: \(user.userName ?? "")")
+            print("Phone Number: \(user.phone_Number ?? "")")
+                print("Country Code: \(user.country_Code ?? "")")
+        print("Company Name: \(user.company_Name ?? "")")
+            print("Email ID: \(user.email_ID ?? "")")
+            print("Device ID: \(user.device_ID ?? "")")
+            print("Session ID: \(user.session_ID ?? "")")
+            print("Group Name: \(user.group_Name ?? "")")
+            print("First Name: \(user.first_Name ?? "")")
+            print("Last Name: \(user.last_Name ?? "")")
+            print("User Name: \(user.user_Name ?? "")")
             print("Password: \(user.password ?? "")")
                 print("--*------*-----*-----*---")
             }

@@ -58,25 +58,25 @@ class ForgetPasswordViewController: UIViewController,UITextFieldDelegate {
 
         }
         @IBAction func verifyBtnPressed(_ sender: Any) {
-            guard let emailID = FPEmailIDTxt.text, !emailID.isEmpty else {
+            guard let email_ID = FPEmailIDTxt.text, !email_ID.isEmpty else {
                 showCustomAlertWith(message: "Please enter your Email ID.", descMsg: "")
                 return
             }
-            if !isValidEmail(emailID) {
+            if !isValidEmail(email_ID) {
                 showCustomAlertWith(message: "Invalid Email ID", descMsg: "")
                 
                 return
             }
-            guard let phoneNumber = FPPhoneNumberTxt.text, !phoneNumber.isEmpty else {
+            guard let phone_Number = FPPhoneNumberTxt.text, !phone_Number.isEmpty else {
                 showCustomAlertWith(message: "Please enter your phone number.", descMsg: "")
                 return
             }
-            if !isValidPhoneNumber(phoneNumber) {
+            if !isValidPhoneNumber(phone_Number) {
                 showCustomAlertWith(message: "Invalid Phone number", descMsg: "")
                 return
             }
             
-            let hasMatchingUser = users.contains { $0.emailID == emailID && $0.phoneNumber == phoneNumber }
+            let hasMatchingUser = users.contains { $0.email_ID == email_ID && $0.phone_Number == phone_Number }
             
             if hasMatchingUser {
                 performSegue(withIdentifier: "forgetToFPotp", sender: nil)

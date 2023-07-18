@@ -82,31 +82,31 @@ class SignUpViewController: UIViewController {
         cv.show(vc: self)
     }
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
-        guard let companyName = companyNameTxt.text, !companyName.isEmpty else {
+        guard let company_Name = companyNameTxt.text, !company_Name.isEmpty else {
             companyNameStatusLabel.text = "Please enter company name"
             phoneNumberStatusLabel.text = ""
             emailIdStatusLabel.text = ""
             return
         }
-        guard let countryCode = countryCodeTxtField.text, !countryCode.isEmpty else {
+        guard let country_Code = countryCodeTxtField.text, !country_Code.isEmpty else {
             companyNameStatusLabel.text = ""
             phoneNumberStatusLabel.text = "Please enter Country Code"
             emailIdStatusLabel.text = ""
             return
         }
-        guard let phoneNumber = phoneNoTxt.text, !phoneNumber.isEmpty else {
+        guard let phone_Number = phoneNoTxt.text, !phone_Number.isEmpty else {
             companyNameStatusLabel.text = ""
             phoneNumberStatusLabel.text = "Please enter phone number"
             emailIdStatusLabel.text = ""
             return
         }
         
-        if !isValidPhoneNumber(phoneNumber) {
+        if !isValidPhoneNumber(phone_Number) {
             phoneNumberStatusLabel.text = "Invalid phone number"
             return
         }
         
-        guard let emailID = emailIDTxt.text, !emailID.isEmpty else {
+        guard let email_ID = emailIDTxt.text, !email_ID.isEmpty else {
             companyNameStatusLabel.text = ""
             phoneNumberStatusLabel.text = ""
             emailIdStatusLabel.text = "Please enter email ID"
@@ -116,17 +116,17 @@ class SignUpViewController: UIViewController {
         resetStatusLabels()
         
         
-        if !isValidEmail(emailID) {
+        if !isValidEmail(email_ID) {
             emailIdStatusLabel.text = "Invalid email"
             return
         }
         let newUser = User(context: managedContext)
-        newUser.phoneNumber = phoneNumber
-        newUser.countryCode = countryCode
-        newUser.companyName = companyName
-        newUser.emailID = emailID
-        newUser.deviceID = UIDevice.current.identifierForVendor?.uuidString
-        newUser.sessionID = UUID().uuidString
+        newUser.phone_Number = phone_Number
+        newUser.country_Code = country_Code
+        newUser.company_Name = company_Name
+        newUser.email_ID = email_ID
+        newUser.device_ID = UIDevice.current.identifierForVendor?.uuidString
+        newUser.session_ID = UUID().uuidString
 
         performSegue(withIdentifier: "SignUpToEmailOTP", sender: newUser)
 
@@ -163,10 +163,10 @@ class SignUpViewController: UIViewController {
             if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
                 let newUser = sender as? User
                 confirmPasswordVC.user = newUser
-                confirmPasswordVC.companyName = newUser?.companyName
-                confirmPasswordVC.phoneNumber = newUser?.phoneNumber
-                confirmPasswordVC.countryCode = newUser?.countryCode
-                confirmPasswordVC.emailID = newUser?.emailID
+                confirmPasswordVC.company_Name = newUser?.company_Name
+                confirmPasswordVC.phone_Number = newUser?.phone_Number
+                confirmPasswordVC.country_Code = newUser?.country_Code
+                confirmPasswordVC.email_ID = newUser?.email_ID
         
             }
         }

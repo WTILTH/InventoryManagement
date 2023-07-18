@@ -116,7 +116,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         
         otpDigits1 = Array(arrayLiteral: String(correctOTP1))
-        resendButton.isHidden = true
+       
         startTimer()
         let underlineLayer = CALayer()
         underlineLayer.frame = CGRect(x: 0, y: emailOTPTxt1.frame.size.height - 1, width: emailOTPTxt1.frame.size.width, height: 1)
@@ -155,6 +155,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         timer?.invalidate()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        resendButton.isEnabled = false
     }
     @objc func updateTimer() {
         timeRemaining -= 1
@@ -163,7 +164,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             
             timer?.invalidate()
             
-            resendButton.isHidden = false
+            resendButton.isEnabled = true
         }
     }
     
@@ -172,6 +173,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             timeRemaining = 10
             startTimer()
             resendAttempts += 1
+            resendButton.isEnabled = false
         } else {
             showCustomAlertWith(okButtonAction: {
                 self.performSegue(withIdentifier: "LoginViewController", sender: nil)
@@ -212,10 +214,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         let enteredOTP1 = getEnteredOTP1
         
         let enteredOTP2 = getEnteredOTP2
-        
-        
-        
-        
+      
         guard !enteredOTP1().isEmpty && enteredOTP1() == correctOTP1 else {
             
             showCustomAlertWith(message: "Incorrect Email OTP. Please try again.", descMsg: "", actions: nil)
@@ -239,10 +238,10 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         if segue.identifier == "OTPToConfirmPassword" {
             if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
                 confirmPasswordVC.user = user
-                confirmPasswordVC.companyName = user?.companyName
-                confirmPasswordVC.phoneNumber = user?.phoneNumber
-                confirmPasswordVC.countryCode = user?.countryCode
-                confirmPasswordVC.emailID = user?.emailID
+                confirmPasswordVC.company_Name = user?.company_Name
+                confirmPasswordVC.phone_Number = user?.phone_Number
+                confirmPasswordVC.country_Code = user?.country_Code
+                confirmPasswordVC.email_ID = user?.email_ID
             }
         }
     }

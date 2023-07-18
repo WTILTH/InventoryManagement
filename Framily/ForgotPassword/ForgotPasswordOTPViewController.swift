@@ -24,7 +24,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var FPOTPnextBtn: UIButton!
     @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
-    
+    var resendAttempts = 0
     var timer: Timer?
         var timeRemaining = 10
     var correctOTP1: String = ""
@@ -168,27 +168,33 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     func startTimer() {
-       
+        
         timer?.invalidate()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        resendButton.isEnabled = false
     }
     @objc func updateTimer() {
         timeRemaining -= 1
         timerLabel.text = "\(timeRemaining) seconds remaining"
         if timeRemaining <= 0 {
-        
+            
             timer?.invalidate()
             
-            resendButton.isHidden = false
+            resendButton.isEnabled = true
         }
     }
-
+    
     @IBAction func resendButtonTapped(_ sender: UIButton) {
-       
-        timeRemaining = 10
-        resendButton.isHidden = true
-
-        startTimer()
+        if resendAttempts < 3 {
+            timeRemaining = 10
+            startTimer()
+            resendAttempts += 1
+            resendButton.isEnabled = false
+        } else {
+            showCustomAlertWith(okButtonAction: {
+                self.performSegue(withIdentifier: "FPOTPToLogin", sender: nil)
+            }, message: "Please contact the admin.", descMsg: "", actions: nil)
+        }
     }
     
     @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
@@ -210,13 +216,13 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         let enteredOTP2 = getEnteredOTP2
 
         guard !enteredOTP1().isEmpty && enteredOTP1() == correctOTP1 else {
-            showCustomAlertWith(message: "Incorrect OTP. Please try again.", descMsg: "", actions: nil)
+            showCustomAlertWith(message: "Incorrect Email OTP. Please try again.", descMsg: "", actions: nil)
             clearAllTextFields()
             return
         }
 
         guard !enteredOTP2().isEmpty && enteredOTP2() == correctOTP2 else {
-            showCustomAlertWith(message: "Incorrect OTP. Please try again.", descMsg: "", actions: nil)
+            showCustomAlertWith(message: "Incorrect Phone number OTP. Please try again.", descMsg: "", actions: nil)
             clearAllTextFields()
             return
         }

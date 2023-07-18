@@ -21,10 +21,10 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @IBOutlet weak var customCheckbox: VKCheckbox!
     @IBOutlet weak var infoPasswordBtn: UIButton!
     @IBOutlet weak var confirmPasswordView: UIView!
-    var companyName: String?
-    var phoneNumber: String?
-    var countryCode: String?
-    var emailID: String?
+    var company_Name: String?
+    var phone_Number: String?
+    var country_Code: String?
+    var email_ID: String?
     var iconClick = false
     let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -47,12 +47,12 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
        confirmPasswordTxt.borderStyle = .none
         if let user = user {
           
-            let phoneNumber = user.phoneNumber
-            let countryCode = user.countryCode
-            let companyName = user.companyName
-            let emailID = user.emailID
-            let deviceID = user.deviceID
-            let sessionID = user.sessionID
+            let phone_Number = user.phone_Number
+            let country_Code = user.country_Code
+            let company_Name = user.company_Name
+            let email_ID = user.email_ID
+            let device_ID = user.device_ID
+            let session_ID = user.session_ID
         }
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 1.5
@@ -158,7 +158,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     }
     @objc func submitButtonTapped() {
         
-        guard let groupName = groupNameTxt.text, !groupName.isEmpty else {
+        guard let group_Name = groupNameTxt.text, !group_Name.isEmpty else {
 
                     errorLbl.text = "Please enter group Name"
 
@@ -166,7 +166,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
 
                 }
 
-                guard let firstName = firstNameTxt.text, !firstName.isEmpty else {
+                guard let first_Name = firstNameTxt.text, !first_Name.isEmpty else {
 
                     errorLbl.text = "Please enter first Name"
 
@@ -174,7 +174,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
 
                 }
 
-                guard let lastName = lastNameTxt.text, !lastName.isEmpty else {
+                guard let last_Name = lastNameTxt.text, !last_Name.isEmpty else {
 
                     errorLbl.text = "Please enter last Name"
 
@@ -182,7 +182,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
 
                 }
 
-                guard let userName = userNameTxt.text, !userName.isEmpty else {
+                guard let user_Name = userNameTxt.text, !user_Name.isEmpty else {
 
                     errorLbl.text = "Please enter user Name"
 
@@ -234,13 +234,13 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
 
                     errorLbl.isHidden = true
 
-                    user.groupName = groupName
+                    user.group_Name = group_Name
 
-                    user.firstName = firstName
+                    user.first_Name = first_Name
 
-                    user.lastName = lastName
+                    user.last_Name = last_Name
 
-                    user.userName = userName
+                    user.user_Name = user_Name
 
                     user.password = newPassword
 
@@ -336,10 +336,10 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             let savedUsers = try managedContext.fetch(fetchRequest)
             for user in savedUsers {
                
-                print("Group Name: \(user.groupName ?? "")")
-                print("First Name: \(user.firstName ?? "")")
-                print("Last Name: \(user.lastName ?? "")")
-                print("User Name: \(user.userName ?? "")")
+                print("Group Name: \(user.group_Name ?? "")")
+                print("First Name: \(user.first_Name ?? "")")
+                print("Last Name: \(user.last_Name ?? "")")
+                print("User Name: \(user.user_Name ?? "")")
                 print("Password: \(user.password ?? "")")
                 
               

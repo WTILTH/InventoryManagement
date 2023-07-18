@@ -63,7 +63,7 @@ class VendorsListViewController: UIViewController, UITableViewDelegate, UITableV
       
         let name = selectedVendor.name ?? "N/A"
         let age = selectedVendor.age ?? "N/A"
-        let storeName = selectedVendor.storeName ?? "N/A"
+        let storeName = selectedVendor.store_Name ?? "N/A"
         let category = selectedVendor.category ?? "N/A"
         
   
