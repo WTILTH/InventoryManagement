@@ -1,77 +1,75 @@
 //
-//  SignUpViewController.swift
+//  SignUpExistingViewController.swift
 //  Framily
 //
-//  Created by Tharun kumar on 04/07/23.
+//  Created by Varun kumar on 25/07/23.
 //
 
 import UIKit
 import CoreData
 import DialCountries
 
-class SignUpViewController: UIViewController {
+class SignUpExistingViewController: UIViewController {
     
     var countryCodes = [[String]]()
+    @IBOutlet weak var existingGroupNameTxt: UITextField!
+    @IBOutlet weak var existingCountryCodeTxt: UITextField!
+    @IBOutlet weak var existingPhoneNumberTxt: UITextField!
+    @IBOutlet weak var existingEmailIDTxt: UITextField!
+    @IBOutlet weak var existingGroupNameStatusLabel: UILabel!
+    @IBOutlet weak var existingCountryCodeTxtStatusLabel: UILabel!
+    @IBOutlet weak var existingEmailIDStatusLabel: UILabel!
+    @IBOutlet weak var existingNextBtn: UIButton!
     @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var phoneNoTxt: UITextField!
-    @IBOutlet weak var signUpView: UIView!
-    @IBOutlet weak var nextBtn: UIButton!
-    @IBOutlet weak var countryCodeTxtField: UITextField!
-    @IBOutlet weak var companyNameTxt: UITextField!
-    @IBOutlet weak var emailIDTxt: UITextField!
-    @IBOutlet weak var companyNameStatusLabel: UILabel!
-    @IBOutlet weak var phoneNumberStatusLabel: UILabel!
-    @IBOutlet weak var emailIdStatusLabel: UILabel!
-    
+    @IBOutlet weak var existingSignUpView: UIView!
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showDialCountriesController))
-        countryCodeTxtField.addGestureRecognizer(tapGesture)
-        countryCodeTxtField.isUserInteractionEnabled = true
-        signUpView.layer.cornerRadius = 20.0
+        existingCountryCodeTxt.addGestureRecognizer(tapGesture)
+        existingCountryCodeTxt.isUserInteractionEnabled = true
+        existingSignUpView.layer.cornerRadius = 20.0
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         self.countryCodes = getAllCountryCodes()
         picker()
-        countryCodeTxtField.isUserInteractionEnabled = true
-        companyNameTxt.backgroundColor = UIColor.clear
-       companyNameTxt.borderStyle = .none
-        countryCodeTxtField.backgroundColor = UIColor.clear
-       countryCodeTxtField.borderStyle = .none
-        phoneNoTxt.backgroundColor = UIColor.clear
-       phoneNoTxt.borderStyle = .none
-        emailIDTxt.backgroundColor = UIColor.clear
-       emailIDTxt.borderStyle = .none
+        existingCountryCodeTxt.isUserInteractionEnabled = true
+        existingGroupNameTxt.backgroundColor = UIColor.clear
+       existingGroupNameTxt.borderStyle = .none
+        existingCountryCodeTxt.backgroundColor = UIColor.clear
+       existingCountryCodeTxt.borderStyle = .none
+        existingPhoneNumberTxt.backgroundColor = UIColor.clear
+       existingPhoneNumberTxt.borderStyle = .none
+        existingEmailIDTxt.backgroundColor = UIColor.clear
+       existingEmailIDTxt.borderStyle = .none
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
         let shadowOffset = CGSize(width: 0, height: 3)
         let shadowRadius: CGFloat = 5
         
-        nextBtn.layer.shadowColor = shadowColor
-        nextBtn.layer.shadowOpacity = shadowOpacity
-       nextBtn.layer.shadowOffset = shadowOffset
-        nextBtn.layer.shadowRadius = shadowRadius
-        signUpView.layer.shadowColor = shadowColor
-        signUpView.layer.shadowOpacity = shadowOpacity
-        signUpView.layer.shadowOffset = shadowOffset
-        signUpView.layer.shadowRadius = shadowRadius
+        existingNextBtn.layer.shadowColor = shadowColor
+        existingNextBtn.layer.shadowOpacity = shadowOpacity
+       existingNextBtn.layer.shadowOffset = shadowOffset
+        existingNextBtn.layer.shadowRadius = shadowRadius
+        existingSignUpView.layer.shadowColor = shadowColor
+        existingSignUpView.layer.shadowOpacity = shadowOpacity
+        existingSignUpView.layer.shadowOffset = shadowOffset
+        existingSignUpView.layer.shadowRadius = shadowRadius
         let underlineLayer = CALayer()
-        underlineLayer.frame = CGRect(x: 0, y: companyNameTxt.frame.size.height - 1, width: companyNameTxt.frame.size.width, height: 1)
+        underlineLayer.frame = CGRect(x: 0, y: existingGroupNameTxt.frame.size.height - 1, width: existingGroupNameTxt.frame.size.width, height: 1)
         underlineLayer.backgroundColor = UIColor.white.cgColor
-        companyNameTxt.layer.addSublayer(underlineLayer)
+        existingGroupNameTxt.layer.addSublayer(underlineLayer)
         let underlineLayer4 = CALayer()
-        underlineLayer4.frame = CGRect(x: 0, y: countryCodeTxtField.frame.size.height - 1, width: countryCodeTxtField.frame.size.width, height: 1)
+        underlineLayer4.frame = CGRect(x: 0, y: existingCountryCodeTxt.frame.size.height - 1, width: existingCountryCodeTxt.frame.size.width, height: 1)
         underlineLayer4.backgroundColor = UIColor.white.cgColor
-        countryCodeTxtField.layer.addSublayer(underlineLayer4)
+        existingCountryCodeTxt.layer.addSublayer(underlineLayer4)
         let underlineLayer3 = CALayer()
-        underlineLayer3.frame = CGRect(x: 0, y: phoneNoTxt.frame.size.height - 1, width: phoneNoTxt.frame.size.width, height: 1)
+        underlineLayer3.frame = CGRect(x: 0, y: existingPhoneNumberTxt.frame.size.height - 1, width: existingPhoneNumberTxt.frame.size.width, height: 1)
         underlineLayer3.backgroundColor = UIColor.white.cgColor
-        phoneNoTxt.layer.addSublayer(underlineLayer3)
+        existingPhoneNumberTxt.layer.addSublayer(underlineLayer3)
         let underlineLayer2 = CALayer()
-        underlineLayer2.frame = CGRect(x: 0, y: emailIDTxt.frame.size.height - 1, width: emailIDTxt.frame.size.width, height: 1)
+        underlineLayer2.frame = CGRect(x: 0, y: existingEmailIDTxt.frame.size.height - 1, width: existingEmailIDTxt.frame.size.width, height: 1)
         underlineLayer2.backgroundColor = UIColor.white.cgColor
-        emailIDTxt.layer.addSublayer(underlineLayer2)
+        existingEmailIDTxt.layer.addSublayer(underlineLayer2)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -82,34 +80,34 @@ class SignUpViewController: UIViewController {
         cv.show(vc: self)
     }
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
-        guard let companyName = companyNameTxt.text, !companyName.isEmpty else {
-            companyNameStatusLabel.text = "Please enter company name"
-            phoneNumberStatusLabel.text = ""
-            emailIdStatusLabel.text = ""
+        guard let groupName = existingGroupNameTxt.text, !groupName.isEmpty else {
+            existingGroupNameStatusLabel.text = "Please enter Group name"
+            existingCountryCodeTxtStatusLabel.text = ""
+            existingEmailIDStatusLabel.text = ""
             return
         }
-        guard let countryCode = countryCodeTxtField.text, !countryCode.isEmpty else {
-            companyNameStatusLabel.text = ""
-            phoneNumberStatusLabel.text = "Please enter Country Code"
-            emailIdStatusLabel.text = ""
+        guard let countryCode = existingCountryCodeTxt.text, !countryCode.isEmpty else {
+            existingGroupNameStatusLabel.text = ""
+            existingCountryCodeTxtStatusLabel.text = "Please enter Country Code"
+            existingEmailIDStatusLabel.text = ""
             return
         }
-        guard let phoneNumber = phoneNoTxt.text, !phoneNumber.isEmpty else {
-            companyNameStatusLabel.text = ""
-            phoneNumberStatusLabel.text = "Please enter phone number"
-            emailIdStatusLabel.text = ""
+        guard let phoneNumber = existingPhoneNumberTxt.text, !phoneNumber.isEmpty else {
+            existingGroupNameStatusLabel.text = ""
+            existingCountryCodeTxtStatusLabel.text = "Please enter phone number"
+            existingEmailIDStatusLabel.text = ""
             return
         }
         
         if !isValidPhoneNumber(phoneNumber) {
-            phoneNumberStatusLabel.text = "Invalid phone number"
+            existingCountryCodeTxtStatusLabel.text = "Invalid phone number"
             return
         }
         
-        guard let emailID = emailIDTxt.text, !emailID.isEmpty else {
-            companyNameStatusLabel.text = ""
-            phoneNumberStatusLabel.text = ""
-            emailIdStatusLabel.text = "Please enter email ID"
+        guard let emailID = existingEmailIDTxt.text, !emailID.isEmpty else {
+            existingGroupNameStatusLabel.text = ""
+            existingCountryCodeTxtStatusLabel.text = ""
+            existingEmailIDStatusLabel.text = "Please enter email ID"
             return
         }
         
@@ -117,18 +115,18 @@ class SignUpViewController: UIViewController {
         
         
         if !isValidEmail(emailID) {
-            emailIdStatusLabel.text = "Invalid email"
+            existingEmailIDStatusLabel.text = "Invalid email"
             return
         }
         let newUser = User(context: managedContext)
         newUser.phoneNumber = phoneNumber
-        newUser.countryCode = countryCode
-        newUser.companyName = companyName
+      newUser.countryCode = countryCode
+       newUser.groupName = groupName
         newUser.emailID = emailID
-        newUser.deviceID = UIDevice.current.identifierForVendor?.uuidString
-        newUser.sessionID = UUID().uuidString
+       newUser.deviceID = UIDevice.current.identifierForVendor?.uuidString
+       newUser.sessionID = UUID().uuidString
 
-        performSegue(withIdentifier: "SignUpToEmailOTP", sender: newUser)
+        performSegue(withIdentifier: "SignUpExistingToEmailOTP", sender: newUser)
 
         
     }
@@ -148,7 +146,7 @@ class SignUpViewController: UIViewController {
         let picker = UIPickerView()
         picker.delegate = self
         picker.dataSource = self
-        countryCodeTxtField.inputView = picker
+        existingCountryCodeTxt.inputView = picker
         picker.selectRow(0, inComponent: 0, animated: true)
     }
     
@@ -163,7 +161,7 @@ class SignUpViewController: UIViewController {
             if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
                 let newUser = sender as? User
                 confirmPasswordVC.user = newUser
-                confirmPasswordVC.companyName = newUser?.companyName
+                confirmPasswordVC.groupName = newUser?.groupName
                 confirmPasswordVC.phoneNumber = newUser?.phoneNumber
                 confirmPasswordVC.countryCode = newUser?.countryCode
                 confirmPasswordVC.emailID = newUser?.emailID
@@ -174,11 +172,11 @@ class SignUpViewController: UIViewController {
     
     func resetStatusLabels() {
 
-        companyNameStatusLabel.text = ""
+        existingGroupNameStatusLabel.text = ""
 
-        phoneNumberStatusLabel.text = ""
+        existingCountryCodeTxtStatusLabel.text = ""
 
-        emailIdStatusLabel.text = ""
+        existingEmailIDStatusLabel.text = ""
 
         statusLabel.text = ""
 
@@ -196,7 +194,7 @@ class SignUpViewController: UIViewController {
         }
     
   }
-extension SignUpViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension SignUpExistingViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - UIPickerView Delegate Methods
     
@@ -215,12 +213,13 @@ extension SignUpViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let code = countryCodes[row]
-        countryCodeTxtField.text = "+\(code[1])"
+        existingCountryCodeTxt.text = "+\(code[1])"
     }
 }
-extension SignUpViewController: DialCountriesControllerDelegate {
+extension SignUpExistingViewController: DialCountriesControllerDelegate {
     func didSelected(with country: Country) {
         // Update the text field with the selected country code
-        countryCodeTxtField.text = country.dialCode
+        existingCountryCodeTxt.text = country.dialCode
     }
 }
+

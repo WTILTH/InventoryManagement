@@ -15,20 +15,31 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
     @IBOutlet weak var FPCreatePasswordTxt: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var forgotPasswordConfirmPassView: UIView!
+    @IBOutlet weak var forgotPasswordStrengthProgressView: UIProgressView!
+    var isPasswordValid: Bool = false
     var user: User?
     var iconClick = false
     let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        FPCreatePasswordTxt.addTarget(self, action: #selector(passwordEditingChanged(_:)), for: .editingChanged)
+        FPCreatePasswordTxt.delegate = self
+        self.forgotPasswordStrengthProgressView.setProgress(0, animated: true)
+        self.errorLabel.textColor = UIColor.red
+        self.errorLabel.text = ""
+        self.errorLabel.isHidden = true
+        
+        FPConfirmPasswordTxt.delegate = self
         forgotPasswordConfirmPassView.layer.cornerRadius = 20.0
         FPCreatePasswordTxt.backgroundColor = UIColor.clear
-       FPCreatePasswordTxt.borderStyle = .none
+        FPCreatePasswordTxt.borderStyle = .none
         FPConfirmPasswordTxt.backgroundColor = UIColor.clear
-       FPConfirmPasswordTxt.borderStyle = .none
+        FPConfirmPasswordTxt.borderStyle = .none
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         confirmBtn.layer.cornerRadius=10.0
-       
+        
         imageIcon.image = UIImage(named: "closeEye")
         let contentView = UIView()
         contentView.addSubview(imageIcon)
@@ -107,7 +118,7 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
             errorLabel.text = "Passwords do not match"
             return
         }
-
+        
         guard let newPassword = FPCreatePasswordTxt.text, !newPassword.isEmpty else {
             showCustomAlertWith(message: "Please enter a new password", descMsg: "")
             return
@@ -116,7 +127,7 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
             showCustomAlertWith(message: "Please enter a confirm Password", descMsg: "")
             return
         }
-
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
@@ -138,80 +149,103 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
             print("Failed to update password: \(error)")
         }
     }
-
-
-
-
-
-func validatePasswords() -> Bool {
-    guard let newPassword = FPCreatePasswordTxt.text,
-          let confirmPassword = FPConfirmPasswordTxt.text else {
-        return false
-    }
-    //  if newPassword.count < 8 || newPassword.count > 14 {
-      //    return false
-     // }
-     // let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,14}$"
-      //let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
-     // if !passwordPredicate.evaluate(with: newPassword) {
-     //     return false
-     // }
-      
     
-    if newPassword != confirmPassword {
-        return false
-    }
-    return true
-}
-}
-
-
-
-
-/*@IBAction func updateButtonTapped(_ sender: Any) {
-if validatePasswords() {
-errorLabel.isHidden = true
-
-guard let newPassword = FPConfirmPasswordTxt.text,
-    let user = user else {
-    return
-}
-
-
-guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-    return
-}
-
-let managedContext = appDelegate.persistentContainer.viewContext
-let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-
-do {
-    let users = try managedContext.fetch(fetchRequest)
     
-   
-    let passwordExists = users.contains { $0.password == newPassword }
     
-    if passwordExists {
-        showCustomAlertWith(message: "Password Already Exists", descMsg: "Please choose a different password.")
-    } else {
-   
-        user.password = newPassword
+    
+    
+    func validatePasswords() -> Bool {
+        guard let newPassword = FPCreatePasswordTxt.text,
+              let confirmPassword = FPConfirmPasswordTxt.text else {
+            return false
+        }
         
-        do {
-            try managedContext.save()
-            
-            performSegue(withIdentifier: "FPtoMAIN", sender: nil)
-            showCustomAlertWith(message: "Password Updated", descMsg: "")
-        } catch {
-            print("Failed to update password: \(error)")
+        if newPassword.count < 8 || newPassword.count > 14 {
+            showCustomAlertWith(message: "Password length should be between 8 and 14 characters, Should have Upper Case and Lower Case and Special character", descMsg: "")
+            return false
+        }
+        
+        let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,14}$"
+        let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
+        if !passwordPredicate.evaluate(with: newPassword) {
+            showCustomAlertWith(message: "Password requirements are not satisfied", descMsg: "")
+            return false
+        }
+        
+        return true
+    }
+    
+    @IBAction func confirmPssword(_ sender: Any) {
+    }
+    @objc func passwordEditingChanged(_ textField: UITextField) {
+        if textField == FPCreatePasswordTxt {
+            if let password = textField.text, !password.isEmpty {
+                self.errorLabel.isHidden = false
+                self.errorLabel.alpha = 0
+                
+                let validationId = PasswordStrengthManager.checkValidationWithUniqueCharacter(pass: password, rules: PasswordRules.passwordRule, minLength: PasswordRules.minPasswordLength, maxLength: PasswordRules.maxPasswordLength)
+                UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: { [weak self] in
+                    self?.errorLabel.alpha = CGFloat(validationId.alpha)
+                    self?.errorLabel.text = validationId.text
+                })
+                
+                let progressInfo = PasswordStrengthManager.setProgressView(strength: validationId.strength)
+                self.isPasswordValid = progressInfo.shouldValid
+                self.forgotPasswordStrengthProgressView.setProgress(progressInfo.percentage, animated: true)
+                self.forgotPasswordStrengthProgressView.progressTintColor = UIColor.colorFrom(hexString: progressInfo.color)
+            } else {
+                self.errorLabel.isHidden = true
+                self.forgotPasswordStrengthProgressView.setProgress(0, animated: false)
+            }
         }
     }
-} catch {
-    print("Failed to fetch user data: \(error)")
+    
+    
+    
+    /*@IBAction func updateButtonTapped(_ sender: Any) {
+     if validatePasswords() {
+     errorLabel.isHidden = true
+     
+     guard let newPassword = FPConfirmPasswordTxt.text,
+     let user = user else {
+     return
+     }
+     
+     
+     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+     return
+     }
+     
+     let managedContext = appDelegate.persistentContainer.viewContext
+     let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+     
+     do {
+     let users = try managedContext.fetch(fetchRequest)
+     
+     
+     let passwordExists = users.contains { $0.password == newPassword }
+     
+     if passwordExists {
+     showCustomAlertWith(message: "Password Already Exists", descMsg: "Please choose a different password.")
+     } else {
+     
+     user.password = newPassword
+     
+     do {
+     try managedContext.save()
+     
+     performSegue(withIdentifier: "FPtoMAIN", sender: nil)
+     showCustomAlertWith(message: "Password Updated", descMsg: "")
+     } catch {
+     print("Failed to update password: \(error)")
+     }
+     }
+     } catch {
+     print("Failed to fetch user data: \(error)")
+     }
+     } else {
+     errorLabel.isHidden = false
+     errorLabel.text = "Passwords do not match"
+     }
+     }*/
 }
-} else {
-errorLabel.isHidden = false
-errorLabel.text = "Passwords do not match"
-}
-}*/
-

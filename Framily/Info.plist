@@ -4,14 +4,6 @@
 <dict>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
 	<false/>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>allow</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>allow</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Access to the camera is required to capture images for text recognition.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access to the photo library is required to select images for text recognition.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

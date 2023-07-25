@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 import UserNotifications
-import FirebaseCore
+//import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         // ... Existing code ...
        
-        FirebaseApp.configure()
+       // FirebaseApp.configure()
         return true
     }
     // MARK: UISceneSession Lifecycle

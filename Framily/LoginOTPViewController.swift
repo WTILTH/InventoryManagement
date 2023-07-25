@@ -1,28 +1,26 @@
 //
-//  EmailOTPViewController.swift
+//  LoginOTPViewController.swift
 //  Framily
 //
-//  Created by Varun kumar on 05/07/23.
+//  Created by Varun kumar on 25/07/23.
 //
 
 import UIKit
 import UserNotifications
-import CoreData
 
-class EmailOTPViewController: UIViewController, UITextFieldDelegate {
-    
-    @IBOutlet weak var emailOTPTxt1: UITextField!
-    @IBOutlet weak var emailOTPTxt2: UITextField!
-    @IBOutlet weak var emailOTPTxt3: UITextField!
-    @IBOutlet weak var phoneNumberTxt1: UITextField!
-    @IBOutlet weak var phoneNumberTxt2: UITextField!
-    @IBOutlet weak var phoneNumberTxt3: UITextField!
-    @IBOutlet weak var emailOTPBtn: UIButton!
-    @IBOutlet weak var phoneNumberOTPBtn: UIButton!
-    @IBOutlet weak var timerLabel: UILabel!
-    @IBOutlet weak var resendButton: UIButton!
-    @IBOutlet weak var nextBtn: UIButton!
-    @IBOutlet weak var emailOTPView: UIView!
+class LoginOTPViewController: UIViewController, UITextFieldDelegate {
+    @IBOutlet weak var LoginEmailOTPTxt1: UITextField!
+    @IBOutlet weak var LoginEmailOTPTxt2: UITextField!
+    @IBOutlet weak var LoginEmailOTPTxt3: UITextField!
+    @IBOutlet weak var LoginPhoneNumberTxt1: UITextField!
+    @IBOutlet weak var LoginPhoneNumberTxt2: UITextField!
+    @IBOutlet weak var LoginPhoneNumberTxt3: UITextField!
+    @IBOutlet weak var LoginEmailOTPBtn: UIButton!
+    @IBOutlet weak var LoginPhoneNumberOTPBtn: UIButton!
+    @IBOutlet weak var LoginTimerLabel: UILabel!
+    @IBOutlet weak var LoginResendButton: UIButton!
+    @IBOutlet weak var LoginNextBtn: UIButton!
+    @IBOutlet weak var LoginEmailOTPView: UIView!
     
     var resendAttempts = 0
     var timer: Timer?
@@ -35,62 +33,62 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = BackgroundManager.shared.backgroundColor
-        emailOTPView.layer.cornerRadius = 20.0
-        emailOTPTxt1.backgroundColor = UIColor.clear
-        emailOTPTxt1.borderStyle = .none
-        emailOTPTxt2.backgroundColor = UIColor.clear
-        emailOTPTxt2.borderStyle = .none
-        emailOTPTxt3.backgroundColor = UIColor.clear
-        emailOTPTxt3.borderStyle = .none
-        phoneNumberTxt1.backgroundColor = UIColor.clear
-        phoneNumberTxt1.borderStyle = .none
-        phoneNumberTxt2.backgroundColor = UIColor.clear
-        phoneNumberTxt2.borderStyle = .none
-        phoneNumberTxt3.backgroundColor = UIColor.clear
-        phoneNumberTxt3.borderStyle = .none
+        LoginEmailOTPView.layer.cornerRadius = 20.0
+        LoginEmailOTPTxt1.backgroundColor = UIColor.clear
+        LoginEmailOTPTxt1.borderStyle = .none
+        LoginEmailOTPTxt2.backgroundColor = UIColor.clear
+        LoginEmailOTPTxt2.borderStyle = .none
+        LoginEmailOTPTxt3.backgroundColor = UIColor.clear
+        LoginEmailOTPTxt3.borderStyle = .none
+        LoginPhoneNumberTxt1.backgroundColor = UIColor.clear
+        LoginPhoneNumberTxt1.borderStyle = .none
+        LoginPhoneNumberTxt2.backgroundColor = UIColor.clear
+        LoginPhoneNumberTxt2.borderStyle = .none
+        LoginPhoneNumberTxt3.backgroundColor = UIColor.clear
+        LoginPhoneNumberTxt3.borderStyle = .none
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
         let shadowOffset = CGSize(width: 0, height: 3)
         let shadowRadius: CGFloat = 5
-        nextBtn.layer.shadowColor = shadowColor
-        nextBtn.layer.shadowOpacity = shadowOpacity
-        nextBtn.layer.shadowOffset = shadowOffset
-        nextBtn.layer.shadowRadius = shadowRadius
-        emailOTPView.layer.shadowColor = shadowColor
-        emailOTPView.layer.shadowOpacity = shadowOpacity
-        emailOTPView.layer.shadowOffset = shadowOffset
-        emailOTPView.layer.shadowRadius = shadowRadius
-        emailOTPTxt1.layer.shadowColor = shadowColor
-        emailOTPTxt1.layer.shadowOpacity = shadowOpacity
-        emailOTPTxt1.layer.shadowOffset = shadowOffset
-        emailOTPTxt1.layer.shadowRadius = shadowRadius
-        emailOTPTxt2.layer.shadowColor = shadowColor
-        emailOTPTxt2.layer.shadowOpacity = shadowOpacity
-        emailOTPTxt2.layer.shadowOffset = shadowOffset
-        emailOTPTxt2.layer.shadowRadius = shadowRadius
-        emailOTPTxt3.layer.shadowColor = shadowColor
-        emailOTPTxt3.layer.shadowOpacity = shadowOpacity
-        emailOTPTxt3.layer.shadowOffset = shadowOffset
-        emailOTPTxt3.layer.shadowRadius = shadowRadius
-        phoneNumberTxt1.layer.shadowColor = shadowColor
-        phoneNumberTxt1.layer.shadowOpacity = shadowOpacity
-        phoneNumberTxt1.layer.shadowOffset = shadowOffset
-        phoneNumberTxt1.layer.shadowRadius = shadowRadius
-        phoneNumberTxt2.layer.shadowColor = shadowColor
-        phoneNumberTxt2.layer.shadowOpacity = shadowOpacity
-        phoneNumberTxt2.layer.shadowOffset = shadowOffset
-        phoneNumberTxt2.layer.shadowRadius = shadowRadius
-        phoneNumberTxt3.layer.shadowColor = shadowColor
-        phoneNumberTxt3.layer.shadowOpacity = shadowOpacity
-        phoneNumberTxt3.layer.shadowOffset = shadowOffset
-        phoneNumberTxt3.layer.shadowRadius = shadowRadius
+        LoginNextBtn.layer.shadowColor = shadowColor
+        LoginNextBtn.layer.shadowOpacity = shadowOpacity
+        LoginNextBtn.layer.shadowOffset = shadowOffset
+        LoginNextBtn.layer.shadowRadius = shadowRadius
+        LoginEmailOTPView.layer.shadowColor = shadowColor
+        LoginEmailOTPView.layer.shadowOpacity = shadowOpacity
+        LoginEmailOTPView.layer.shadowOffset = shadowOffset
+        LoginEmailOTPView.layer.shadowRadius = shadowRadius
+        LoginEmailOTPTxt1.layer.shadowColor = shadowColor
+        LoginEmailOTPTxt1.layer.shadowOpacity = shadowOpacity
+        LoginEmailOTPTxt1.layer.shadowOffset = shadowOffset
+        LoginEmailOTPTxt1.layer.shadowRadius = shadowRadius
+        LoginEmailOTPTxt2.layer.shadowColor = shadowColor
+        LoginEmailOTPTxt2.layer.shadowOpacity = shadowOpacity
+        LoginEmailOTPTxt2.layer.shadowOffset = shadowOffset
+        LoginEmailOTPTxt2.layer.shadowRadius = shadowRadius
+        LoginEmailOTPTxt3.layer.shadowColor = shadowColor
+        LoginEmailOTPTxt3.layer.shadowOpacity = shadowOpacity
+        LoginEmailOTPTxt3.layer.shadowOffset = shadowOffset
+        LoginEmailOTPTxt3.layer.shadowRadius = shadowRadius
+        LoginPhoneNumberTxt1.layer.shadowColor = shadowColor
+        LoginPhoneNumberTxt1.layer.shadowOpacity = shadowOpacity
+        LoginPhoneNumberTxt1.layer.shadowOffset = shadowOffset
+        LoginPhoneNumberTxt1.layer.shadowRadius = shadowRadius
+        LoginPhoneNumberTxt2.layer.shadowColor = shadowColor
+        LoginPhoneNumberTxt2.layer.shadowOpacity = shadowOpacity
+        LoginPhoneNumberTxt2.layer.shadowOffset = shadowOffset
+        LoginPhoneNumberTxt2.layer.shadowRadius = shadowRadius
+        LoginPhoneNumberTxt3.layer.shadowColor = shadowColor
+        LoginPhoneNumberTxt3.layer.shadowOpacity = shadowOpacity
+        LoginPhoneNumberTxt3.layer.shadowOffset = shadowOffset
+        LoginPhoneNumberTxt3.layer.shadowRadius = shadowRadius
         
-        emailOTPTxt1.delegate = self
-        emailOTPTxt2.delegate = self
-        emailOTPTxt3.delegate = self
-        phoneNumberTxt1.delegate = self
-        phoneNumberTxt2.delegate = self
-        phoneNumberTxt3.delegate = self
+        LoginEmailOTPTxt1.delegate = self
+        LoginEmailOTPTxt2.delegate = self
+        LoginEmailOTPTxt3.delegate = self
+        LoginPhoneNumberTxt1.delegate = self
+        LoginPhoneNumberTxt2.delegate = self
+        LoginPhoneNumberTxt3.delegate = self
         
       /*  emailOTPTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
@@ -98,11 +96,11 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         emailOTPTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)*/
         
-        phoneNumberTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        LoginPhoneNumberTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
-        phoneNumberTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        LoginPhoneNumberTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
-        phoneNumberTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        LoginPhoneNumberTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
       /*  let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(firstTextFieldTapped))
         
@@ -112,7 +110,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(secondTextFieldTapped))
         
-        phoneNumberTxt1.addGestureRecognizer(tapGesture2)
+        LoginPhoneNumberTxt1.addGestureRecognizer(tapGesture2)
         
         
         
@@ -120,29 +118,29 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
        
         startTimer()
         let underlineLayer = CALayer()
-        underlineLayer.frame = CGRect(x: 0, y: emailOTPTxt1.frame.size.height - 1, width: emailOTPTxt1.frame.size.width, height: 1)
+        underlineLayer.frame = CGRect(x: 0, y: LoginEmailOTPTxt1.frame.size.height - 1, width: LoginEmailOTPTxt1.frame.size.width, height: 1)
         underlineLayer.backgroundColor = UIColor.white.cgColor
-        emailOTPTxt1.layer.addSublayer(underlineLayer)
+        LoginEmailOTPTxt1.layer.addSublayer(underlineLayer)
         let underlineLayer1 = CALayer()
-        underlineLayer1.frame = CGRect(x: 0, y: emailOTPTxt2.frame.size.height - 1, width: emailOTPTxt2.frame.size.width, height: 1)
+        underlineLayer1.frame = CGRect(x: 0, y: LoginEmailOTPTxt2.frame.size.height - 1, width: LoginEmailOTPTxt2.frame.size.width, height: 1)
         underlineLayer1.backgroundColor = UIColor.white.cgColor
-        emailOTPTxt2.layer.addSublayer(underlineLayer1)
+        LoginEmailOTPTxt2.layer.addSublayer(underlineLayer1)
         let underlineLayer2 = CALayer()
-        underlineLayer2.frame = CGRect(x: 0, y: emailOTPTxt3.frame.size.height - 1, width: emailOTPTxt3.frame.size.width, height: 1)
+        underlineLayer2.frame = CGRect(x: 0, y: LoginEmailOTPTxt3.frame.size.height - 1, width: LoginEmailOTPTxt3.frame.size.width, height: 1)
         underlineLayer2.backgroundColor = UIColor.white.cgColor
-        emailOTPTxt3.layer.addSublayer(underlineLayer2)
+        LoginEmailOTPTxt3.layer.addSublayer(underlineLayer2)
         let underlineLayer3 = CALayer()
-        underlineLayer3.frame = CGRect(x: 0, y: phoneNumberTxt1.frame.size.height - 1, width: phoneNumberTxt1.frame.size.width, height: 1)
+        underlineLayer3.frame = CGRect(x: 0, y: LoginPhoneNumberTxt1.frame.size.height - 1, width: LoginPhoneNumberTxt1.frame.size.width, height: 1)
         underlineLayer3.backgroundColor = UIColor.white.cgColor
-        phoneNumberTxt1.layer.addSublayer(underlineLayer3)
+        LoginPhoneNumberTxt1.layer.addSublayer(underlineLayer3)
         let underlineLayer4 = CALayer()
-        underlineLayer4.frame = CGRect(x: 0, y: phoneNumberTxt2.frame.size.height - 1, width: phoneNumberTxt2.frame.size.width, height: 1)
+        underlineLayer4.frame = CGRect(x: 0, y: LoginPhoneNumberTxt2.frame.size.height - 1, width: LoginPhoneNumberTxt2.frame.size.width, height: 1)
         underlineLayer4.backgroundColor = UIColor.white.cgColor
-        phoneNumberTxt2.layer.addSublayer(underlineLayer4)
+        LoginPhoneNumberTxt2.layer.addSublayer(underlineLayer4)
         let underlineLayer5 = CALayer()
-        underlineLayer5.frame = CGRect(x: 0, y: phoneNumberTxt3.frame.size.height - 1, width: phoneNumberTxt3.frame.size.width, height: 1)
+        underlineLayer5.frame = CGRect(x: 0, y: LoginPhoneNumberTxt3.frame.size.height - 1, width: LoginPhoneNumberTxt3.frame.size.width, height: 1)
         underlineLayer5.backgroundColor = UIColor.white.cgColor
-        phoneNumberTxt3.layer.addSublayer(underlineLayer5)
+        LoginPhoneNumberTxt3.layer.addSublayer(underlineLayer5)
         
     }
     
@@ -156,16 +154,16 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         timer?.invalidate()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-        resendButton.isEnabled = false
+        LoginResendButton.isEnabled = false
     }
     @objc func updateTimer() {
         timeRemaining -= 1
-        timerLabel.text = "\(timeRemaining) seconds remaining"
+        LoginTimerLabel.text = "\(timeRemaining) seconds remaining"
         if timeRemaining <= 0 {
             
             timer?.invalidate()
             
-            resendButton.isEnabled = true
+            LoginResendButton.isEnabled = true
         }
     }
     
@@ -174,7 +172,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             timeRemaining = 10
             startTimer()
             resendAttempts += 1
-            resendButton.isEnabled = false
+            LoginResendButton.isEnabled = false
         } else {
             showCustomAlertWith(okButtonAction: {
                 self.performSegue(withIdentifier: "LoginViewController", sender: nil)
@@ -232,7 +230,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             clearAllTextFields()
             return
         }
-        performSegue(withIdentifier: "OTPToConfirmPassword", sender: nil)
+        performSegue(withIdentifier: "LoginOTPToHome", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -271,53 +269,50 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
 
             
 
-        if newLength <= 1 {
-            
-            // Check if the entered character is a number (you can adjust this condition as needed)
-            
-            if let char = string.cString(using: String.Encoding.utf8) {
-                
-                let isBackSpace = strcmp(char, "\\b")
-                
-                if isBackSpace == -92 { // Backspace was pressed, allow the text change
+            if newLength <= 1 {
+
+                // Check if the entered character is a number (you can adjust this condition as needed)
+
+                if let char = string.cString(using: String.Encoding.utf8) {
                     
-                    return true
+                    let isBackSpace = strcmp(char, "\\b")
                     
-                } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
-                    
-                    // If it's a number, move to the next text field
-                    
-                    switch textField {
+                    if isBackSpace == -92 { // Backspace was pressed, allow the text change
                         
-                    case emailOTPTxt1:
+                        return true
                         
-                        emailOTPTxt2.becomeFirstResponder()
+                    } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
                         
-                    case emailOTPTxt2:
+                        // If it's a number, move to the next text field
                         
-                        emailOTPTxt3.becomeFirstResponder()
+                        switch textField {
+                            
+                        case LoginEmailOTPTxt1:
+                            
+                            LoginEmailOTPTxt2.becomeFirstResponder()
+                            
+                        case LoginEmailOTPTxt2:
+                            
+                            LoginEmailOTPTxt3.becomeFirstResponder()
+                            
+                        case LoginEmailOTPTxt3:
+                            
+                            LoginEmailOTPTxt3.resignFirstResponder()
+                            
+                        default:
+                            
+                            break
+                            
+                        }
                         
-                    case emailOTPTxt3:
+                        textField.text = string // Manually set the text field with the entered character
                         
-                        emailOTPTxt3.resignFirstResponder()
-                    default:
+                        return false // Return false to prevent the default behavior of shouldChangeCharactersIn
                         
-                        break
-                        
-                    }
-                    
-                    textField.text = string // Manually set the text field with the entered character
-                    
-                    return false // Return false to prevent the default behavior of shouldChangeCharactersIn
-                    
+                     }
+                   }
                 }
-                
-            }
-            
-        }
-
-            return false
-
+        return false
         }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
@@ -326,29 +321,29 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         if text.count == 1 {
             switch textField {
-            case emailOTPTxt1:
+            case LoginEmailOTPTxt1:
                 
-                emailOTPTxt2.becomeFirstResponder()
+                LoginEmailOTPTxt2.becomeFirstResponder()
                 
-            case emailOTPTxt2:
+            case LoginEmailOTPTxt2:
                 
-                emailOTPTxt3.becomeFirstResponder()
+                LoginEmailOTPTxt3.becomeFirstResponder()
                 
-            case emailOTPTxt3:
+            case LoginEmailOTPTxt3:
                 
-                phoneNumberTxt1.becomeFirstResponder()
+                LoginPhoneNumberTxt1.becomeFirstResponder()
                 
-            case phoneNumberTxt1:
+            case LoginPhoneNumberTxt1:
                 
-                phoneNumberTxt2.becomeFirstResponder()
+                LoginPhoneNumberTxt2.becomeFirstResponder()
                 
-            case phoneNumberTxt2:
+            case LoginPhoneNumberTxt2:
                 
-                phoneNumberTxt3.becomeFirstResponder()
+                LoginPhoneNumberTxt3.becomeFirstResponder()
                 
-            case phoneNumberTxt3:
+            case LoginPhoneNumberTxt3:
                 
-                phoneNumberTxt3.resignFirstResponder()
+                LoginPhoneNumberTxt3.resignFirstResponder()
                 
             default:
                 
@@ -360,21 +355,21 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             
             switch textField {
                 
-            case emailOTPTxt2:
+            case LoginEmailOTPTxt2:
                 
-                emailOTPTxt1.becomeFirstResponder()
+                LoginEmailOTPTxt1.becomeFirstResponder()
                 
-            case emailOTPTxt3:
+            case LoginEmailOTPTxt3:
                 
-                emailOTPTxt2.becomeFirstResponder()
+                LoginEmailOTPTxt2.becomeFirstResponder()
                 
-            case phoneNumberTxt2:
+            case LoginPhoneNumberTxt2:
                 
-                phoneNumberTxt1.becomeFirstResponder()
+                LoginPhoneNumberTxt1.becomeFirstResponder()
                 
-            case phoneNumberTxt3:
+            case LoginPhoneNumberTxt3:
                 
-                phoneNumberTxt2.becomeFirstResponder()
+                LoginPhoneNumberTxt2.becomeFirstResponder()
                 
             default:
                 
@@ -461,7 +456,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     
     func getEnteredOTP1() -> String {
         
-        let enteredOTP = [emailOTPTxt1.text, emailOTPTxt2.text, emailOTPTxt3.text]
+        let enteredOTP = [LoginEmailOTPTxt1.text, LoginEmailOTPTxt2.text, LoginEmailOTPTxt3.text]
         
         return enteredOTP.compactMap { $0 }.joined()
     
@@ -469,18 +464,18 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     
     func clearAllTextFields() {
         
-        emailOTPTxt1.text = ""
+        LoginEmailOTPTxt1.text = ""
         
-        emailOTPTxt2.text = ""
+        LoginEmailOTPTxt2.text = ""
         
-        emailOTPTxt3.text = ""
+        LoginEmailOTPTxt3.text = ""
         
-        phoneNumberTxt1.text = ""
+        LoginPhoneNumberTxt1.text = ""
         
-        phoneNumberTxt2.text = ""
+        LoginPhoneNumberTxt2.text = ""
         
-        phoneNumberTxt3.text = ""
-        phoneNumberTxt1.becomeFirstResponder()
+        LoginPhoneNumberTxt3.text = ""
+        LoginPhoneNumberTxt1.becomeFirstResponder()
         
     }
     
@@ -506,17 +501,17 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             
         }
         
-        phoneNumberTxt1.text = String(correctOTP2[correctOTP2.startIndex])
+        LoginPhoneNumberTxt1.text = String(correctOTP2[correctOTP2.startIndex])
         
-        phoneNumberTxt2.text = String(correctOTP2[correctOTP2.index(after: correctOTP2.startIndex)])
+        LoginPhoneNumberTxt2.text = String(correctOTP2[correctOTP2.index(after: correctOTP2.startIndex)])
         
-        phoneNumberTxt3.text = String(correctOTP2[correctOTP2.index(correctOTP2.startIndex, offsetBy: 2)])
+        LoginPhoneNumberTxt3.text = String(correctOTP2[correctOTP2.index(correctOTP2.startIndex, offsetBy: 2)])
         
     }
     
     func getEnteredOTP2() -> String {
         
-        let enteredOTP = [phoneNumberTxt1.text, phoneNumberTxt2.text, phoneNumberTxt3.text]
+        let enteredOTP = [LoginPhoneNumberTxt1.text, LoginPhoneNumberTxt2.text, LoginPhoneNumberTxt3.text]
         
         return enteredOTP.compactMap { $0 }.joined()
         
@@ -524,13 +519,13 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     
     func clearAllTextFields2() {
         
-        phoneNumberTxt1.text = ""
+        LoginPhoneNumberTxt1.text = ""
         
-        phoneNumberTxt2.text = ""
+        LoginPhoneNumberTxt2.text = ""
         
-        phoneNumberTxt3.text = ""
+        LoginPhoneNumberTxt3.text = ""
         
-        emailOTPTxt1.becomeFirstResponder()
+        LoginEmailOTPTxt1.becomeFirstResponder()
         
     }
     
@@ -538,11 +533,11 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         let otpArray = Array(otp)
         
-        phoneNumberTxt1.text = String(otpArray[0])
+        LoginPhoneNumberTxt1.text = String(otpArray[0])
         
-        phoneNumberTxt2.text = String(otpArray[1])
+        LoginPhoneNumberTxt2.text = String(otpArray[1])
         
-        phoneNumberTxt3.text = String(otpArray[2])
+        LoginPhoneNumberTxt3.text = String(otpArray[2])
         
     }
     
@@ -580,7 +575,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         guard let firstDigit = correctOTP2.first else { return }
         
-        phoneNumberTxt1.text = String(firstDigit)
+        LoginPhoneNumberTxt1.text = String(firstDigit)
         
         guard correctOTP2.count >= 2 else { return }
         
@@ -588,7 +583,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         let secondDigit = correctOTP2[secondIndex]
         
-        phoneNumberTxt2.text = String(secondDigit)
+        LoginPhoneNumberTxt2.text = String(secondDigit)
         
         guard correctOTP2.count >= 3 else { return }
         
@@ -596,9 +591,9 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         let thirdDigit = correctOTP2[thirdIndex]
         
-        phoneNumberTxt3.text = String(thirdDigit)
+        LoginPhoneNumberTxt3.text = String(thirdDigit)
         
-        phoneNumberTxt2.becomeFirstResponder()
+        LoginPhoneNumberTxt2.becomeFirstResponder()
         
         
     }

@@ -6,13 +6,6 @@ target 'Framily' do
   use_frameworks!
    pod 'SOTabBar'
    pod 'NSVAnimatedTabBar'
-   pod 'AnimatedGradientView'
-   pod 'Firebase'
-   pod 'Firebase/Analytics'
-   pod 'Firebase/Database'
-   pod 'Firebase/Auth'
-   pod 'Firebase/Storage'
-   pod 'Firebase/Firestore'
    pod 'DialCountries'
 
   # Pods for Framily

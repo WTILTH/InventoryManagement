@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Firebase
+//import Firebase
 import CoreLocation
 import UserNotifications
 
@@ -19,13 +19,13 @@ struct Location {
 
 class ReminderViewController: UIViewController, CLLocationManagerDelegate {
 
-    let locationManager = CLLocationManager()
-    var databaseRef: DatabaseReference!
+   // let locationManager = CLLocationManager()
+   // var databaseRef: DatabaseReference!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = BackgroundManager.shared.backgroundColor
+     /*   view.backgroundColor = BackgroundManager.shared.backgroundColor
         databaseRef = Database.database().reference()
 
        
@@ -165,7 +165,7 @@ extension UIViewController {
             return tabBarController.selectedViewController?.topmostViewController ?? tabBarController
         }
         
-        return self
+        return self*/
     }
     
     

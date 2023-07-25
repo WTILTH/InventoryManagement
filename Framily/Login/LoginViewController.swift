@@ -13,18 +13,21 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var signUpBtn: UIButton!
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var emailIdText: UITextField!
-    @IBOutlet weak var passwordText: UITextField!
+    @IBOutlet weak var phoneNumberText: UITextField!
     @IBOutlet weak var loginView: UIView!
+    @IBOutlet weak var signUpPopUp: UIView!
     
     var managedObjectContext: NSManagedObjectContext!
-    var iconClick = false
-    let imageIcon = UIImageView()
+   // var iconClick = false
+    //let imageIcon = UIImageView()
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
+    var currentPopUpView: UIView?
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = BackgroundManager.shared.backgroundColor
-        self.navigationItem.setHidesBackButton(true, animated: false)
+        //self.navigationItem.setHidesBackButton(true, animated: false)
+        signUpPopUp.frame = CGRect(x: 0, y: view.frame.size.height, width: view.frame.size.width, height: 200)
+        signUpPopUp.layer.cornerRadius = 40.0
         printSavedData()
         setupCoreDataStack()
         loginView.layer.cornerRadius = 20.0
@@ -32,8 +35,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         signUpBtn.layer.cornerRadius = 10.0
         emailIdText.backgroundColor = UIColor.clear
        emailIdText.borderStyle = .none
-        passwordText.backgroundColor = UIColor.clear
-       passwordText.borderStyle = .none
+        phoneNumberText.backgroundColor = UIColor.clear
+        phoneNumberText.borderStyle = .none
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
         let shadowOffset = CGSize(width: 0, height: 3)
@@ -83,7 +86,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
                     if let currentUser = getCurrentUser() {
 
-                        let dueAmount = currentUser.due_Amount
+                        let dueAmount = currentUser.dueAmount
 
                         showAlert(for: formattedPeriod, dueAmount: dueAmount)
 
@@ -103,29 +106,82 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
         }
 
-        imageIcon.image = UIImage(named: "closeEye")
-                let contentView = UIView()
-                contentView.addSubview(imageIcon)
+      //  imageIcon.image = UIImage(named: "closeEye")
+        //        let contentView = UIView()
+        //        contentView.addSubview(imageIcon)
                 
-                contentView.frame = CGRect(x: 0, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
+            //    contentView.frame = CGRect(x: 0, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
+           //
+           //     imageIcon.frame = CGRect(x: -10, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
+       // phoneNumberText.rightView = contentView
+       // phoneNumberText.rightViewMode = .always
                 
-                imageIcon.frame = CGRect(x: -10, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
-                passwordText.rightView = contentView
-                passwordText.rightViewMode = .always
-                
-                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-                imageIcon.isUserInteractionEnabled = true
-                imageIcon.addGestureRecognizer(tapGestureRecognizer)
+              //  let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
+              //  imageIcon.isUserInteractionEnabled = true
+              //  imageIcon.addGestureRecognizer(tapGestureRecognizer)
         let underlineLayer = CALayer()
         underlineLayer.frame = CGRect(x: 0, y: emailIdText.frame.size.height - 1, width: emailIdText.frame.size.width, height: 1)
         underlineLayer.backgroundColor = UIColor.white.cgColor
         emailIdText.layer.addSublayer(underlineLayer)
         let underlineLayer1 = CALayer()
-        underlineLayer1.frame = CGRect(x: 0, y: passwordText.frame.size.height - 1, width: passwordText.frame.size.width, height: 1)
+        underlineLayer1.frame = CGRect(x: 0, y: phoneNumberText.frame.size.height - 1, width: phoneNumberText.frame.size.width, height: 1)
         underlineLayer1.backgroundColor = UIColor.white.cgColor
-        passwordText.layer.addSublayer(underlineLayer1)
+        phoneNumberText.layer.addSublayer(underlineLayer1)
+        let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        signUpPopUp?.addGestureRecognizer(tapGestureRecognizer1)
+    }
+
+    @objc func handleTap() {
+        // Dismiss the keyboard when the user taps on the transparent overlay
+        view.endEditing(true)
+        // Dismiss the pop-up view
+        if let currentPopUpView = currentPopUpView {
+            dismissPopUpView(currentPopUpView)
+        }
+    }
+
+    // Function to show the pop-up view
+    func showPopUpView(_ popUpView: UIView) {
+        // Dismiss any currently visible pop-up views
+        if let currentPopUpView = currentPopUpView {
+            dismissPopUpView(currentPopUpView)
+        }
+        currentPopUpView = popUpView
+
+        // Make the transparent overlay visible when the pop-up is shown
+        signUpPopUp?.alpha = 1
+
+        UIView.animate(withDuration: 0.3) {
+            popUpView.frame = CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200)
+        }
+    }
+
+    // Function to dismiss the pop-up view
+    func dismissPopUpView(_ popUpView: UIView) {
+        // Hide the transparent overlay when the pop-up is dismissed
+        signUpPopUp?.alpha = 0
+
+        UIView.animate(withDuration: 0.3) {
+            popUpView.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.size.width, height: 200)
+        }
+        currentPopUpView = nil
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+
+    @IBAction func showPopUpButtonTapped(_ sender: UIButton) {
+       if sender == signUpBtn {
+            // Show pop-up view 1
+            showPopUpView(signUpPopUp)
+        }
+    }
+        @IBAction func dismissPopUpButtonTapped(_ sender: UIButton) {
+          if sender.superview == signUpPopUp {
+                // Dismiss pop-up view 1
+                dismissPopUpView(signUpPopUp)
             }
-    
+        }
     func showAlert(for subscriptionPeriod: String?, dueAmount: Double?) {
 
             let message: String
@@ -144,27 +200,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
             }
 
-            
-
             if subscriptionPeriod != nil {
 
                 let alert = UIAlertController(title: "Subscription Alert", message: message, preferredStyle: .alert)
 
-                
-
-              
-
                 let payAction = UIAlertAction(title: "Pay Now", style: .default) { [weak self] (_) in
-
                     self?.navigateToPaymentViewController()
-
                 }
 
-                
-
                 alert.addAction(payAction)
-
-                
 
                 if subscriptionPeriod != nil {
 
@@ -173,8 +217,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     alert.addAction(cancelAction)
 
                 }
-
-                
 
                 present(alert, animated: true, completion: nil)
 
@@ -202,9 +244,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
         }
 
-
-
-
         func navigateToPaymentViewController() {
 
          
@@ -221,7 +260,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let fetchedUsers = try managedObjectContext?.fetch(fetchRequest) as! [User]
             if let currentUser = fetchedUsers.first {
               
-                currentUser.due_Amount = 59.99
+                currentUser.dueAmount = 55.99
                 try managedObjectContext?.save()
                 return currentUser
             }
@@ -233,7 +272,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
             
             
-            @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer)
+        /*    @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer)
     {
         
         let tappedImage = tapGestureRecognizer.view as! UIImageView
@@ -242,28 +281,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         {
             iconClick = false
             tappedImage.image = UIImage(named: "openEye")
-            passwordText.isSecureTextEntry = false
+            phoneNumberText.isSecureTextEntry = false
         }
         
         else {
             
             iconClick = true
             tappedImage.image = UIImage(named: "closeEye")
-            passwordText.isSecureTextEntry = true
+            phoneNumberText.isSecureTextEntry = true
             
             
         }
-    }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
+    }*/
+    
     @IBAction func forgotPasswordBtnPressed(_ sender: Any) {
         
         guard let loginInput = emailIdText.text, !loginInput.isEmpty
         else {
             showCustomAlertWith(message: "Please enter your Username or Email ID or Phone number", descMsg: "")
             return
-    }
+       }
         
     }
     
@@ -274,8 +311,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
              return
          }
          
-         guard let password = passwordText.text, !password.isEmpty else {
-             showCustomAlertWith(message: "Please enter password", descMsg: "")
+         guard let phoneNumber = phoneNumberText.text, !phoneNumber.isEmpty else {
+             showCustomAlertWith(message: "Please enter Phone Number", descMsg: "")
              return
          }
                 guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -283,19 +320,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-                fetchRequest.predicate = NSPredicate(format: "email_ID == %@", email)
+                fetchRequest.predicate = NSPredicate(format: "emailID == %@", email)
 
                 do {
                     let result = try appDelegate.persistentContainer.viewContext.fetch(fetchRequest)
                     let filteredUsers = result.compactMap { $0 as? User }.filter {
-                        $0.email_ID == email
+                        $0.emailID == email
                     }
                     
                     if let user = filteredUsers.first {
-                        if user.password == password {
+                        if user.phoneNumber == phoneNumber {
                             performSegue(withIdentifier: "loginToOtp", sender: nil)
                         } else {
-                            showCustomAlertWith(message: "Incorrect password", descMsg: "")
+                            showCustomAlertWith(message: "Incorrect Phone Number", descMsg: "")
                         }
                     } else {
                         showCustomAlertWith(message: "Email is not registered", descMsg: "")
@@ -323,6 +360,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
             return phonePredicate.evaluate(with: phoneNumber)
         }
+    
     func printSavedData() {
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
 
@@ -330,16 +368,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let savedUsers = try managedContext.fetch(fetchRequest)
             for user in savedUsers {
                 print("User Data:")
-            print("Phone Number: \(user.phone_Number ?? "")")
-                print("Country Code: \(user.country_Code ?? "")")
-        print("Company Name: \(user.company_Name ?? "")")
-            print("Email ID: \(user.email_ID ?? "")")
-            print("Device ID: \(user.device_ID ?? "")")
-            print("Session ID: \(user.session_ID ?? "")")
-            print("Group Name: \(user.group_Name ?? "")")
-            print("First Name: \(user.first_Name ?? "")")
-            print("Last Name: \(user.last_Name ?? "")")
-            print("User Name: \(user.user_Name ?? "")")
+            print("Phone Number: \(user.phoneNumber ?? "")")
+                print("Country Code: \(user.countryCode ?? "")")
+        print("Company Name: \(user.companyName ?? "")")
+            print("Email ID: \(user.emailID ?? "")")
+            print("Device ID: \(user.deviceID ?? "")")
+            print("Session ID: \(user.sessionID ?? "")")
+            print("Group Name: \(user.groupName ?? "")")
+            print("First Name: \(user.firstName ?? "")")
+            print("Last Name: \(user.lastName ?? "")")
+            print("User Name: \(user.userName ?? "")")
             print("Password: \(user.password ?? "")")
                 print("--*------*-----*-----*---")
             }

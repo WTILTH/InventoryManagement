@@ -122,15 +122,15 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         FPPOtpTxt2.keyboardType = .numberPad
         FPPOtpTxt3.keyboardType = .numberPad
         FPOTPnextBtn.layer.cornerRadius = 10.0
-        FPEOtpTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        /*FPEOtpTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPEOtpTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        FPEOtpTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        FPEOtpTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)*/
         FPPOtpTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPPOtpTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPPOtpTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
-        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(firstTextFieldTapped))
-        FPEOtpTxt1.addGestureRecognizer(tapGesture1)
+       /* let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(firstTextFieldTapped))
+        FPEOtpTxt1.addGestureRecognizer(tapGesture1)*/
         
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(secondTextFieldTapped))
         FPPOtpTxt1.addGestureRecognizer(tapGesture2)
@@ -199,7 +199,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
         generateOTP1()
-        autofillOTP1()
+      //  autofillOTP1()
         showCustomAlertWith(message: "Generated OTP: \(correctOTP1)", descMsg: "", actions: nil)
         showOTPNotification1()
     }
@@ -250,12 +250,60 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
         guard let text = textField.text else { return true }
+        
         let newLength = text.count + string.count - range.length
-        return newLength <= 1
+        
+        
+        
+        if newLength <= 1 {
+            
+            // Check if the entered character is a number (you can adjust this condition as needed)
+            
+            if let char = string.cString(using: String.Encoding.utf8) {
+                
+                let isBackSpace = strcmp(char, "\\b")
+                
+                if isBackSpace == -92 { // Backspace was pressed, allow the text change
+                    
+                    return true
+                    
+                } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
+                    
+                    // If it's a number, move to the next text field
+                    
+                    switch textField {
+                        
+                    case FPEOtpTxt1:
+                        
+                        FPEOtpTxt2.becomeFirstResponder()
+                        
+                    case FPEOtpTxt2:
+                        
+                        FPEOtpTxt3.becomeFirstResponder()
+                        
+                    case FPEOtpTxt3:
+                        
+                        FPEOtpTxt3.resignFirstResponder()
+                        
+                    default:
+                        
+                        break
+                        
+                    }
+                    
+                    textField.text = string // Manually set the text field with the entered character
+                    
+                    return false // Return false to prevent the default behavior of shouldChangeCharactersIn
+                    
+                }
+            }
+        }
+        return false
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
+   @objc func textFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
         
         if text.count == 1 {
@@ -291,7 +339,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
             }
         }
     
-    @objc func firstTextFieldTapped() {
+   /* @objc func firstTextFieldTapped() {
         guard let firstDigit = correctOTP1.first else { return }
         
         FPEOtpTxt1.text = String(firstDigit)
@@ -307,7 +355,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         FPEOtpTxt3.text = String(thirdDigit)
         
         FPEOtpTxt2.becomeFirstResponder()
-    }
+    }*/
     
 
     func showOTPNotification1() {
@@ -331,7 +379,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         }
     }
   
-    func autofillOTP1() {
+  /*  func autofillOTP1() {
         guard correctOTP1.count == 3 else {
             
             return
@@ -340,7 +388,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         FPEOtpTxt1.text = String(correctOTP1[correctOTP1.startIndex])
         FPEOtpTxt2.text = String(correctOTP1[correctOTP1.index(after: correctOTP1.startIndex)])
         FPEOtpTxt3.text = String(correctOTP1[correctOTP1.index(correctOTP1.startIndex, offsetBy: 2)])
-    }
+    }*/
     
     
     func getEnteredOTP1() -> String {
@@ -358,14 +406,14 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         
         FPEOtpTxt1.becomeFirstResponder()
     }
-    func fillOTPFields1(with otp: String) {
+  /*  func fillOTPFields1(with otp: String) {
         let otpArray = Array(otp)
         
         FPEOtpTxt1.text = String(otpArray[0])
         FPEOtpTxt2.text = String(otpArray[1])
         FPEOtpTxt3.text = String(otpArray[2])
        
-    }
+    }*/
     func autofillOTP2() {
         guard correctOTP2.count == 3 else {
             
