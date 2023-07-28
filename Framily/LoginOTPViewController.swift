@@ -21,7 +21,7 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var LoginResendButton: UIButton!
     @IBOutlet weak var LoginNextBtn: UIButton!
     @IBOutlet weak var LoginEmailOTPView: UIView!
-    
+    var shouldDisableButtons = false
     var resendAttempts = 0
     var timer: Timer?
     var timeRemaining = 10
@@ -173,15 +173,24 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
             startTimer()
             resendAttempts += 1
             LoginResendButton.isEnabled = false
+            shouldDisableButtons = true
         } else {
             showCustomAlertWith(okButtonAction: {
-                self.performSegue(withIdentifier: "LoginViewController", sender: nil)
+                self.performSegue(withIdentifier: "EmailPhoneOTPToLogin", sender: nil)
             }, message: "Please contact the admin.", descMsg: "", actions: nil)
         }
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "EmailPhoneOTPToLogin" {
+            // Pass the shouldDisableButtons flag to loginUserNameViewController
+            if let loginViewController = segue.destination as? loginUserNameViewController {
+                loginViewController.shouldDisableButtons = shouldDisableButtons
+            }
+        }
+    }
 
-    
+    //EmailPhoneOTPToLogin
     @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
         
         generateOTP1()
@@ -233,17 +242,6 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         performSegue(withIdentifier: "LoginOTPToHome", sender: nil)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "OTPToConfirmPassword" {
-            if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
-                confirmPasswordVC.user = user
-                confirmPasswordVC.companyName = user?.companyName
-                confirmPasswordVC.phoneNumber = user?.phoneNumber
-                confirmPasswordVC.countryCode = user?.countryCode
-                confirmPasswordVC.emailID = user?.emailID
-            }
-        }
-    }
     func generateOTP1() {
         
         let otpDigits = (0..<3).map { _ in String(Int.random(in: 0...9)) }

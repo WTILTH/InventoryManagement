@@ -4,8 +4,9 @@
 //
 //  Created by Tharun kumar on 04/07/23.
 //
-
+// sign up 1
 import UIKit
+import Foundation
 import CoreData
 import DialCountries
 
@@ -100,38 +101,95 @@ class SignUpViewController: UIViewController {
             emailIdStatusLabel.text = ""
             return
         }
-        
         if !isValidPhoneNumber(phoneNumber) {
             phoneNumberStatusLabel.text = "Invalid phone number"
             return
         }
-        
         guard let emailID = emailIDTxt.text, !emailID.isEmpty else {
             companyNameStatusLabel.text = ""
             phoneNumberStatusLabel.text = ""
             emailIdStatusLabel.text = "Please enter email ID"
             return
         }
-        
         resetStatusLabels()
-        
-        
         if !isValidEmail(emailID) {
             emailIdStatusLabel.text = "Invalid email"
             return
         }
-        let newUser = User(context: managedContext)
-        newUser.phoneNumber = phoneNumber
-        newUser.countryCode = countryCode
-        newUser.companyName = companyName
-        newUser.emailID = emailID
-        newUser.deviceID = UIDevice.current.identifierForVendor?.uuidString
-        newUser.sessionID = UUID().uuidString
-
-        performSegue(withIdentifier: "SignUpToEmailOTP", sender: newUser)
-
-        
+        print("Sending signup request to API...")
+        signUpUser(companyName: companyName, countryCode: countryCode, phoneNumber: phoneNumber, emailID: emailID)
     }
+    func signUpUser(companyName: String, countryCode: String, phoneNumber: String, emailID: String) {
+            let apiURL = URL(string: "http://192.168.29.7:8080/companyRegister")!
+        
+            var request = URLRequest(url: apiURL)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            // afer api checking
+            let parameters: [String: Any] = [
+                "companyName": companyName,
+                "countryCode": countryCode,
+                "phoneNumber": phoneNumber,
+                "emailID": emailID
+            ]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            } catch {
+                print("Error creating request body: \(error)")
+                return
+            }
+        let credentials = "arun:arun1" // Replace with your actual credentials
+            let credentialsData = credentials.data(using: .utf8)!
+            let base64Credentials = credentialsData.base64EncodedString()
+            request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error: \(error)")
+                    
+                    return
+                }
+                
+                if let httpResponse = response as? HTTPURLResponse,
+                   (200...299).contains(httpResponse.statusCode) {
+                    
+                    if let responseData = data {
+                        do {
+                            let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                            print("Response: \(jsonObject)")
+                            
+                            
+                            
+                            
+                            if let responseDict = jsonObject as? [String: Any],
+                               let success = responseDict["success"] as? Bool, success {
+                               
+                                DispatchQueue.main.async {
+                                    self.performSegue(withIdentifier: "SignUpToEmailOTP", sender: nil)
+                                }
+                            } else {
+                                
+                                DispatchQueue.main.async {
+                                                // Display an alert or error label with a message for the user
+                                    self.showCustomAlertWith(message:" Server Error", descMsg: "There was a problem with the server. Please try again later.")
+                                            }
+                            }
+                            
+                        }catch {
+                            print("Error parsing response data: \(error)")
+                        }
+                    }
+                } else {
+                    print("Invalid HTTP response: \(response?.description ?? "")")
+                    
+                }
+            }
+            task.resume()
+        print("Sending signup request to API...")
+        }
+ 
+    
     func getAllCountryCodes() -> [[String]] {
         var countrys = [[String]]()
         let countryList = GlobalConstants.Constants.codePrefixes
@@ -141,9 +199,7 @@ class SignUpViewController: UIViewController {
         let sorted = countrys.sorted(by: {$0[0] < $1[0]})
         return sorted
     }
-    
     // MARK: - Create UIPickerView
-    
     func picker(){
         let picker = UIPickerView()
         picker.delegate = self
@@ -151,7 +207,6 @@ class SignUpViewController: UIViewController {
         countryCodeTxtField.inputView = picker
         picker.selectRow(0, inComponent: 0, animated: true)
     }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SignUpToEmailOTP" {
             if let otpVC = segue.destination as? EmailOTPViewController {
@@ -171,7 +226,6 @@ class SignUpViewController: UIViewController {
             }
         }
     }
-    
     func resetStatusLabels() {
 
         companyNameStatusLabel.text = ""

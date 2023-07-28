@@ -435,7 +435,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zdp-6E-EOu">
-                                <rect key="frame" x="39" y="143" width="315" height="566"/>
+                                <rect key="frame" x="39" y="143" width="315" height="598"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kxt-Le-AhP">
@@ -446,7 +446,6 @@
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <action selector="newPasswordTxt:" destination="S30-oP-KZK" eventType="editingDidEnd" id="yOQ-tG-u6c"/>
-                                            <action selector="passwordEditingChanged:" destination="Tnh-lv-hcS" eventType="editingDidEnd" id="hRP-KJ-ouj"/>
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l48-rC-swf">
@@ -601,7 +600,7 @@
                         <outlet property="newPasswordTxt" destination="Kxt-Le-AhP" id="vaw-K5-B9a"/>
                         <outlet property="strengthProgressView" destination="kkl-Um-1Od" id="spt-pw-Rcm"/>
                         <outlet property="userNameTxt" destination="BR6-cn-F5c" id="cGM-Xw-2Ea"/>
-                        <segue destination="BFV-QO-flB" kind="show" identifier="passwordToLogin" id="65V-eY-Wjs"/>
+                        <segue destination="iAO-yV-CXl" kind="show" identifier="passwordToLogin" id="stf-fs-ZRg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F5t-ko-L77" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -685,7 +684,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="LogOut"/>
                                 <connections>
-                                    <segue destination="BFV-QO-flB" kind="show" id="Enx-E8-3WW"/>
+                                    <segue destination="iAO-yV-CXl" kind="show" id="OhU-7q-zXu"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -802,7 +801,7 @@
             <objects>
                 <viewController id="iAO-yV-CXl" customClass="loginUserNameViewController" customModule="Framily" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xEZ-Cy-khw">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Group Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FG6-vb-2Pa">
@@ -810,14 +809,14 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="79V-UA-meu">
                                 <rect key="frame" x="82" y="240" width="229" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Dk-hb-v6Q">
                                 <rect key="frame" x="82" y="282" width="229" height="34"/>
@@ -848,7 +847,6 @@
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="forgotPasswordBtnPressed:" destination="iAO-yV-CXl" eventType="touchUpInside" id="b3U-AM-0mQ"/>
-                                    <action selector="forgotPasswordBtnPressed:" destination="BFV-QO-flB" eventType="touchUpInside" id="khk-Su-IS7"/>
                                     <segue destination="iyw-qj-n92" kind="show" id="0pY-98-sux"/>
                                 </connections>
                             </button>
@@ -927,18 +925,20 @@
                     </view>
                     <navigationItem key="navigationItem" id="QYG-vk-OWa"/>
                     <connections>
+                        <outlet property="forgotPasswordBtn" destination="ldk-Nz-LQd" id="IXa-xi-bqh"/>
                         <outlet property="groupNameTxt" destination="FG6-vb-2Pa" id="qsI-Jn-oau"/>
-                        <outlet property="loginInBtn" destination="gu1-Z4-XaT" id="Zum-rt-3gJ"/>
+                        <outlet property="loginBtn" destination="gu1-Z4-XaT" id="ZHK-uv-nrw"/>
+                        <outlet property="loginWithEmailPhoneBtn" destination="sIM-l6-XQh" id="ObM-yS-OwU"/>
                         <outlet property="passwordTxt" destination="4Dk-hb-v6Q" id="diy-vQ-SkI"/>
                         <outlet property="signUpUserBtn" destination="2Ir-dD-eu9" id="9gW-KB-wq6"/>
                         <outlet property="signUpUserPopUp" destination="KDa-xy-3Fe" id="1jg-aX-cE3"/>
                         <outlet property="userNameTxt" destination="79V-UA-meu" id="pTf-nd-46M"/>
-                        <segue destination="Jry-k9-8Ug" kind="show" id="Cb9-sn-afY"/>
+                        <segue destination="Jry-k9-8Ug" kind="show" identifier="signinToOtp" id="Cb9-sn-afY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8da-Ix-80s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2289.3129770992364" y="-38.028169014084511"/>
+            <point key="canvasLocation" x="-2347" y="-32"/>
         </scene>
         <!--Sign Up Existing View Controller-->
         <scene sceneID="iot-r0-qM7">
@@ -1176,15 +1176,6 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kEh-zI-UHq">
-                                        <rect key="frame" x="127" y="461" width="75" height="35"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
-                                        <connections>
-                                            <segue destination="sgj-OL-DCP" kind="show" id="GGt-f6-esN"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JAA-fy-heS">
                                         <rect key="frame" x="127" y="347" width="60" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1204,6 +1195,15 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kEh-zI-UHq">
+                                        <rect key="frame" x="120" y="429" width="75" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                        <connections>
+                                            <segue destination="sgj-OL-DCP" kind="show" id="GGt-f6-esN"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.6182800531" green="0.11210168149999999" blue="0.25080922249999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -1383,7 +1383,7 @@
                         <outlet property="resendButton" destination="nmG-Au-ROc" id="gtv-1U-RXz"/>
                         <outlet property="timerLabel" destination="Y4x-7q-RYe" id="8qb-wq-emf"/>
                         <segue destination="Tnh-lv-hcS" kind="show" identifier="OTPToConfirmPassword" id="Lgx-o2-3e6"/>
-                        <segue destination="BFV-QO-flB" kind="show" identifier="LoginViewController" id="Sb1-gS-whW"/>
+                        <segue destination="iAO-yV-CXl" kind="show" identifier="LoginViewController" id="XMD-Wy-MIO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9lh-RR-cEJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1443,18 +1443,6 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDQ-HR-sYy">
-                                        <rect key="frame" x="109" y="269" width="167" height="34.333333333333314"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Forget Password ?">
-                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="forgotPasswordBtnPressed:" destination="BFV-QO-flB" eventType="touchUpInside" id="bbS-pb-GVo"/>
-                                            <segue destination="iyw-qj-n92" kind="show" id="DMC-qQ-v2V"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="LOGIN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xOh-K5-jry">
                                         <rect key="frame" x="90" y="36" width="123" height="48"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1690,11 +1678,12 @@
                         <outlet property="LoginResendButton" destination="H3V-uY-Nbz" id="gyh-3m-FAd"/>
                         <outlet property="LoginTimerLabel" destination="4eo-1I-epK" id="nL8-Ss-sbw"/>
                         <segue destination="qiP-SZ-qpF" kind="show" identifier="LoginOTPToHome" id="88n-H5-W4C"/>
+                        <segue destination="iAO-yV-CXl" kind="show" identifier="EmailPhoneOTPToLogin" id="jrp-ak-Hpu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D3J-8v-j2j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-953" y="-34"/>
+            <point key="canvasLocation" x="-931" y="-32"/>
         </scene>
         <!--Forget Password View Controller-->
         <scene sceneID="fj6-Nv-H3E">
@@ -1922,12 +1911,12 @@
                         <outlet property="resendButton" destination="Ifa-Dw-4ao" id="C5E-0K-yOf"/>
                         <outlet property="timerLabel" destination="9ir-e5-JjR" id="hKd-s7-oEu"/>
                         <segue destination="NpR-n6-FXI" kind="show" identifier="FPOtpToConfirmPass" id="M79-tR-D1t"/>
-                        <segue destination="BFV-QO-flB" kind="show" identifier="FPOTPToLogin" id="Ces-He-JCw"/>
+                        <segue destination="iAO-yV-CXl" kind="show" identifier="FPOTPToLogin" id="4s0-g3-0fB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1IS-K5-PDb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-663.35877862595419" y="634.50704225352115"/>
+            <point key="canvasLocation" x="-689" y="635"/>
         </scene>
         <!--Forgot Password Confirm Pass View Controller-->
         <scene sceneID="EAP-66-Y0d">
@@ -2009,7 +1998,7 @@
                         <outlet property="errorLabel" destination="hyx-Gf-rjY" id="2K3-4U-7X7"/>
                         <outlet property="forgotPasswordConfirmPassView" destination="OSC-yq-u34" id="aha-vR-YeM"/>
                         <outlet property="forgotPasswordStrengthProgressView" destination="l3c-lW-WpF" id="kLh-7M-TaU"/>
-                        <segue destination="BFV-QO-flB" kind="show" identifier="FPtoMAIN" id="sC3-Og-UxU"/>
+                        <segue destination="iAO-yV-CXl" kind="show" identifier="FPtoMAIN" id="x9M-K6-H0V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4vS-df-ooq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2021,7 +2010,7 @@
             <objects>
                 <viewController id="Jry-k9-8Ug" customClass="OtpViewController" customModule="Framily" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mqX-kw-8Ap">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gy0-BZ-AHu">
@@ -2060,8 +2049,27 @@
                                     <action selector="generateOTPButtonPressed:" destination="Jry-k9-8Ug" eventType="touchUpInside" id="etE-Ar-Uvv"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dU6-tQ-1Nd">
+                                <rect key="frame" x="73" y="465" width="246" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tu7-Bn-vl9">
+                                <rect key="frame" x="154" y="485" width="85" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="tintColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="re-send"/>
+                                <connections>
+                                    <action selector="resendButtonTapped:" destination="xc7-iZ-fbP" eventType="touchUpInside" id="XLm-J8-ajb"/>
+                                    <action selector="resendButtonTapped:" destination="sgj-OL-DCP" eventType="touchUpInside" id="jdQ-bu-95W"/>
+                                    <action selector="resendButtonTapped:" destination="Jry-k9-8Ug" eventType="touchUpInside" id="llk-NK-YQY"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hku-a9-RZM">
-                                <rect key="frame" x="163" y="529" width="66" height="35"/>
+                                <rect key="frame" x="163" y="551" width="66" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="gray" title="Login">
@@ -2080,24 +2088,26 @@
                     <connections>
                         <outlet property="generateOtpBtn" destination="hSd-Fj-dvK" id="3b3-gu-xIe"/>
                         <outlet property="loginBtn" destination="Hku-a9-RZM" id="YVk-bM-C5a"/>
+                        <outlet property="loginUserResendBtn" destination="Tu7-Bn-vl9" id="7DY-4m-0oT"/>
+                        <outlet property="loginUserTimerLabel" destination="dU6-tQ-1Nd" id="ZX6-Kd-FsN"/>
                         <outlet property="otpTextField1" destination="gy0-BZ-AHu" id="fnA-Yx-er2"/>
                         <outlet property="otpTextField2" destination="w07-nC-NJK" id="YD6-c3-alj"/>
                         <outlet property="otpTextField3" destination="FpW-FX-Cca" id="Dxc-ee-JBb"/>
                         <outlet property="otpTextField4" destination="zRX-vQ-LmF" id="gbz-cH-XF5"/>
                         <segue destination="qiP-SZ-qpF" kind="show" identifier="OtpToMain" id="RoZ-CX-7Iu"/>
+                        <segue destination="iAO-yV-CXl" kind="show" identifier="OTPToLoginViewController" id="RqC-VM-k0H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="blz-ZR-xmH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-302" y="-38"/>
+            <point key="canvasLocation" x="-279" y="-32"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="DMC-qQ-v2V"/>
-        <segue reference="sC3-Og-UxU"/>
-        <segue reference="L4S-8n-rhf"/>
-        <segue reference="G5S-rm-83r"/>
-        <segue reference="HiQ-m3-eAd"/>
+        <segue reference="COb-sQ-p4I"/>
+        <segue reference="F6j-QK-6z5"/>
+        <segue reference="HvG-0E-Y2P"/>
+        <segue reference="4s0-g3-0fB"/>
         <segue reference="88n-H5-W4C"/>
         <segue reference="Lgx-o2-3e6"/>
         <segue reference="jlN-Ea-LKr"/>

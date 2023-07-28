@@ -15,16 +15,20 @@ class OtpViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var otpTextField3: UITextField!
     @IBOutlet weak var generateOtpBtn: UIButton!
     @IBOutlet weak var otpTextField4: UITextField!
-    
+    @IBOutlet weak var loginUserTimerLabel: UILabel!
+    @IBOutlet weak var loginUserResendBtn: UIButton!
+    var shouldDisableButtons = false
     var correctOTP: String = ""
     var otpDigits: [String] = []
-    
+    var resendAttempts = 0
+    var timer: Timer?
+    var timeRemaining = 10
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         self.navigationItem.setHidesBackButton(true, animated: false)
-        
+        startTimer()
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 1.5
         let shadowOffset = CGSize(width: 0, height: 2)
@@ -90,6 +94,48 @@ class OtpViewController: UIViewController, UITextFieldDelegate{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+    func startTimer() {
+        
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        loginUserResendBtn.isEnabled = false
+    }
+    @objc func updateTimer() {
+        timeRemaining -= 1
+        loginUserTimerLabel.text = "\(timeRemaining) seconds remaining"
+        if timeRemaining <= 0 {
+            
+            timer?.invalidate()
+            
+            loginUserResendBtn.isEnabled = true
+        }
+    }
+    
+    @IBAction func resendButtonTapped(_ sender: UIButton) {
+        if resendAttempts < 3 {
+            timeRemaining = 10
+            startTimer()
+            resendAttempts += 1
+            loginUserResendBtn.isEnabled = false
+
+            // Set the flag to true when the resend button is tapped
+            shouldDisableButtons = true
+        } else {
+            showCustomAlertWith(okButtonAction: {
+                self.performSegue(withIdentifier: "OTPToLoginViewController", sender: nil)
+            }, message: "Please contact the admin.", descMsg: "", actions: nil)
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "OTPToLoginViewController" {
+            // Pass the shouldDisableButtons flag to loginUserNameViewController
+            if let loginViewController = segue.destination as? loginUserNameViewController {
+                loginViewController.shouldDisableButtons = shouldDisableButtons
+            }
+        }
+    }
+//OTPToLoginViewController
     @IBAction func generateOTPButtonPressed(_ sender: UIButton) {
         generateOTP()
         autofillOTP()

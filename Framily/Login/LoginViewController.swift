@@ -294,20 +294,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }*/
     
-    @IBAction func forgotPasswordBtnPressed(_ sender: Any) {
-        
-        guard let loginInput = emailIdText.text, !loginInput.isEmpty
-        else {
-            showCustomAlertWith(message: "Please enter your Username or Email ID or Phone number", descMsg: "")
-            return
-       }
-        
-    }
     
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         
         guard let email = emailIdText.text, !email.isEmpty else {
-             showCustomAlertWith(message: "Please enter Email Id or Phone number", descMsg: "")
+             showCustomAlertWith(message: "Please enter Email Id or User Name", descMsg: "")
              return
          }
          
@@ -315,6 +306,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
              showCustomAlertWith(message: "Please enter Phone Number", descMsg: "")
              return
          }
+        if !isValidPhoneNumber(phoneNumber) {
+            showCustomAlertWith(message: "Invalid Phone Number", descMsg: "")
+            return
+        }
                 guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
                     return
                 }

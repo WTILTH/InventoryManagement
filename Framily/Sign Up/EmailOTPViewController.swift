@@ -23,7 +23,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
     @IBOutlet weak var emailOTPView: UIView!
-    
+    var shouldDisableButtons = false
     var resendAttempts = 0
     var timer: Timer?
     var timeRemaining = 10
@@ -143,15 +143,10 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         underlineLayer5.frame = CGRect(x: 0, y: phoneNumberTxt3.frame.size.height - 1, width: phoneNumberTxt3.frame.size.width, height: 1)
         underlineLayer5.backgroundColor = UIColor.white.cgColor
         phoneNumberTxt3.layer.addSublayer(underlineLayer5)
-        
     }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         self.view.endEditing(true)
-        
     }
-    
     func startTimer() {
         
         timer?.invalidate()
@@ -162,28 +157,44 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         timeRemaining -= 1
         timerLabel.text = "\(timeRemaining) seconds remaining"
         if timeRemaining <= 0 {
-            
             timer?.invalidate()
-            
             resendButton.isEnabled = true
         }
     }
-    
     @IBAction func resendButtonTapped(_ sender: UIButton) {
         if resendAttempts < 3 {
-            timeRemaining = 10
-            startTimer()
-            resendAttempts += 1
-            resendButton.isEnabled = false
-        } else {
-            showCustomAlertWith(okButtonAction: {
-                self.performSegue(withIdentifier: "LoginViewController", sender: nil)
-            }, message: "Please contact the admin.", descMsg: "", actions: nil)
-        }
-    }
+                    timeRemaining = 10
+                    startTimer()
+                    resendAttempts += 1
+                    resendButton.isEnabled = false
+                    shouldDisableButtons = true
+                } else {
+                    showCustomAlertWith(okButtonAction: {
+                        self.performSegue(withIdentifier: "LoginViewController", sender: nil)
+                    }, message: "Please contact the admin.", descMsg: "", actions: nil)
+                }
+            }
 
-
+            override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+                if segue.identifier == "LoginViewController" {
+                    if let loginViewController = segue.destination as? loginUserNameViewController {
+                        loginViewController.shouldDisableButtons = shouldDisableButtons
+                    }
+                }
+                
+                if segue.identifier == "OTPToConfirmPassword" {
+                        if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
+                            confirmPasswordVC.user = user
+                            confirmPasswordVC.companyName = user?.companyName
+                            confirmPasswordVC.phoneNumber = user?.phoneNumber
+                            confirmPasswordVC.countryCode = user?.countryCode
+                            confirmPasswordVC.emailID = user?.emailID
+                        }
+                    }
+            }
     
+        
+        
     @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
         
         generateOTP1()
@@ -220,7 +231,11 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             
             showCustomAlertWith(message: "Incorrect Email OTP. Please try again.", descMsg: "", actions: nil)
             
-            clearAllTextFields()
+            emailOTPTxt1.text = ""
+            
+            emailOTPTxt2.text = ""
+            
+            emailOTPTxt3.text = ""
             
             return
             
@@ -229,23 +244,16 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         guard !enteredOTP2().isEmpty && enteredOTP2() == correctOTP2 else {
             
             showCustomAlertWith(message: "Incorrect Phone number OTP. Please try again.", descMsg: "", actions: nil)
-            clearAllTextFields()
+            phoneNumberTxt1.text = ""
+            
+            phoneNumberTxt2.text = ""
+            
+            phoneNumberTxt3.text = ""
             return
         }
         performSegue(withIdentifier: "OTPToConfirmPassword", sender: nil)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "OTPToConfirmPassword" {
-            if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
-                confirmPasswordVC.user = user
-                confirmPasswordVC.companyName = user?.companyName
-                confirmPasswordVC.phoneNumber = user?.phoneNumber
-                confirmPasswordVC.countryCode = user?.countryCode
-                confirmPasswordVC.emailID = user?.emailID
-            }
-        }
-    }
     func generateOTP1() {
         
         let otpDigits = (0..<3).map { _ in String(Int.random(in: 0...9)) }
@@ -269,122 +277,169 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
 
             let newLength = text.count + string.count - range.length
 
-            
+            if newLength <= 1 {
 
-        if newLength <= 1 {
-            
-            // Check if the entered character is a number (you can adjust this condition as needed)
-            
-            if let char = string.cString(using: String.Encoding.utf8) {
-                
-                let isBackSpace = strcmp(char, "\\b")
-                
-                if isBackSpace == -92 { // Backspace was pressed, allow the text change
-                    
-                    return true
-                    
-                } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
-                    
-                    // If it's a number, move to the next text field
-                    
-                    switch textField {
-                        
-                    case emailOTPTxt1:
-                        
-                        emailOTPTxt2.becomeFirstResponder()
-                        
-                    case emailOTPTxt2:
-                        
-                        emailOTPTxt3.becomeFirstResponder()
-                        
-                    case emailOTPTxt3:
-                        
-                        emailOTPTxt3.resignFirstResponder()
-                    default:
-                        
-                        break
-                        
+                if let char = string.cString(using: String.Encoding.utf8) {
+
+                    let isBackSpace = strcmp(char, "\\b")
+
+                    if isBackSpace == -92 {
+
+                        if newLength == 0 {
+
+                            switch textField {
+
+                            case emailOTPTxt2:
+
+                                emailOTPTxt1.becomeFirstResponder()
+
+                            case emailOTPTxt3:
+
+                                emailOTPTxt2.becomeFirstResponder()
+
+                            case phoneNumberTxt2:
+
+                                phoneNumberTxt1.becomeFirstResponder()
+
+                            case phoneNumberTxt3:
+
+                                phoneNumberTxt2.becomeFirstResponder()
+
+                            default:
+
+                                break
+
+                            }
+
+                        }
+
+                        textField.text = ""
+
+                        return false
+
+                    } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
+
+                      
+
+                        switch textField {
+
+                        case emailOTPTxt1:
+
+                            emailOTPTxt2.becomeFirstResponder()
+
+                        case emailOTPTxt2:
+
+                            emailOTPTxt3.becomeFirstResponder()
+
+                        case emailOTPTxt3:
+
+                            emailOTPTxt3.resignFirstResponder()
+
+                            phoneNumberTxt1.becomeFirstResponder()
+
+                        case phoneNumberTxt1:
+
+                            phoneNumberTxt2.becomeFirstResponder()
+
+                        case phoneNumberTxt2:
+
+                            phoneNumberTxt3.becomeFirstResponder()
+
+                        case phoneNumberTxt3:
+
+                            phoneNumberTxt3.resignFirstResponder()
+
+                        default:
+
+                            break
+
+                        }
+
+                        textField.text = string
+
+                        return false
+
                     }
-                    
-                    textField.text = string // Manually set the text field with the entered character
-                    
-                    return false // Return false to prevent the default behavior of shouldChangeCharactersIn
-                    
+
                 }
-                
-            }
-            
-        }
+
+                return newLength <= 1         }
 
             return false
 
         }
-    
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        
-        guard let text = textField.text else { return }
-        
-        if text.count == 1 {
-            switch textField {
-            case emailOTPTxt1:
-                
-                emailOTPTxt2.becomeFirstResponder()
-                
-            case emailOTPTxt2:
-                
-                emailOTPTxt3.becomeFirstResponder()
-                
-            case emailOTPTxt3:
-                
-                phoneNumberTxt1.becomeFirstResponder()
-                
-            case phoneNumberTxt1:
-                
-                phoneNumberTxt2.becomeFirstResponder()
-                
-            case phoneNumberTxt2:
-                
-                phoneNumberTxt3.becomeFirstResponder()
-                
-            case phoneNumberTxt3:
-                
-                phoneNumberTxt3.resignFirstResponder()
-                
-            default:
-                
-                break
-                
+
+        @objc func textFieldDidChange(_ textField: UITextField) {
+
+            guard let text = textField.text else { return }
+
+            let newLength = text.count
+            if newLength == 1 {
+
+                switch textField {
+
+                case emailOTPTxt1:
+
+                    emailOTPTxt2.becomeFirstResponder()
+
+                case emailOTPTxt2:
+
+                    emailOTPTxt3.becomeFirstResponder()
+
+                case emailOTPTxt3:
+
+                    emailOTPTxt3.resignFirstResponder()
+
+                    phoneNumberTxt1.becomeFirstResponder()
+
+                case phoneNumberTxt1:
+
+                    phoneNumberTxt2.becomeFirstResponder()
+
+                case phoneNumberTxt2:
+
+                    phoneNumberTxt3.becomeFirstResponder()
+
+                case phoneNumberTxt3:
+
+                    phoneNumberTxt3.resignFirstResponder()
+
+                default:
+
+                    break
+
+                }
+
+                textField.text = text
+
+            } else if newLength == 0 {
+                switch textField {
+
+                case emailOTPTxt2:
+
+                    emailOTPTxt1.becomeFirstResponder()
+
+                case emailOTPTxt3:
+
+                    emailOTPTxt2.becomeFirstResponder()
+
+                case phoneNumberTxt2:
+
+                    phoneNumberTxt1.becomeFirstResponder()
+
+                case phoneNumberTxt3:
+
+                    phoneNumberTxt2.becomeFirstResponder()
+
+                default:
+
+                    break
+
+                }
+
             }
-            
-        } else if text.isEmpty {
-            
-            switch textField {
-                
-            case emailOTPTxt2:
-                
-                emailOTPTxt1.becomeFirstResponder()
-                
-            case emailOTPTxt3:
-                
-                emailOTPTxt2.becomeFirstResponder()
-                
-            case phoneNumberTxt2:
-                
-                phoneNumberTxt1.becomeFirstResponder()
-                
-            case phoneNumberTxt3:
-                
-                phoneNumberTxt2.becomeFirstResponder()
-                
-            default:
-                
-                break
-                
-            }
-            
+
         }
-        
-    }
     
  /*   @objc func firstTextFieldTapped() {
         
@@ -407,9 +462,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         let thirdDigit = correctOTP1[thirdIndex]
         
         emailOTPTxt3.text = String(thirdDigit)
-        
-        
-        
+       
         emailOTPTxt2.becomeFirstResponder()
         
     }*/
@@ -432,13 +485,9 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         UNUserNotificationCenter.current().add(request) { error in
             
             if let error = error {
-                
                 print("Error adding notification request: \(error)")
-                
             }
-            
         }
-        
     }
     
  /*   func autofillOTP1() {
@@ -460,14 +509,12 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     
     
     func getEnteredOTP1() -> String {
-        
-        let enteredOTP = [emailOTPTxt1.text, emailOTPTxt2.text, emailOTPTxt3.text]
-        
+    let enteredOTP = [emailOTPTxt1.text, emailOTPTxt2.text, emailOTPTxt3.text]
         return enteredOTP.compactMap { $0 }.joined()
     
     }
     
-    func clearAllTextFields() {
+   /* func clearAllTextFields() {
         
         emailOTPTxt1.text = ""
         
@@ -482,7 +529,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         phoneNumberTxt3.text = ""
         phoneNumberTxt1.becomeFirstResponder()
         
-    }
+    }*/
     
   /*  func fillOTPFields1(with otp: String) {
         
@@ -499,13 +546,9 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     }*/
     
     func autofillOTP2() {
-        
         guard correctOTP2.count == 3 else {
-            
             return
-            
         }
-        
         phoneNumberTxt1.text = String(correctOTP2[correctOTP2.startIndex])
         
         phoneNumberTxt2.text = String(correctOTP2[correctOTP2.index(after: correctOTP2.startIndex)])
@@ -513,27 +556,16 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         phoneNumberTxt3.text = String(correctOTP2[correctOTP2.index(correctOTP2.startIndex, offsetBy: 2)])
         
     }
-    
     func getEnteredOTP2() -> String {
-        
         let enteredOTP = [phoneNumberTxt1.text, phoneNumberTxt2.text, phoneNumberTxt3.text]
-        
         return enteredOTP.compactMap { $0 }.joined()
-        
     }
-    
     func clearAllTextFields2() {
-        
         phoneNumberTxt1.text = ""
-        
         phoneNumberTxt2.text = ""
-        
         phoneNumberTxt3.text = ""
-        
         emailOTPTxt1.becomeFirstResponder()
-        
     }
-    
     func fillOTPFields2(with otp: String) {
         
         let otpArray = Array(otp)
@@ -546,12 +578,8 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    
-    
     func showOTPNotification2() {
-        
-        
-        
+       
         let content = UNMutableNotificationContent()
         
         content.title = "Generated OTP"
@@ -565,41 +593,25 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         let request = UNNotificationRequest(identifier: "OTPNotification", content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
-            
             if let error = error {
-                
                 print("Error adding notification request: \(error)")
-                
             }
-            
         }
-        
     }
     
     @objc func secondTextFieldTapped() {
-        
         guard let firstDigit = correctOTP2.first else { return }
-        
+
         phoneNumberTxt1.text = String(firstDigit)
-        
         guard correctOTP2.count >= 2 else { return }
-        
         let secondIndex = correctOTP2.index(correctOTP2.startIndex, offsetBy: 1)
-        
         let secondDigit = correctOTP2[secondIndex]
-        
         phoneNumberTxt2.text = String(secondDigit)
-        
         guard correctOTP2.count >= 3 else { return }
-        
         let thirdIndex = correctOTP2.index(correctOTP2.startIndex, offsetBy: 2)
-        
-        let thirdDigit = correctOTP2[thirdIndex]
-        
+    let thirdDigit = correctOTP2[thirdIndex]
         phoneNumberTxt3.text = String(thirdDigit)
-        
         phoneNumberTxt2.becomeFirstResponder()
-        
         
     }
 }

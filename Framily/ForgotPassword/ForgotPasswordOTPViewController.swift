@@ -24,6 +24,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var FPOTPnextBtn: UIButton!
     @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
+    var shouldDisableButtons = false
     var resendAttempts = 0
     var timer: Timer?
         var timeRemaining = 10
@@ -35,6 +36,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        startTimer()
         ForgotPasswordOTPView.layer.cornerRadius = 20.0
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         FPEOtpTxt1.backgroundColor = UIColor.clear
@@ -190,13 +192,23 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
             startTimer()
             resendAttempts += 1
             resendButton.isEnabled = false
+            shouldDisableButtons = true
         } else {
             showCustomAlertWith(okButtonAction: {
                 self.performSegue(withIdentifier: "FPOTPToLogin", sender: nil)
             }, message: "Please contact the admin.", descMsg: "", actions: nil)
         }
     }
-    
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "FPOTPToLogin" {
+            
+            if let loginViewController = segue.destination as? loginUserNameViewController {
+                loginViewController.shouldDisableButtons = shouldDisableButtons
+            }
+        }
+    }
+    //FPOTPToLogin
     @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
         generateOTP1()
       //  autofillOTP1()
@@ -230,15 +242,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         performSegue(withIdentifier: "FPOtpToConfirmPass", sender: nil)
         
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "FPOtpToConfirmPass" {
-            if let confirmPassViewController = segue.destination as? ForgotPasswordConfirmPassViewController,
-                let validatedUser = user {
-                confirmPassViewController.user = validatedUser
-            }
-        }
-    }
-
+    
     func generateOTP1() {
         let otpDigits = (0..<3).map { _ in String(Int.random(in: 0...9)) }
         correctOTP1 = otpDigits.joined()
