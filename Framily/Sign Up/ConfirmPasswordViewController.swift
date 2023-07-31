@@ -24,7 +24,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @IBOutlet weak var strengthView : UIView!
     @IBOutlet weak var strengthProgressView : UIProgressView!
     
-    
+    var usernameCounter = 1
     var isPasswordValid: Bool = false
     var companyName: String?
     var phoneNumber: String?
@@ -38,7 +38,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        firstNameTxt.delegate = self
         newPasswordTxt.addTarget(self, action: #selector(passwordEditingChanged(_:)), for: .editingChanged)
         newPasswordTxt.delegate = self
         self.strengthProgressView.setProgress(0, animated: true)
@@ -320,6 +320,12 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         }
         
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            if textField == firstNameTxt {
+                
+                DispatchQueue.main.async {
+                    self.generateUsername()
+                }
+            }
             if textField == newPasswordTxt {
                 if let currentText = textField.text,
                    let range = Range(range, in: currentText) {
@@ -344,9 +350,28 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                     }
                 }
             }
+            
             return true
         }
-        
+    func generateUsername() {
+        if let firstName = firstNameTxt.text?.trimmingCharacters(in: .whitespacesAndNewlines), !firstName.isEmpty {
+            
+            let firstLetter = String(firstName.prefix(1))
+            
+            
+            let formattedCounter = String(format: "%02d", usernameCounter)
+            
+            
+            let username = "\(firstLetter)\(firstName.dropFirst())\(formattedCounter)"
+            
+            
+            userNameTxt.text = username
+            
+            usernameCounter += 1
+        } else {
+            userNameTxt.text = ""
+        }
+    }
         func printSavedData() {
             let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
             

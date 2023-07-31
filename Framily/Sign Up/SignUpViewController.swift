@@ -139,7 +139,7 @@ class SignUpViewController: UIViewController {
                 print("Error creating request body: \(error)")
                 return
             }
-        let credentials = "arun:arun1" // Replace with your actual credentials
+        let credentials = "arun:arun1"
             let credentialsData = credentials.data(using: .utf8)!
             let base64Credentials = credentialsData.base64EncodedString()
             request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
@@ -159,9 +159,6 @@ class SignUpViewController: UIViewController {
                             let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
                             print("Response: \(jsonObject)")
                             
-                            
-                            
-                            
                             if let responseDict = jsonObject as? [String: Any],
                                let success = responseDict["success"] as? Bool, success {
                                
@@ -171,7 +168,7 @@ class SignUpViewController: UIViewController {
                             } else {
                                 
                                 DispatchQueue.main.async {
-                                                // Display an alert or error label with a message for the user
+                                                
                                     self.showCustomAlertWith(message:" Server Error", descMsg: "There was a problem with the server. Please try again later.")
                                             }
                             }
