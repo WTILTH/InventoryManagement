@@ -163,7 +163,10 @@ class SignUpViewController: UIViewController {
                                let success = responseDict["success"] as? Bool, success {
                                
                                 DispatchQueue.main.async {
-                                    self.performSegue(withIdentifier: "SignUpToEmailOTP", sender: nil)
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let otpViewController = storyboard.instantiateViewController(withIdentifier: "EmailOTPViewControllers") as! EmailOTPViewController
+                                    otpViewController.responseData = responseDict
+                                    self.navigationController?.pushViewController(otpViewController, animated: true)
                                 }
                             } else {
                                 
@@ -204,7 +207,7 @@ class SignUpViewController: UIViewController {
         countryCodeTxtField.inputView = picker
         picker.selectRow(0, inComponent: 0, animated: true)
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+ /*   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SignUpToEmailOTP" {
             if let otpVC = segue.destination as? EmailOTPViewController {
                 let newUser = sender as? User
@@ -222,7 +225,7 @@ class SignUpViewController: UIViewController {
         
             }
         }
-    }
+    }*/
     func resetStatusLabels() {
 
         companyNameStatusLabel.text = ""

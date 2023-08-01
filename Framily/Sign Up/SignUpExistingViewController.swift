@@ -157,7 +157,7 @@ class SignUpExistingViewController: UIViewController {
                 otpVC.user = newUser
             }
         }
-        else if segue.identifier == "OTPToConfirmPassword" {
+       /* else if segue.identifier == "OTPToConfirmPassword" {
             if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
                 let newUser = sender as? User
                 confirmPasswordVC.user = newUser
@@ -167,7 +167,7 @@ class SignUpExistingViewController: UIViewController {
                 confirmPasswordVC.emailID = newUser?.emailID
         
             }
-        }
+        }*/
     }
     
     func resetStatusLabels() {

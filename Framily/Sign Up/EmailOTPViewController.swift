@@ -23,6 +23,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
     @IBOutlet weak var emailOTPView: UIView!
+    var responseData: [String: Any]?
     var shouldDisableButtons = false
     var resendAttempts = 0
     var timer: Timer?
@@ -144,6 +145,15 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         underlineLayer5.backgroundColor = UIColor.white.cgColor
         phoneNumberTxt3.layer.addSublayer(underlineLayer5)
     }
+    func handleOTPVerificationAndNavigate() {
+           
+           DispatchQueue.main.async {
+               let storyboard = UIStoryboard(name: "Main", bundle: nil)
+               let confirmPasswordViewController = storyboard.instantiateViewController(withIdentifier: "ConfirmPasswordViewControllers") as! ConfirmPasswordViewController
+               confirmPasswordViewController.responseData = self.responseData
+               self.navigationController?.pushViewController(confirmPasswordViewController, animated: true)
+           }
+       }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -182,7 +192,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
                 
-                if segue.identifier == "OTPToConfirmPassword" {
+           /*     if segue.identifier == "OTPToConfirmPassword" {
                         if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
                             confirmPasswordVC.user = user
                             confirmPasswordVC.companyName = user?.companyName
@@ -190,7 +200,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
                             confirmPasswordVC.countryCode = user?.countryCode
                             confirmPasswordVC.emailID = user?.emailID
                         }
-                    }
+                    }*/
             }
     
         
@@ -251,7 +261,8 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
             phoneNumberTxt3.text = ""
             return
         }
-        performSegue(withIdentifier: "OTPToConfirmPassword", sender: nil)
+        handleOTPVerificationAndNavigate()
+       // performSegue(withIdentifier: "OTPToConfirmPassword", sender: nil)
     }
     
     func generateOTP1() {

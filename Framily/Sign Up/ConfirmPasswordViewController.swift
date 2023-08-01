@@ -23,13 +23,16 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @IBOutlet weak var confirmPasswordView: UIView!
     @IBOutlet weak var strengthView : UIView!
     @IBOutlet weak var strengthProgressView : UIProgressView!
-    
+    var responseData: [String: Any]?
     var usernameCounter = 1
     var isPasswordValid: Bool = false
-    var companyName: String?
-    var phoneNumber: String?
-    var countryCode: String?
-    var emailID: String?
+    var deviceID: String?
+    var sessionID: String?
+    var devicePlatform: String?
+  //  var companyName: String?
+  //  var phoneNumber: String?
+   // var countryCode: String?
+   // var emailID: String?
     var groupName: String?
     var iconClick = false
     let imageIcon = UIImageView()
@@ -38,6 +41,12 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(responseData as Any,"hi")
+        
+        if let responseData = responseData, let body = responseData["body"] as? [String: Any] {
+            groupName = body["groupName"] as? String ?? ""
+            groupNameTxt.text = groupName
+        }
         firstNameTxt.delegate = self
         newPasswordTxt.addTarget(self, action: #selector(passwordEditingChanged(_:)), for: .editingChanged)
         newPasswordTxt.delegate = self
@@ -198,7 +207,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                 return
             }
             
-            guard let newPassword = newPasswordTxt.text, !newPassword.isEmpty else {
+            guard let password = newPasswordTxt.text, !password.isEmpty else {
                 errorLbl.text = "Please enter new Password"
                 return
             }
@@ -208,13 +217,13 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                 return
             }
             
-            guard let user = user else {
-                errorLbl.text = "All fields must be filled."
-                return
-            }
+         //   guard let user = user else {
+          //      errorLbl.text = "All fields must be filled."
+          //      return
+          //  }
             
             // Check if passwords match
-            if newPassword == confirmPassword {
+            if password == confirmPassword {
                 
                 if validatePasswords() {
                     
@@ -224,7 +233,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                         return
                     }
                     
-                    // Save the user details
+                 /*   // Save the user details
                     user.groupName = groupName
                     user.firstName = firstName
                     user.lastName = lastName
@@ -242,9 +251,10 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                         firstNameTxt.text = ""
                         groupNameTxt.text = ""
                         
-                        printSavedData()
-                        
-                        let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
+                        printSavedData()*/
+                    print("Sending signup request to API...")
+                    signUpUser(groupName: groupName, firstName: firstName, lastName: lastName, userName: userName, password: password, responseData: responseData)
+                      /*  let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
                         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
                             self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
                         }
@@ -253,7 +263,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                         
                     } catch let error as NSError {
                         print("Error saving data: \(error), \(error.userInfo)")
-                    }
+                    }*/
                 } else {
                     errorLbl.isHidden = false
                     errorLbl.text = "Passwords do not match the criteria."
@@ -264,6 +274,100 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                 errorLbl.text = "Passwords do not match."
             }
         }
+    func signUpUser(groupName: String, firstName: String, lastName: String,userName: String,password: String, responseData: [String: Any]?) {
+                let apiURL = URL(string: "http://192.168.29.7:8080/userRegister")!
+            
+                var request = URLRequest(url: apiURL)
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let deviceID = UIDevice.current.identifierForVendor?.uuidString
+        let sessionID = UUID().uuidString
+        let platform = UIDevice.current.model
+        
+        var emailID: String = ""
+        var phoneNumber: String = ""
+        if let responseData = responseData, let body = responseData["body"] as? [String: Any] {
+            emailID = body["emailID"] as? String ?? ""
+            phoneNumber = body["phoneNumber"] as? String ?? ""
+        }
+
+        let userRegistrationRequest: [String: Any] = [
+            "emailID": emailID,
+            "phoneNumber": phoneNumber,
+            "groupName": groupName,
+            "firstName": firstName,
+            "lastName": lastName,
+            "userName": userName,
+            "password": password,
+        ]
+
+        let deviceRegistrationRequest: [String: Any] = [
+            "sessionID": sessionID,
+            "platform": platform,
+            "deviceID": deviceID,
+        ]
+
+        let requestData: [String: Any] = [
+                "userRegistrationRequest": userRegistrationRequest,
+                "deviceRegistrationRequest": deviceRegistrationRequest,
+            ]
+      
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestData, options: [])
+        } catch {
+            print("Error creating request body: \(error)")
+            return
+        }
+        if let dataString = String(data: request.httpBody ?? Data(), encoding: .utf8) {
+            print("Data being sent to the API: \(dataString)")
+        }
+                let credentials = "arun:arun1"
+                    let credentialsData = credentials.data(using: .utf8)!
+                    let base64Credentials = credentialsData.base64EncodedString()
+                    request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+                    let session = URLSession.shared
+                    let task = session.dataTask(with: request) { data, response, error in
+                        if let error = error {
+                            print("Error: \(error)")
+                            
+                            return
+                        }
+                        
+                        if let httpResponse = response as? HTTPURLResponse,
+                           (200...299).contains(httpResponse.statusCode) {
+                            
+                            if let responseData = data {
+                                do {
+                                    let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                                    print("Response: \(jsonObject)")
+                                 
+                                    if let responseDict = jsonObject as? [String: Any],
+                                       let success = responseDict["success"] as? Bool, success {
+                                       
+                                        DispatchQueue.main.async {
+                                            self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
+                                        }
+                                    } else {
+                                        
+                                        DispatchQueue.main.async {
+                                                        
+                                            self.showCustomAlertWith(message:" Server Error", descMsg: "There was a problem with the server. Please try again later.")
+                                                    }
+                                    }
+                                    
+                                }catch {
+                                    print("Error parsing response data: \(error)")
+                                }
+                            }
+                        } else {
+                            print("Invalid HTTP response: \(response?.description ?? "")")
+                            
+                        }
+                    }
+                    task.resume()
+                print("Sending signup request to API...")
+                }
     
     func validatePasswords() -> Bool {
         guard let newPassword = newPasswordTxt.text,
