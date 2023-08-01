@@ -579,6 +579,17 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coo-WM-dIj">
+                                        <rect key="frame" x="286" y="207" width="26" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="info.circle" catalog="system" title=" ">
+                                            <color key="baseForegroundColor" systemColor="secondaryLabelColor"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="infoUserNameBtnPressed:" destination="Tnh-lv-hcS" eventType="touchUpInside" id="JmE-ms-eRz"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.6182800531" green="0.11210168149999999" blue="0.25080922249999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -2107,7 +2118,7 @@
         <segue reference="COb-sQ-p4I"/>
         <segue reference="F6j-QK-6z5"/>
         <segue reference="HvG-0E-Y2P"/>
-        <segue reference="4s0-g3-0fB"/>
+        <segue reference="stf-fs-ZRg"/>
         <segue reference="88n-H5-W4C"/>
         <segue reference="Lgx-o2-3e6"/>
         <segue reference="jlN-Ea-LKr"/>

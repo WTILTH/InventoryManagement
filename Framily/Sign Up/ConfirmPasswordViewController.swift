@@ -167,14 +167,12 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         self.view.endEditing(true)
     }
     
+    @IBAction func infoUserNameBtnPressed(_ sender: Any) {
+        let alert = showCustomAlertWith(message: "User Name", descMsg: "The user name can be edited.")
+        
+    }
     @IBAction func infoPasswordBtnPressed(_ sender: Any) {
-        let alertController = UIAlertController(title: "Required", message: "Min. 8 to 14 characters long, A combination of uppercase letters, lowercase letters, numbers, and symbols.", preferredStyle: .alert)
-        
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        
-        present(alertController, animated: true, completion: nil)
-        
+        let alertController = showCustomAlertWith(message: "Password credentials", descMsg: "Min. 8 to 14 characters long, A combination of uppercase letters, lowercase letters, numbers, and symbols.")
         
     }
     @objc func submitButtonTapped() {
@@ -354,24 +352,17 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             return true
         }
     func generateUsername() {
-        if let firstName = firstNameTxt.text?.trimmingCharacters(in: .whitespacesAndNewlines), !firstName.isEmpty {
-            
-            let firstLetter = String(firstName.prefix(1))
-            
-            
-            let formattedCounter = String(format: "%02d", usernameCounter)
-            
-            
-            let username = "\(firstLetter)\(firstName.dropFirst())\(formattedCounter)"
-            
-            
-            userNameTxt.text = username
-            
-            usernameCounter += 1
-        } else {
-            userNameTxt.text = ""
+            if let firstName = firstNameTxt.text?.trimmingCharacters(in: .whitespacesAndNewlines), !firstName.isEmpty {
+                
+                let randomNumber = String(format: "%02d", Int(arc4random_uniform(100)))
+                let username = "\(firstName)\(randomNumber)"
+         
+                userNameTxt.text = username
+            } else {
+                
+                userNameTxt.text = ""
+            }
         }
-    }
         func printSavedData() {
             let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
             
