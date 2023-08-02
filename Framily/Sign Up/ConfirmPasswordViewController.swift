@@ -20,9 +20,9 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var customCheckbox: VKCheckbox!
     @IBOutlet weak var infoPasswordBtn: UIButton!
-    @IBOutlet weak var confirmPasswordView: UIView!
-    @IBOutlet weak var strengthView : UIView!
     @IBOutlet weak var strengthProgressView : UIProgressView!
+    
+    var responseData1: [String: Any]?
     var responseData: [String: Any]?
     var usernameCounter = 1
     var isPasswordValid: Bool = false
@@ -57,20 +57,25 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         
         confirmPasswordTxt.delegate = self
         view.backgroundColor = BackgroundManager.shared.backgroundColor
-        confirmPasswordView.layer.cornerRadius = 20.0
-        groupNameTxt.backgroundColor = UIColor.clear
+        groupNameTxt.layer.cornerRadius = 5
+        firstNameTxt.layer.cornerRadius = 5
+        lastNameTxt.layer.cornerRadius = 5
+        userNameTxt.layer.cornerRadius = 5
+        newPasswordTxt.layer.cornerRadius = 5
+        confirmPasswordTxt.layer.cornerRadius = 5
+       // groupNameTxt.backgroundColor = UIColor.clear
         groupNameTxt.borderStyle = .none
-        firstNameTxt.backgroundColor = UIColor.clear
+      //  firstNameTxt.backgroundColor = UIColor.clear
         firstNameTxt.borderStyle = .none
-        lastNameTxt.backgroundColor = UIColor.clear
+       // lastNameTxt.backgroundColor = UIColor.clear
         lastNameTxt.borderStyle = .none
-        userNameTxt.backgroundColor = UIColor.clear
+      //  userNameTxt.backgroundColor = UIColor.clear
         userNameTxt.borderStyle = .none
-        newPasswordTxt.backgroundColor = UIColor.clear
+       // newPasswordTxt.backgroundColor = UIColor.clear
         newPasswordTxt.borderStyle = .none
-        confirmPasswordTxt.backgroundColor = UIColor.clear
+       // confirmPasswordTxt.backgroundColor = UIColor.clear
         confirmPasswordTxt.borderStyle = .none
-        if let user = user {
+       /* if let user = user {
             
             let phoneNumber = user.phoneNumber
             let countryCode = user.countryCode
@@ -79,7 +84,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             let deviceID = user.deviceID
             let sessionID = user.sessionID
             let groupName = user.groupName
-        }
+        }*/
         
         if newPasswordTxt.text?.isEmpty ?? true {
             self.strengthProgressView.setProgress(0, animated: false)
@@ -92,10 +97,6 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         loginBtn.layer.shadowOpacity = shadowOpacity
         loginBtn.layer.shadowOffset = shadowOffset
         loginBtn.layer.shadowRadius = shadowRadius
-        confirmPasswordView.layer.shadowColor = shadowColor
-        confirmPasswordView.layer.shadowOpacity = shadowOpacity
-        confirmPasswordView.layer.shadowOffset = shadowOffset
-        confirmPasswordView.layer.shadowRadius = shadowRadius
         loginBtn.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
         imageIcon.image = UIImage(named: "closeEye")
         let contentView = UIView()
@@ -110,7 +111,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imageIcon.isUserInteractionEnabled = true
         imageIcon.addGestureRecognizer(tapGestureRecognizer)
-        let underlineLayer = CALayer()
+       /* let underlineLayer = CALayer()
         underlineLayer.frame = CGRect(x: 0, y: groupNameTxt.frame.size.height - 1, width: groupNameTxt.frame.size.width, height: 1)
         underlineLayer.backgroundColor = UIColor.white.cgColor
         groupNameTxt.layer.addSublayer(underlineLayer)
@@ -133,7 +134,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         let underlineLayer5 = CALayer()
         underlineLayer5.frame = CGRect(x: 0, y: confirmPasswordTxt.frame.size.height - 1, width: confirmPasswordTxt.frame.size.width, height: 1)
         underlineLayer5.backgroundColor = UIColor.white.cgColor
-        confirmPasswordTxt.layer.addSublayer(underlineLayer5)
+        confirmPasswordTxt.layer.addSublayer(underlineLayer5)*/
     }
     
     
@@ -169,7 +170,6 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             isOn in
             print("Custom checkbox is \(isOn ? "ON" : "OFF")")
         }
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -486,5 +486,4 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                 print("Error fetching data: \(error), \(error.userInfo)")
             }
         }
-    
 }

@@ -7,7 +7,6 @@ target 'Framily' do
    pod 'SOTabBar'
    pod 'NSVAnimatedTabBar'
    pod 'DialCountries'
-
   # Pods for Framily
 
   target 'FramilyTests' do

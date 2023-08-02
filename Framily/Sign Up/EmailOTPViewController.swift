@@ -24,6 +24,7 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nextBtn: UIButton!
     @IBOutlet weak var emailOTPView: UIView!
     var responseData: [String: Any]?
+    var responseData1: [String: Any]?
     var shouldDisableButtons = false
     var resendAttempts = 0
     var timer: Timer?
@@ -146,14 +147,14 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         phoneNumberTxt3.layer.addSublayer(underlineLayer5)
     }
     func handleOTPVerificationAndNavigate() {
-           
-           DispatchQueue.main.async {
-               let storyboard = UIStoryboard(name: "Main", bundle: nil)
-               let confirmPasswordViewController = storyboard.instantiateViewController(withIdentifier: "ConfirmPasswordViewControllers") as! ConfirmPasswordViewController
-               confirmPasswordViewController.responseData = self.responseData
-               self.navigationController?.pushViewController(confirmPasswordViewController, animated: true)
-           }
-       }
+        DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let confirmPasswordViewController = storyboard.instantiateViewController(withIdentifier: "ConfirmPasswordViewControllers") as! ConfirmPasswordViewController
+            confirmPasswordViewController.responseData = self.responseData
+            confirmPasswordViewController.responseData1 = self.responseData1
+            self.navigationController?.pushViewController(confirmPasswordViewController, animated: true)
+        }
+    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

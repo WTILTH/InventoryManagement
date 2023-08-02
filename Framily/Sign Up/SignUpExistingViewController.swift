@@ -20,26 +20,30 @@ class SignUpExistingViewController: UIViewController {
     @IBOutlet weak var existingCountryCodeTxtStatusLabel: UILabel!
     @IBOutlet weak var existingEmailIDStatusLabel: UILabel!
     @IBOutlet weak var existingNextBtn: UIButton!
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var existingSignUpView: UIView!
+
     let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showDialCountriesController))
         existingCountryCodeTxt.addGestureRecognizer(tapGesture)
         existingCountryCodeTxt.isUserInteractionEnabled = true
-        existingSignUpView.layer.cornerRadius = 20.0
+        existingCountryCodeTxt.text = "  +91"
+        self.navigationController?.navigationBar.topItem?.title = "Sign Up"
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         self.countryCodes = getAllCountryCodes()
         picker()
+        existingGroupNameTxt.layer.cornerRadius = 5
+        existingCountryCodeTxt.layer.cornerRadius = 5
+        existingPhoneNumberTxt.layer.cornerRadius = 5
+        existingEmailIDTxt.layer.cornerRadius = 5
         existingCountryCodeTxt.isUserInteractionEnabled = true
-        existingGroupNameTxt.backgroundColor = UIColor.clear
+       // existingGroupNameTxt.backgroundColor = UIColor.clear
        existingGroupNameTxt.borderStyle = .none
-        existingCountryCodeTxt.backgroundColor = UIColor.clear
+       // existingCountryCodeTxt.backgroundColor = UIColor.clear
        existingCountryCodeTxt.borderStyle = .none
-        existingPhoneNumberTxt.backgroundColor = UIColor.clear
+      //  existingPhoneNumberTxt.backgroundColor = UIColor.clear
        existingPhoneNumberTxt.borderStyle = .none
-        existingEmailIDTxt.backgroundColor = UIColor.clear
+      //  existingEmailIDTxt.backgroundColor = UIColor.clear
        existingEmailIDTxt.borderStyle = .none
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
@@ -50,11 +54,7 @@ class SignUpExistingViewController: UIViewController {
         existingNextBtn.layer.shadowOpacity = shadowOpacity
        existingNextBtn.layer.shadowOffset = shadowOffset
         existingNextBtn.layer.shadowRadius = shadowRadius
-        existingSignUpView.layer.shadowColor = shadowColor
-        existingSignUpView.layer.shadowOpacity = shadowOpacity
-        existingSignUpView.layer.shadowOffset = shadowOffset
-        existingSignUpView.layer.shadowRadius = shadowRadius
-        let underlineLayer = CALayer()
+       /* let underlineLayer = CALayer()
         underlineLayer.frame = CGRect(x: 0, y: existingGroupNameTxt.frame.size.height - 1, width: existingGroupNameTxt.frame.size.width, height: 1)
         underlineLayer.backgroundColor = UIColor.white.cgColor
         existingGroupNameTxt.layer.addSublayer(underlineLayer)
@@ -69,7 +69,7 @@ class SignUpExistingViewController: UIViewController {
         let underlineLayer2 = CALayer()
         underlineLayer2.frame = CGRect(x: 0, y: existingEmailIDTxt.frame.size.height - 1, width: existingEmailIDTxt.frame.size.width, height: 1)
         underlineLayer2.backgroundColor = UIColor.white.cgColor
-        existingEmailIDTxt.layer.addSublayer(underlineLayer2)
+        existingEmailIDTxt.layer.addSublayer(underlineLayer2)*/
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -86,6 +86,21 @@ class SignUpExistingViewController: UIViewController {
             existingEmailIDStatusLabel.text = ""
             return
         }
+        
+        guard let emailID = existingEmailIDTxt.text, !emailID.isEmpty else {
+            existingGroupNameStatusLabel.text = ""
+            existingCountryCodeTxtStatusLabel.text = ""
+            existingEmailIDStatusLabel.text = "Please enter email ID"
+            return
+        }
+        
+        
+        
+        
+        if !isValidEmail(emailID) {
+            existingEmailIDStatusLabel.text = "Invalid email"
+            return
+        }
         guard let countryCode = existingCountryCodeTxt.text, !countryCode.isEmpty else {
             existingGroupNameStatusLabel.text = ""
             existingCountryCodeTxtStatusLabel.text = "Please enter Country Code"
@@ -98,27 +113,14 @@ class SignUpExistingViewController: UIViewController {
             existingEmailIDStatusLabel.text = ""
             return
         }
-        
+        resetStatusLabels()
         if !isValidPhoneNumber(phoneNumber) {
             existingCountryCodeTxtStatusLabel.text = "Invalid phone number"
             return
         }
         
-        guard let emailID = existingEmailIDTxt.text, !emailID.isEmpty else {
-            existingGroupNameStatusLabel.text = ""
-            existingCountryCodeTxtStatusLabel.text = ""
-            existingEmailIDStatusLabel.text = "Please enter email ID"
-            return
-        }
         
-        resetStatusLabels()
-        
-        
-        if !isValidEmail(emailID) {
-            existingEmailIDStatusLabel.text = "Invalid email"
-            return
-        }
-        let newUser = User(context: managedContext)
+     /*   let newUser = User(context: managedContext)
         newUser.phoneNumber = phoneNumber
       newUser.countryCode = countryCode
        newUser.groupName = groupName
@@ -126,10 +128,81 @@ class SignUpExistingViewController: UIViewController {
        newUser.deviceID = UIDevice.current.identifierForVendor?.uuidString
        newUser.sessionID = UUID().uuidString
 
-        performSegue(withIdentifier: "SignUpExistingToEmailOTP", sender: newUser)
-
+        performSegue(withIdentifier: "SignUpExistingToEmailOTP", sender: newUser)*/
+        print("Sending signup request to API...")
+        signUpUser(groupName: groupName, countryCode: countryCode, phoneNumber: phoneNumber, emailID: emailID)
         
     }
+    func signUpUser(groupName: String, countryCode: String, phoneNumber: String, emailID: String) {
+            let apiURL = URL(string: "http://192.168.29.7:8080/existsCompanyUserRegister")!
+        
+            var request = URLRequest(url: apiURL)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            // afer api checking
+            let parameters: [String: Any] = [
+                "groupName": groupName,
+                "countryCode": countryCode,
+                "phoneNumber": phoneNumber,
+                "emailID": emailID
+            ]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            } catch {
+                print("Error creating request body: \(error)")
+                return
+            }
+        let credentials = "arun:arun1"
+            let credentialsData = credentials.data(using: .utf8)!
+            let base64Credentials = credentialsData.base64EncodedString()
+            request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error: \(error)")
+                    
+                    return
+                }
+                
+                if let httpResponse = response as? HTTPURLResponse,
+                   (200...299).contains(httpResponse.statusCode) {
+                    
+                    if let responseData1 = data {
+                        do {
+                            let jsonObject = try JSONSerialization.jsonObject(with: responseData1, options: [])
+                            print("Response: \(jsonObject)")
+                            
+                            if let responseDict = jsonObject as? [String: Any],
+                               let success = responseDict["success"] as? Bool, success {
+                               
+                                DispatchQueue.main.async {
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let otpViewController = storyboard.instantiateViewController(withIdentifier: "EmailOTPViewControllers") as! EmailOTPViewController
+                                    otpViewController.responseData1 = responseDict
+                                    self.navigationController?.pushViewController(otpViewController, animated: true)
+                                }
+                            } else {
+                                
+                                DispatchQueue.main.async {
+                                                
+                                    self.showCustomAlertWith(message:" Server Error", descMsg: "There was a problem with the server. Please try again later.")
+                                            }
+                            }
+                            
+                        }catch {
+                            print("Error parsing response data: \(error)")
+                        }
+                    }
+                } else {
+                    print("Invalid HTTP response: \(response?.description ?? "")")
+                    
+                }
+            }
+            task.resume()
+        print("Sending signup request to API...")
+        }
+
     func getAllCountryCodes() -> [[String]] {
         var countrys = [[String]]()
         let countryList = GlobalConstants.Constants.codePrefixes
@@ -178,7 +251,6 @@ class SignUpExistingViewController: UIViewController {
 
         existingEmailIDStatusLabel.text = ""
 
-        statusLabel.text = ""
 
     }
     func isValidEmail(_ email: String) -> Bool {

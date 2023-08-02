@@ -163,72 +163,107 @@ class loginUserNameViewController: UIViewController {
     }
     @IBAction func loginInButtonPressed(_ sender: Any) {
         guard let groupName = groupNameTxt.text, !groupName.isEmpty else {
-                    showCustomAlertWith(message: "Please enter groupName", descMsg: "")
-                    return
+            showCustomAlertWith(message: "Please enter groupName", descMsg: "")
+            return
+        }
+        
+        guard let userName = userNameTxt.text, !userName.isEmpty else {
+            showCustomAlertWith(message: "Please enter userName", descMsg: "")
+            return
+        }
+        
+        guard let password = passwordTxt.text, !password.isEmpty else {
+            showCustomAlertWith(message: "Please enter password", descMsg: "")
+            return
+        }
+        
+        print("Sending signup request to API...")
+        signUpUser(groupName: groupName, userName: userName, password: password)
+    }
 
+    private func verifyPassword(_ password: String, storedHash: String?) -> Bool {
+        return password == storedHash
+    }
+    
+    
+    func signUpUser(groupName: String, userName: String, password: String) {
+        let apiURL = URL(string: "http://192.168.29.7:8080/usernameLogin")!
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let parameters: [String: Any] = [
+            "groupName": groupName,
+            "userName": userName,
+            "password": password
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        } catch {
+            print("Error creating request body: \(error)")
+            return
+        }
+        
+        let credentials = "arun:arun1"
+        let credentialsData = credentials.data(using: .utf8)!
+        let base64Credentials = credentialsData.base64EncodedString()
+        request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                DispatchQueue.main.async {
+                    self.showCustomAlertWith(message: "Network Error", descMsg: "There was a network error. Please check your connection and try again.")
                 }
-                guard let userName = userNameTxt.text, !userName.isEmpty else {
-                    showCustomAlertWith(message: "Please enter userName", descMsg: "")
-                    return
+                return
             }
-                guard let password = passwordTxt.text, !password.isEmpty else {
-                    showCustomAlertWith(message: "Please enter password", descMsg: "")
-
-                    return
-                }
-                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                    return
-                }
-                let groupFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-                groupFetchRequest.predicate = NSPredicate(format: "groupName == %@", groupName)
-                let userFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-                userFetchRequest.predicate = NSPredicate(format: "userName == %@", userName)
-                do {
-                    let groupResult = try appDelegate.persistentContainer.viewContext.fetch(groupFetchRequest)
-
-                    let groupFilteredUsers = groupResult.compactMap { $0 as? User }
-
-                    let userResult = try appDelegate.persistentContainer.viewContext.fetch(userFetchRequest)
-
-                    let userFilteredUsers = userResult.compactMap { $0 as? User }
-
-                    let groupNameExists = !groupFilteredUsers.isEmpty
-
-                    let userNameExists = !userFilteredUsers.isEmpty
-                    if !groupNameExists && !userNameExists {
-                        showCustomAlertWith(message: "User Name and Group Name are not registered", descMsg: "")
-                        return
-                    }
-                    if !groupNameExists {
-                        showCustomAlertWith(message: "Group Name is Wrong", descMsg: "")
-                        return
-                    }
-                    if !userNameExists {
-                        showCustomAlertWith(message: "User Name is Wrong", descMsg: "")
-                        return
-                    }
-                    var validUser: User?
-                    for user in groupFilteredUsers {
-                        if user.userName == userName && verifyPassword(password, storedHash: user.password) {
-                            validUser = user
-                            break
+            
+            if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
+                if let responseData = data {
+                    do {
+                        let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                        print("Response: \(jsonObject)")
+                        
+                        if let responseDict = jsonObject as? [String: Any] {
+                            if let success = responseDict["success"] as? Bool, success {
+                                DispatchQueue.main.async {
+                                    self.performSegue(withIdentifier: "signinToOtp", sender: nil)
+                                }
+                            } else if let errorMessage = responseDict["errorMessage"] as? String {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: "Server Error", descMsg: errorMessage)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                            }
+                        }
+                    } catch {
+                        print("Error parsing response data: \(error)")
+                        DispatchQueue.main.async {
+                            self.showCustomAlertWith(message: "Server Error", descMsg: "An error occurred while processing the response.")
                         }
                     }
-                    if let validUser = validUser {
-                    performSegue(withIdentifier: "signinToOtp", sender: nil)
-                } else {
-                    showCustomAlertWith(message: "Incorrect password", descMsg: "")
-                    }
-                } catch {
-                    showCustomAlertWith(message: "An error occurred during login", descMsg: "")
+                }
+            } else {
+                print("Invalid HTTP response: \(response?.description ?? "")")
+                DispatchQueue.main.async {
+                    self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
                 }
             }
+        }
+        
+        task.resume()
+        print("Sending signup request to API...")
+    }
 
-            private func verifyPassword(_ password: String, storedHash: String?) -> Bool {
-
-                return password == storedHash
-
-            }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "LoginViewController" {
             // Disable all buttons after the segue from EmailOTPViewController

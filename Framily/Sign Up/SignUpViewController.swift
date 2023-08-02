@@ -13,9 +13,7 @@ import DialCountries
 class SignUpViewController: UIViewController {
     
     var countryCodes = [[String]]()
-    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var phoneNoTxt: UITextField!
-    @IBOutlet weak var signUpView: UIView!
     @IBOutlet weak var nextBtn: UIButton!
     @IBOutlet weak var countryCodeTxtField: UITextField!
     @IBOutlet weak var companyNameTxt: UITextField!
@@ -28,21 +26,39 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       /* let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: companyNameTxt.frame.height))
+                companyNameTxt.leftView = paddingView
+                companyNameTxt.leftViewMode = .always
+        let paddingView1 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: phoneNoTxt.frame.height))
+                phoneNoTxt.leftView = paddingView
+                phoneNoTxt.leftViewMode = .always
+        let paddingView2 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: countryCodeTxtField.frame.height))
+               // countryCodeTxtField.leftView = paddingView
+                countryCodeTxtField.leftViewMode = .always
+        let paddingView3 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: emailIDTxt.frame.height))
+              //  emailIDTxt.leftView = paddingView
+                emailIDTxt.leftViewMode = .always*/
+        countryCodeTxtField.text = "  +91"
+        self.navigationController?.navigationBar.topItem?.title = "Sign Up"
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showDialCountriesController))
         countryCodeTxtField.addGestureRecognizer(tapGesture)
         countryCodeTxtField.isUserInteractionEnabled = true
-        signUpView.layer.cornerRadius = 20.0
+       // signUpView.layer.cornerRadius = 20.0
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         self.countryCodes = getAllCountryCodes()
         picker()
+        companyNameTxt.layer.cornerRadius = 5
+        countryCodeTxtField.layer.cornerRadius = 5
+        phoneNoTxt.layer.cornerRadius = 5
+        emailIDTxt.layer.cornerRadius = 5
         countryCodeTxtField.isUserInteractionEnabled = true
-        companyNameTxt.backgroundColor = UIColor.clear
+       //companyNameTxt.backgroundColor = UIColor.clear
        companyNameTxt.borderStyle = .none
-        countryCodeTxtField.backgroundColor = UIColor.clear
+      // countryCodeTxtField.backgroundColor = UIColor.clear
        countryCodeTxtField.borderStyle = .none
-        phoneNoTxt.backgroundColor = UIColor.clear
+       //phoneNoTxt.backgroundColor = UIColor.clear
        phoneNoTxt.borderStyle = .none
-        emailIDTxt.backgroundColor = UIColor.clear
+      // emailIDTxt.backgroundColor = UIColor.clear
        emailIDTxt.borderStyle = .none
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
@@ -53,11 +69,7 @@ class SignUpViewController: UIViewController {
         nextBtn.layer.shadowOpacity = shadowOpacity
        nextBtn.layer.shadowOffset = shadowOffset
         nextBtn.layer.shadowRadius = shadowRadius
-        signUpView.layer.shadowColor = shadowColor
-        signUpView.layer.shadowOpacity = shadowOpacity
-        signUpView.layer.shadowOffset = shadowOffset
-        signUpView.layer.shadowRadius = shadowRadius
-        let underlineLayer = CALayer()
+       /* let underlineLayer = CALayer()
         underlineLayer.frame = CGRect(x: 0, y: companyNameTxt.frame.size.height - 1, width: companyNameTxt.frame.size.width, height: 1)
         underlineLayer.backgroundColor = UIColor.white.cgColor
         companyNameTxt.layer.addSublayer(underlineLayer)
@@ -72,7 +84,7 @@ class SignUpViewController: UIViewController {
         let underlineLayer2 = CALayer()
         underlineLayer2.frame = CGRect(x: 0, y: emailIDTxt.frame.size.height - 1, width: emailIDTxt.frame.size.width, height: 1)
         underlineLayer2.backgroundColor = UIColor.white.cgColor
-        emailIDTxt.layer.addSublayer(underlineLayer2)
+        emailIDTxt.layer.addSublayer(underlineLayer2)*/
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -87,6 +99,17 @@ class SignUpViewController: UIViewController {
             companyNameStatusLabel.text = "Please enter company name"
             phoneNumberStatusLabel.text = ""
             emailIdStatusLabel.text = ""
+            return
+        }
+        guard let emailID = emailIDTxt.text, !emailID.isEmpty else {
+            companyNameStatusLabel.text = ""
+            phoneNumberStatusLabel.text = ""
+            emailIdStatusLabel.text = "Please enter email ID"
+            return
+        }
+        resetStatusLabels()
+        if !isValidEmail(emailID) {
+            emailIdStatusLabel.text = "Invalid email"
             return
         }
         guard let countryCode = countryCodeTxtField.text, !countryCode.isEmpty else {
@@ -105,17 +128,7 @@ class SignUpViewController: UIViewController {
             phoneNumberStatusLabel.text = "Invalid phone number"
             return
         }
-        guard let emailID = emailIDTxt.text, !emailID.isEmpty else {
-            companyNameStatusLabel.text = ""
-            phoneNumberStatusLabel.text = ""
-            emailIdStatusLabel.text = "Please enter email ID"
-            return
-        }
-        resetStatusLabels()
-        if !isValidEmail(emailID) {
-            emailIdStatusLabel.text = "Invalid email"
-            return
-        }
+        
         print("Sending signup request to API...")
         signUpUser(companyName: companyName, countryCode: countryCode, phoneNumber: phoneNumber, emailID: emailID)
     }
@@ -234,15 +247,16 @@ class SignUpViewController: UIViewController {
 
         emailIdStatusLabel.text = ""
 
-        statusLabel.text = ""
 
     }
     func isValidEmail(_ email: String) -> Bool {
-        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return emailPredicate.evaluate(with: email)
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
     }
-    
+
+
     func isValidPhoneNumber(_ phoneNumber: String) -> Bool {
             let phoneRegex = "[0-9]{10}"
             let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
