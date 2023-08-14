@@ -5,7 +5,7 @@
 //  Created by John Codeos on 2/9/21.
 //
 
-import UIKit
+/*import UIKit
 import CoreData
 
 class VendorsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -73,4 +73,4 @@ class VendorsListViewController: UIViewController, UITableViewDelegate, UITableV
         present(alert, animated: true, completion: nil)
     }
     
-}
+}*/

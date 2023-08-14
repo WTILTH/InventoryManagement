@@ -1,25 +1,29 @@
 //
-//  VendorsDetailsViewController.swift
+//  TabViewController.swift
 //  Framily
 //
-//  Created by Tharun kumar on 28/06/23.
+//  Created by Varun kumar on 09/08/23.
 //
 
-/*import UIKit
+import UIKit
 
-class VendorsDetailsViewController: UIViewController {
+class TabViewController: UITabBarController {
 
-    @IBOutlet weak var categoryLbl: UILabel!
-    @IBOutlet weak var ageLbl: UILabel!
-    @IBOutlet weak var storeNameLbl: UILabel!
-    @IBOutlet weak var nameLbl: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = BackgroundManager.shared.backgroundColor
 
         // Do any additional setup after loading the view.
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+
 
     /*
     // MARK: - Navigation
@@ -31,4 +35,4 @@ class VendorsDetailsViewController: UIViewController {
     }
     */
 
-}*/
+}

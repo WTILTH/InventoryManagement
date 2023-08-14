@@ -1,14 +1,21 @@
 //
 //  LoginOTPViewController.swift
-//  Framily
-//
+//  Inventory Mangement
+//  Requirement ID :RI/2
 //  Created by Varun kumar on 25/07/23.
 //
-
+//  Module : Login 
 import UIKit
 import UserNotifications
-
+/*Version History
+Draft|| Date        || Author         || Description
+0.1   | 14-Aug-2023  | Varun Kumar     | UX
+0.2   | 14-Aug-2023  | Tharun Kumar    | Validations
+Changes:
+ 
+ */
 class LoginOTPViewController: UIViewController, UITextFieldDelegate {
+    
     @IBOutlet weak var LoginEmailOTPTxt1: UITextField!
     @IBOutlet weak var LoginEmailOTPTxt2: UITextField!
     @IBOutlet weak var LoginEmailOTPTxt3: UITextField!
@@ -21,6 +28,7 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var LoginResendButton: UIButton!
     @IBOutlet weak var LoginNextBtn: UIButton!
     @IBOutlet weak var LoginEmailOTPView: UIView!
+    
     var shouldDisableButtons = false
     var resendAttempts = 0
     var timer: Timer?
@@ -30,8 +38,10 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
     var otpDigits1: [String] = []
     var correctOTP2: String = ""
     var otpDigits2: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         LoginEmailOTPView.layer.cornerRadius = 20.0
         LoginEmailOTPTxt1.backgroundColor = UIColor.clear
@@ -143,19 +153,17 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         LoginPhoneNumberTxt3.layer.addSublayer(underlineLayer5)
         
     }
-    
+    // MARK: - touchesBegan: Dismiss the keyboard when the user taps outside of any text field
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         self.view.endEditing(true)
-        
     }
-    
+    // MARK: - startTimer: Function to Start the OTP timer
     func startTimer() {
-        
         timer?.invalidate()
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
         LoginResendButton.isEnabled = false
     }
+    // MARK: - updateTimer: Function to Update the timer label every second
     @objc func updateTimer() {
         timeRemaining -= 1
         LoginTimerLabel.text = "\(timeRemaining) seconds remaining"
@@ -166,7 +174,7 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
             LoginResendButton.isEnabled = true
         }
     }
-    
+    // MARK: - resendButtonTapped: Function to Resend the OTP and disable the buttons in login page
     @IBAction func resendButtonTapped(_ sender: UIButton) {
         if resendAttempts < 3 {
             timeRemaining = 10
@@ -180,7 +188,7 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
             }, message: "Please contact the admin.", descMsg: "", actions: nil)
         }
     }
-
+    // MARK: - prepare: Function to segue to the login page and disable the buttons
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EmailPhoneOTPToLogin" {
             // Pass the shouldDisableButtons flag to loginUserNameViewController
@@ -189,130 +197,78 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-
-    //EmailPhoneOTPToLogin
+    // MARK: - generateOTP1ButtonPressed: Function to generate Email OTP after pressing the button
     @IBAction func generateOTP1ButtonPressed(_ sender: UIButton) {
-        
         generateOTP1()
-        
         //autofillOTP1()
-        
         showCustomAlertWith(message: "Generated OTP: \(correctOTP1)", descMsg: "", actions: nil)
-        
         showOTPNotification1()
-        
     }
-    
-    
-    
+    // MARK: - generateOTP2ButtonPressed: Function to generate Phone number OTP after pressing the button
     @IBAction func generateOTP2ButtonPressed(_ sender: UIButton) {
-        
         generateOTP2()
-        
         autofillOTP2()
-        
         showCustomAlertWith(message: "Generated OTP: \(correctOTP2)", descMsg: "", actions: nil)
-        
         showOTPNotification2()
         
     }
-    
+    // MARK: - ContinueButtonPressed: Function to Continue button action to verify OTPs and proceed to the next screen
     @IBAction func ContinueButtonPressed(_ sender: Any) {
-        
         let enteredOTP1 = getEnteredOTP1
-        
         let enteredOTP2 = getEnteredOTP2
-      
         guard !enteredOTP1().isEmpty && enteredOTP1() == correctOTP1 else {
-            
             showCustomAlertWith(message: "Incorrect Email OTP. Please try again.", descMsg: "", actions: nil)
-            
-            clearAllTextFields()
-            
+            //clearAllTextFields()
             return
-            
         }
-        
         guard !enteredOTP2().isEmpty && enteredOTP2() == correctOTP2 else {
-            
             showCustomAlertWith(message: "Incorrect Phone number OTP. Please try again.", descMsg: "", actions: nil)
-            clearAllTextFields()
+           // clearAllTextFields()
             return
         }
         performSegue(withIdentifier: "LoginOTPToHome", sender: nil)
     }
-    
+    // MARK: - generateOTP1: Function to Generate OTP for Email
     func generateOTP1() {
-        
         let otpDigits = (0..<3).map { _ in String(Int.random(in: 0...9)) }
-        
         correctOTP1 = otpDigits.joined()
-        
     }
-    
-    
+    // MARK: - generateOTP2: Function to Generate OTP for Phone Number
     func generateOTP2() {
-        
         let otpDigits = (0..<3).map { _ in String(Int.random(in: 0...9)) }
-        
         correctOTP2 = otpDigits.joined()
-        
     }
-    
+    // MARK: - textField: Function to Limit each OTP text field to allow only one character
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
             guard let text = textField.text else { return true }
-
             let newLength = text.count + string.count - range.length
 
-            
-
             if newLength <= 1 {
-
                 // Check if the entered character is a number (you can adjust this condition as needed)
-
                 if let char = string.cString(using: String.Encoding.utf8) {
-                    
                     let isBackSpace = strcmp(char, "\\b")
-                    
                     if isBackSpace == -92 { // Backspace was pressed, allow the text change
-                        
                         return true
-                        
                     } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
-                        
                         // If it's a number, move to the next text field
-                        
                         switch textField {
-                            
                         case LoginEmailOTPTxt1:
-                            
                             LoginEmailOTPTxt2.becomeFirstResponder()
-                            
                         case LoginEmailOTPTxt2:
-                            
                             LoginEmailOTPTxt3.becomeFirstResponder()
-                            
                         case LoginEmailOTPTxt3:
-                            
                             LoginEmailOTPTxt3.resignFirstResponder()
-                            
                         default:
-                            
                             break
-                            
                         }
-                        
                         textField.text = string // Manually set the text field with the entered character
-                        
                         return false // Return false to prevent the default behavior of shouldChangeCharactersIn
-                        
                      }
                    }
                 }
         return false
         }
-    
+    // MARK: - textFieldDidChange: Function to Handle text field editing to navigate between OTP text fields
     @objc func textFieldDidChange(_ textField: UITextField) {
         
         guard let text = textField.text else { return }
@@ -320,65 +276,35 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         if text.count == 1 {
             switch textField {
             case LoginEmailOTPTxt1:
-                
                 LoginEmailOTPTxt2.becomeFirstResponder()
-                
             case LoginEmailOTPTxt2:
-                
                 LoginEmailOTPTxt3.becomeFirstResponder()
-                
             case LoginEmailOTPTxt3:
-                
                 LoginPhoneNumberTxt1.becomeFirstResponder()
-                
             case LoginPhoneNumberTxt1:
-                
                 LoginPhoneNumberTxt2.becomeFirstResponder()
-                
             case LoginPhoneNumberTxt2:
-                
                 LoginPhoneNumberTxt3.becomeFirstResponder()
-                
             case LoginPhoneNumberTxt3:
-                
                 LoginPhoneNumberTxt3.resignFirstResponder()
-                
             default:
-                
                 break
-                
             }
-            
         } else if text.isEmpty {
-            
             switch textField {
-                
             case LoginEmailOTPTxt2:
-                
-                LoginEmailOTPTxt1.becomeFirstResponder()
-                
+            LoginEmailOTPTxt1.becomeFirstResponder()
             case LoginEmailOTPTxt3:
-                
                 LoginEmailOTPTxt2.becomeFirstResponder()
-                
             case LoginPhoneNumberTxt2:
-                
                 LoginPhoneNumberTxt1.becomeFirstResponder()
-                
             case LoginPhoneNumberTxt3:
-                
                 LoginPhoneNumberTxt2.becomeFirstResponder()
-                
             default:
-                
                 break
-                
             }
-            
         }
-        
     }
-    
  /*   @objc func firstTextFieldTapped() {
         
         guard let firstDigit = correctOTP1.first else { return }
@@ -406,34 +332,20 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         emailOTPTxt2.becomeFirstResponder()
         
     }*/
-    
+    // MARK: - showOTPNotification1: Function to Function to show the notification with the generated OTP for Email
     func showOTPNotification1() {
-       
         let content = UNMutableNotificationContent()
-        
         content.title = "Generated OTP"
-        
         content.body = "Your OTP: \(correctOTP1)"
-        
         content.sound = UNNotificationSound.default
-        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        
         let request = UNNotificationRequest(identifier: "OTPNotification", content: content, trigger: trigger)
-        
-        
         UNUserNotificationCenter.current().add(request) { error in
-            
             if let error = error {
-                
                 print("Error adding notification request: \(error)")
-                
             }
-            
         }
-        
     }
-    
  /*   func autofillOTP1() {
         
         guard correctOTP1.count == 3 else {
@@ -450,32 +362,20 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         emailOTPTxt3.text = String(correctOTP1[correctOTP1.index(correctOTP1.startIndex, offsetBy: 2)])
         
     }*/
-    
-    
+    // MARK: - getEnteredOTP1: Function to Function to get the entered OTP for Email
     func getEnteredOTP1() -> String {
-        
         let enteredOTP = [LoginEmailOTPTxt1.text, LoginEmailOTPTxt2.text, LoginEmailOTPTxt3.text]
-        
         return enteredOTP.compactMap { $0 }.joined()
-    
     }
-    
-    func clearAllTextFields() {
-        
+    /*func clearAllTextFields() {
         LoginEmailOTPTxt1.text = ""
-        
         LoginEmailOTPTxt2.text = ""
-        
         LoginEmailOTPTxt3.text = ""
-        
         LoginPhoneNumberTxt1.text = ""
-        
         LoginPhoneNumberTxt2.text = ""
-        
         LoginPhoneNumberTxt3.text = ""
         LoginPhoneNumberTxt1.becomeFirstResponder()
-        
-    }
+    }*/
     
   /*  func fillOTPFields1(with otp: String) {
         
@@ -490,109 +390,62 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         
         
     }*/
-    
+    // MARK: - autofillOTP2: Function to autofill the OTP for phone number OTP
     func autofillOTP2() {
-        
         guard correctOTP2.count == 3 else {
-            
             return
-            
         }
-        
         LoginPhoneNumberTxt1.text = String(correctOTP2[correctOTP2.startIndex])
-        
         LoginPhoneNumberTxt2.text = String(correctOTP2[correctOTP2.index(after: correctOTP2.startIndex)])
-        
         LoginPhoneNumberTxt3.text = String(correctOTP2[correctOTP2.index(correctOTP2.startIndex, offsetBy: 2)])
         
     }
-    
+    // MARK: - getEnteredOTP2: Function to get the entered OTP for Phone Number
     func getEnteredOTP2() -> String {
-        
         let enteredOTP = [LoginPhoneNumberTxt1.text, LoginPhoneNumberTxt2.text, LoginPhoneNumberTxt3.text]
-        
         return enteredOTP.compactMap { $0 }.joined()
-        
     }
-    
+    // MARK: - clearAllTextFields2: Function to Function to clear all the OTP text fields
     func clearAllTextFields2() {
-        
         LoginPhoneNumberTxt1.text = ""
-        
         LoginPhoneNumberTxt2.text = ""
-        
         LoginPhoneNumberTxt3.text = ""
-        
         LoginEmailOTPTxt1.becomeFirstResponder()
-        
     }
-    
+    // MARK: - fillOTPFields2: Function to fill the Phone number OTP
     func fillOTPFields2(with otp: String) {
-        
         let otpArray = Array(otp)
-        
         LoginPhoneNumberTxt1.text = String(otpArray[0])
-        
         LoginPhoneNumberTxt2.text = String(otpArray[1])
-        
         LoginPhoneNumberTxt3.text = String(otpArray[2])
-        
     }
-    
-    
-    
+    // MARK: - showOTPNotification2: Function to show OTP notifications
     func showOTPNotification2() {
-        
-        
-        
         let content = UNMutableNotificationContent()
-        
         content.title = "Generated OTP"
-        
         content.body = "Your OTP: \(correctOTP2)"
-        
         content.sound = UNNotificationSound.default
-        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        
         let request = UNNotificationRequest(identifier: "OTPNotification", content: content, trigger: trigger)
-        
         UNUserNotificationCenter.current().add(request) { error in
-            
             if let error = error {
-                
                 print("Error adding notification request: \(error)")
-                
-            }
-            
+          }
         }
-        
     }
-    
+    // MARK: - secondTextFieldTapped: Function to go to next text field after entering
     @objc func secondTextFieldTapped() {
-        
         guard let firstDigit = correctOTP2.first else { return }
-        
         LoginPhoneNumberTxt1.text = String(firstDigit)
-        
         guard correctOTP2.count >= 2 else { return }
-        
         let secondIndex = correctOTP2.index(correctOTP2.startIndex, offsetBy: 1)
-        
         let secondDigit = correctOTP2[secondIndex]
-        
         LoginPhoneNumberTxt2.text = String(secondDigit)
-        
         guard correctOTP2.count >= 3 else { return }
-        
         let thirdIndex = correctOTP2.index(correctOTP2.startIndex, offsetBy: 2)
-        
         let thirdDigit = correctOTP2[thirdIndex]
-        
         LoginPhoneNumberTxt3.text = String(thirdDigit)
-        
         LoginPhoneNumberTxt2.becomeFirstResponder()
-        
-        
+       
     }
 }

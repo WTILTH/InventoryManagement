@@ -1,18 +1,17 @@
 //
-//  VendorsListTableViewCell.swift
+//  PurchaseManagementTableViewCell.swift
 //  Framily
 //
-//  Created by Varun kumar on 28/06/23.
+//  Created by Varun kumar on 09/08/23.
 //
 
-/*import UIKit
+import UIKit
 
-class VendorsListTableViewCell: UITableViewCell {
+class PurchaseManagementTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var vendorsListLbl: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -20,5 +19,5 @@ class VendorsListTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
-}*/
+    
+}

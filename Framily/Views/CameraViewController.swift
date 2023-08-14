@@ -5,7 +5,7 @@
 //  Created by John Codeos on 2/9/21.
 //
 
-import UIKit
+/*import UIKit
 import Vision
 import AVFoundation
 
@@ -184,5 +184,5 @@ class ScannedViewController: UIViewController {
             print("Error performing text recognition:", error)
         }
     }
-}
+}*/
 

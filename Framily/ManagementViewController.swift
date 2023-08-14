@@ -1,26 +1,23 @@
 //
-//  VendorsDetailsViewController.swift
+//  ManagementViewController.swift
 //  Framily
 //
-//  Created by Tharun kumar on 28/06/23.
+//  Created by Varun kumar on 09/08/23.
 //
 
-/*import UIKit
+import UIKit
 
-class VendorsDetailsViewController: UIViewController {
+class ManagementViewController: UIViewController {
 
-    @IBOutlet weak var categoryLbl: UILabel!
-    @IBOutlet weak var ageLbl: UILabel!
-    @IBOutlet weak var storeNameLbl: UILabel!
-    @IBOutlet weak var nameLbl: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = BackgroundManager.shared.backgroundColor
 
         // Do any additional setup after loading the view.
     }
+    /*@IBAction func purchaseManagementBtnPressed(_ sender: Any) {
+        performSegue(withIdentifier: "PurchaseManagementtoPurchaseManagement", sender: self)
+    }*/
     
-
     /*
     // MARK: - Navigation
 
@@ -31,4 +28,4 @@ class VendorsDetailsViewController: UIViewController {
     }
     */
 
-}*/
+}

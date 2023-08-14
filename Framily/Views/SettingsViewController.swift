@@ -5,7 +5,7 @@
 //  Created by John Codeos on 2/9/21.
 //
 
-import UIKit
+/*import UIKit
 
 class SettingsViewController: UIViewController {
     
@@ -17,4 +17,4 @@ class SettingsViewController: UIViewController {
         sideMenuBtn.target = self.revealViewController()
         sideMenuBtn.action = #selector(self.revealViewController()?.revealSideMenu)
     }
-}
+}*/

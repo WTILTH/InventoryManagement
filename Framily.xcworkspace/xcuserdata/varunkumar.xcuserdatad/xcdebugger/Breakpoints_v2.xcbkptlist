@@ -15,9 +15,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "171"
-            endingLineNumber = "171"
-            landmarkName = "selectedCell(_:)"
-            landmarkType = "7">
+            endingLineNumber = "171">
             <Locations>
                <Location
                   uuid = "32E812F5-C60B-43CD-9179-DCCE1139AB53 - 5418b1956aa45073"

@@ -5,7 +5,7 @@
 //  Created by Varun kumar on 19/06/23.
 //
 
-import UIKit
+/*import UIKit
 import CoreData
 
 class VendorsViewController: UIViewController {
@@ -68,4 +68,4 @@ class VendorsViewController: UIViewController {
         }
     }
     
-}
+}*/

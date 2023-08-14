@@ -25,23 +25,26 @@
 		D8022E062A557969009A879B /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */; };
 		D80531692A42DFE60080DC16 /* CommonAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80531672A42DFE60080DC16 /* CommonAlertVC.swift */; };
 		D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D805316A2A42E0030080DC16 /* UIViewExtension.swift */; };
+		D867B6CE2A8385BE006E3D2C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6CD2A8385BE006E3D2C /* HomeViewController.swift */; };
+		D867B6D02A838614006E3D2C /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6CF2A838614006E3D2C /* ManagementViewController.swift */; };
+		D867B6D22A83A1A4006E3D2C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6D12A83A1A4006E3D2C /* TabViewController.swift */; };
+		D867B6D42A83A5F5006E3D2C /* PurchaseManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6D32A83A5F5006E3D2C /* PurchaseManagementViewController.swift */; };
+		D867B6D72A83A61D006E3D2C /* PurchaseManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6D52A83A61D006E3D2C /* PurchaseManagementTableViewCell.swift */; };
+		D867B6D82A83A61D006E3D2C /* PurchaseManagementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D867B6D62A83A61D006E3D2C /* PurchaseManagementTableViewCell.xib */; };
+		D867B6F22A83B827006E3D2C /* VendorManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6F12A83B827006E3D2C /* VendorManagementViewController.swift */; };
+		D867B6F52A83BA99006E3D2C /* VendorManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6F42A83BA99006E3D2C /* VendorManagementTableViewCell.swift */; };
+		D867B6F72A83BD94006E3D2C /* VendorManagementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D867B6F62A83BD94006E3D2C /* VendorManagementTableViewCell.xib */; };
+		D867B6F92A83BDC4006E3D2C /* VendorProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6F82A83BDC4006E3D2C /* VendorProfileViewController.swift */; };
 		D88845A42A5BE8C300219226 /* ForgetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */; };
 		D88845A62A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */; };
 		D88845A82A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */; };
 		D88845AB2A5C158D00219226 /* VKCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845AA2A5C158D00219226 /* VKCheckbox.swift */; };
-		D8A32ED12A41742D0070CF4A /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */; };
-		D8A32ED22A41742D0070CF4A /* SideMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC62A41742D0070CF4A /* SideMenuModel.swift */; };
-		D8A32ED32A41742D0070CF4A /* SideMenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8A32EC82A41742D0070CF4A /* SideMenuCell.xib */; };
-		D8A32ED42A41742D0070CF4A /* SideMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32EC92A41742D0070CF4A /* SideMenuCell.swift */; };
 		D8A32ED52A41742D0070CF4A /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECB2A41742D0070CF4A /* CameraViewController.swift */; };
 		D8A32ED62A41742D0070CF4A /* VendorsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECC2A41742D0070CF4A /* VendorsListViewController.swift */; };
 		D8A32ED72A41742D0070CF4A /* VendorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */; };
 		D8A32ED82A41742D0070CF4A /* BarcodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ECE2A41742D0070CF4A /* BarcodeScannerViewController.swift */; };
 		D8A32EDA2A41742D0070CF4A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */; };
 		D8A73EFA2A4C10D3002A7ADF /* VendorsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A73EF92A4C10D3002A7ADF /* VendorsListTableViewCell.swift */; };
-		D8A99CCE2A40304200B9803D /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A99CCA2A40304100B9803D /* SimpleViewController.swift */; };
-		D8A99CD02A40304200B9803D /* AnimatedTabOptionsImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A99CCC2A40304200B9803D /* AnimatedTabOptionsImplementation.swift */; };
-		D8A99CD12A40304200B9803D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A99CCD2A40304200B9803D /* ViewController.swift */; };
 		D8BBD2E92A6905BF0095ADF7 /* PasswordStrengthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BBD2E82A6905BF0095ADF7 /* PasswordStrengthManager.swift */; };
 		D8BBD2EB2A6905DC0095ADF7 /* PasswordStrengthType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BBD2EA2A6905DC0095ADF7 /* PasswordStrengthType.swift */; };
 		D8BBD2ED2A6905F10095ADF7 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BBD2EC2A6905F10095ADF7 /* String+Extension.swift */; };
@@ -56,7 +59,6 @@
 		D8BCEA5A2A401C9300EAF04B /* FramilyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BCEA592A401C9300EAF04B /* FramilyTests.swift */; };
 		D8BCEA642A401C9300EAF04B /* FramilyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BCEA632A401C9300EAF04B /* FramilyUITests.swift */; };
 		D8BCEA662A401C9300EAF04B /* FramilyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BCEA652A401C9300EAF04B /* FramilyUITestsLaunchTests.swift */; };
-		D8C71C302A610E2300FEC62B /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C71C2F2A610E2300FEC62B /* GlobalConstants.swift */; };
 		D8C71C342A61514A00FEC62B /* AppearanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C71C332A61514A00FEC62B /* AppearanceManager.swift */; };
 		D8E30E902A6F9209004B0610 /* SignUpExistingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E30E8F2A6F9209004B0610 /* SignUpExistingViewController.swift */; };
 		D8E30E942A6FBB13004B0610 /* LoginOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E30E932A6FBB13004B0610 /* LoginOTPViewController.swift */; };
@@ -107,23 +109,26 @@
 		D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		D80531672A42DFE60080DC16 /* CommonAlertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonAlertVC.swift; sourceTree = "<group>"; };
 		D805316A2A42E0030080DC16 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		D867B6CD2A8385BE006E3D2C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D867B6CF2A838614006E3D2C /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
+		D867B6D12A83A1A4006E3D2C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
+		D867B6D32A83A5F5006E3D2C /* PurchaseManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManagementViewController.swift; sourceTree = "<group>"; };
+		D867B6D52A83A61D006E3D2C /* PurchaseManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManagementTableViewCell.swift; sourceTree = "<group>"; };
+		D867B6D62A83A61D006E3D2C /* PurchaseManagementTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PurchaseManagementTableViewCell.xib; sourceTree = "<group>"; };
+		D867B6F12A83B827006E3D2C /* VendorManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorManagementViewController.swift; sourceTree = "<group>"; };
+		D867B6F42A83BA99006E3D2C /* VendorManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorManagementTableViewCell.swift; sourceTree = "<group>"; };
+		D867B6F62A83BD94006E3D2C /* VendorManagementTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VendorManagementTableViewCell.xib; sourceTree = "<group>"; };
+		D867B6F82A83BDC4006E3D2C /* VendorProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorProfileViewController.swift; sourceTree = "<group>"; };
 		D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordViewController.swift; sourceTree = "<group>"; };
 		D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordOTPViewController.swift; sourceTree = "<group>"; };
 		D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		D88845AA2A5C158D00219226 /* VKCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKCheckbox.swift; sourceTree = "<group>"; };
-		D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
-		D8A32EC62A41742D0070CF4A /* SideMenuModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuModel.swift; sourceTree = "<group>"; };
-		D8A32EC82A41742D0070CF4A /* SideMenuCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideMenuCell.xib; sourceTree = "<group>"; };
-		D8A32EC92A41742D0070CF4A /* SideMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuCell.swift; sourceTree = "<group>"; };
 		D8A32ECB2A41742D0070CF4A /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		D8A32ECC2A41742D0070CF4A /* VendorsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VendorsListViewController.swift; sourceTree = "<group>"; };
 		D8A32ECD2A41742D0070CF4A /* VendorsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VendorsViewController.swift; sourceTree = "<group>"; };
 		D8A32ECE2A41742D0070CF4A /* BarcodeScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeScannerViewController.swift; sourceTree = "<group>"; };
 		D8A32ED02A41742D0070CF4A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D8A73EF92A4C10D3002A7ADF /* VendorsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorsListTableViewCell.swift; sourceTree = "<group>"; };
-		D8A99CCA2A40304100B9803D /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
-		D8A99CCC2A40304200B9803D /* AnimatedTabOptionsImplementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedTabOptionsImplementation.swift; sourceTree = "<group>"; };
-		D8A99CCD2A40304200B9803D /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D8BBD2E82A6905BF0095ADF7 /* PasswordStrengthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthManager.swift; sourceTree = "<group>"; };
 		D8BBD2EA2A6905DC0095ADF7 /* PasswordStrengthType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthType.swift; sourceTree = "<group>"; };
 		D8BBD2EC2A6905F10095ADF7 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -142,7 +147,6 @@
 		D8BCEA5F2A401C9300EAF04B /* FramilyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FramilyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8BCEA632A401C9300EAF04B /* FramilyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramilyUITests.swift; sourceTree = "<group>"; };
 		D8BCEA652A401C9300EAF04B /* FramilyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramilyUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		D8C71C2F2A610E2300FEC62B /* GlobalConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConstants.swift; sourceTree = "<group>"; };
 		D8C71C332A61514A00FEC62B /* AppearanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceManager.swift; sourceTree = "<group>"; };
 		D8E30E8F2A6F9209004B0610 /* SignUpExistingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpExistingViewController.swift; sourceTree = "<group>"; };
 		D8E30E932A6FBB13004B0610 /* LoginOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOTPViewController.swift; sourceTree = "<group>"; };
@@ -208,48 +212,43 @@
 				D8F80DCC2A6A7ABF00171D49 /* loginUserNameViewController.swift */,
 				4AA295672A4064BB0009198E /* LoginViewController.swift */,
 				4AB2DFE42A4EF4630008D5AA /* Subscription.swift */,
-				4AA896D22A4AD49E00C32E13 /* CommonAlertVC.xib */,
-				D805316A2A42E0030080DC16 /* UIViewExtension.swift */,
-				D80531672A42DFE60080DC16 /* CommonAlertVC.swift */,
+				D8B9B8AE2A7B98580007F372 /* Custom Alert */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		D867B6F02A83B7A7006E3D2C /* Purchase Management */ = {
+			isa = PBXGroup;
+			children = (
+				D867B6D32A83A5F5006E3D2C /* PurchaseManagementViewController.swift */,
+				D867B6D52A83A61D006E3D2C /* PurchaseManagementTableViewCell.swift */,
+				D867B6D62A83A61D006E3D2C /* PurchaseManagementTableViewCell.xib */,
+			);
+			path = "Purchase Management";
+			sourceTree = "<group>";
+		};
+		D867B6F32A83BA70006E3D2C /* Vendor Management */ = {
+			isa = PBXGroup;
+			children = (
+				D867B6F12A83B827006E3D2C /* VendorManagementViewController.swift */,
+				D867B6F42A83BA99006E3D2C /* VendorManagementTableViewCell.swift */,
+				D867B6F62A83BD94006E3D2C /* VendorManagementTableViewCell.xib */,
+				D867B6F82A83BDC4006E3D2C /* VendorProfileViewController.swift */,
+			);
+			path = "Vendor Management";
 			sourceTree = "<group>";
 		};
 		D88845A92A5BF4A800219226 /* Sign Up */ = {
 			isa = PBXGroup;
 			children = (
-				D8E30E8F2A6F9209004B0610 /* SignUpExistingViewController.swift */,
 				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
-				D8C71C2F2A610E2300FEC62B /* GlobalConstants.swift */,
+				D8E30E8F2A6F9209004B0610 /* SignUpExistingViewController.swift */,
 				D8022E032A557953009A879B /* EmailOTPViewController.swift */,
 				D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */,
-				D8BBD2E82A6905BF0095ADF7 /* PasswordStrengthManager.swift */,
-				D8BBD2EA2A6905DC0095ADF7 /* PasswordStrengthType.swift */,
-				D8BBD2EC2A6905F10095ADF7 /* String+Extension.swift */,
-				D8BBD2EE2A69060A0095ADF7 /* PasswordRules.swift */,
-				D8BBD2F02A69061F0095ADF7 /* UIColor+Extension.swift */,
-				D88845AA2A5C158D00219226 /* VKCheckbox.swift */,
+				D8B9B8AC2A7B8B440007F372 /* Password Strength View */,
+				D8B9B8AD2A7B8B760007F372 /* Check Box */,
 			);
 			path = "Sign Up";
-			sourceTree = "<group>";
-		};
-		D8A32EC42A41742D0070CF4A /* SideMenu */ = {
-			isa = PBXGroup;
-			children = (
-				D8A32EC52A41742D0070CF4A /* SideMenuViewController.swift */,
-				D8A32EC62A41742D0070CF4A /* SideMenuModel.swift */,
-				D8A32EC72A41742D0070CF4A /* Cell */,
-			);
-			path = SideMenu;
-			sourceTree = "<group>";
-		};
-		D8A32EC72A41742D0070CF4A /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				D8A32EC82A41742D0070CF4A /* SideMenuCell.xib */,
-				D8A32EC92A41742D0070CF4A /* SideMenuCell.swift */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		D8A32ECA2A41742D0070CF4A /* Views */ = {
@@ -282,6 +281,36 @@
 				D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */,
 			);
 			path = ForgotPassword;
+			sourceTree = "<group>";
+		};
+		D8B9B8AC2A7B8B440007F372 /* Password Strength View */ = {
+			isa = PBXGroup;
+			children = (
+				D8BBD2E82A6905BF0095ADF7 /* PasswordStrengthManager.swift */,
+				D8BBD2EA2A6905DC0095ADF7 /* PasswordStrengthType.swift */,
+				D8BBD2EC2A6905F10095ADF7 /* String+Extension.swift */,
+				D8BBD2EE2A69060A0095ADF7 /* PasswordRules.swift */,
+				D8BBD2F02A69061F0095ADF7 /* UIColor+Extension.swift */,
+			);
+			path = "Password Strength View";
+			sourceTree = "<group>";
+		};
+		D8B9B8AD2A7B8B760007F372 /* Check Box */ = {
+			isa = PBXGroup;
+			children = (
+				D88845AA2A5C158D00219226 /* VKCheckbox.swift */,
+			);
+			path = "Check Box";
+			sourceTree = "<group>";
+		};
+		D8B9B8AE2A7B98580007F372 /* Custom Alert */ = {
+			isa = PBXGroup;
+			children = (
+				4AA896D22A4AD49E00C32E13 /* CommonAlertVC.xib */,
+				D805316A2A42E0030080DC16 /* UIViewExtension.swift */,
+				D80531672A42DFE60080DC16 /* CommonAlertVC.swift */,
+			);
+			path = "Custom Alert";
 			sourceTree = "<group>";
 		};
 		D8BCEA332A401C9100EAF04B = {
@@ -319,14 +348,15 @@
 				D8E30E932A6FBB13004B0610 /* LoginOTPViewController.swift */,
 				D88845A92A5BF4A800219226 /* Sign Up */,
 				D8AC7F712A56CABA00433D9C /* ForgotPassword */,
-				D8A99CCA2A40304100B9803D /* SimpleViewController.swift */,
-				D8A99CCD2A40304200B9803D /* ViewController.swift */,
-				D8A99CCC2A40304200B9803D /* AnimatedTabOptionsImplementation.swift */,
+				D867B6D12A83A1A4006E3D2C /* TabViewController.swift */,
+				D867B6CD2A8385BE006E3D2C /* HomeViewController.swift */,
+				D867B6CF2A838614006E3D2C /* ManagementViewController.swift */,
+				D867B6F02A83B7A7006E3D2C /* Purchase Management */,
+				D867B6F32A83BA70006E3D2C /* Vendor Management */,
 				D8ED9ACC2A42BAF400101711 /* ReminderViewController.swift */,
 				4AA5F6072A45B21800006003 /* ChatViewController.swift */,
 				4AA5F6092A45B25A00006003 /* BrowserViewController.swift */,
 				4AA5F60B2A45B27900006003 /* SecurityViewController.swift */,
-				D8A32EC42A41742D0070CF4A /* SideMenu */,
 				D8A32ECA2A41742D0070CF4A /* Views */,
 				D8BCEA452A401C9200EAF04B /* Main.storyboard */,
 				D8BCEA4B2A401C9200EAF04B /* Assets.xcassets */,
@@ -465,11 +495,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8BCEA4F2A401C9200EAF04B /* LaunchScreen.storyboard in Resources */,
+				D867B6F72A83BD94006E3D2C /* VendorManagementTableViewCell.xib in Resources */,
 				4AA896D32A4AD49E00C32E13 /* CommonAlertVC.xib in Resources */,
 				D8BCEA4C2A401C9200EAF04B /* Assets.xcassets in Resources */,
 				D8BCEA472A401C9200EAF04B /* Main.storyboard in Resources */,
-				D8A32ED32A41742D0070CF4A /* SideMenuCell.xib in Resources */,
 				4AA5F6062A45AAC500006003 /* GoogleService-Info.plist in Resources */,
+				D867B6D82A83A61D006E3D2C /* PurchaseManagementTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,38 +628,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D867B6F52A83BA99006E3D2C /* VendorManagementTableViewCell.swift in Sources */,
 				4AA295682A4064BB0009198E /* LoginViewController.swift in Sources */,
 				D88845A42A5BE8C300219226 /* ForgetPasswordViewController.swift in Sources */,
 				D8E30E942A6FBB13004B0610 /* LoginOTPViewController.swift in Sources */,
 				D8F80DCD2A6A7ABF00171D49 /* loginUserNameViewController.swift in Sources */,
 				D8A73EFA2A4C10D3002A7ADF /* VendorsListTableViewCell.swift in Sources */,
+				D867B6CE2A8385BE006E3D2C /* HomeViewController.swift in Sources */,
 				D8A32ED82A41742D0070CF4A /* BarcodeScannerViewController.swift in Sources */,
 				D8BCEA4A2A401C9200EAF04B /* Framily.xcdatamodeld in Sources */,
+				D867B6D22A83A1A4006E3D2C /* TabViewController.swift in Sources */,
 				D8BBD2EB2A6905DC0095ADF7 /* PasswordStrengthType.swift in Sources */,
 				D8E30E902A6F9209004B0610 /* SignUpExistingViewController.swift in Sources */,
-				D8A99CCE2A40304200B9803D /* SimpleViewController.swift in Sources */,
+				D867B6D02A838614006E3D2C /* ManagementViewController.swift in Sources */,
 				D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */,
 				D88845AB2A5C158D00219226 /* VKCheckbox.swift in Sources */,
+				D867B6F22A83B827006E3D2C /* VendorManagementViewController.swift in Sources */,
 				4AA5F60C2A45B27900006003 /* SecurityViewController.swift in Sources */,
-				D8A99CD12A40304200B9803D /* ViewController.swift in Sources */,
+				D867B6D42A83A5F5006E3D2C /* PurchaseManagementViewController.swift in Sources */,
 				D8A32ED72A41742D0070CF4A /* VendorsViewController.swift in Sources */,
 				D8BBD2F12A69061F0095ADF7 /* UIColor+Extension.swift in Sources */,
 				4AA172B92A53F81000C4834A /* CommonViewController.swift in Sources */,
 				D8022E042A557953009A879B /* EmailOTPViewController.swift in Sources */,
 				D8C71C342A61514A00FEC62B /* AppearanceManager.swift in Sources */,
+				D867B6F92A83BDC4006E3D2C /* VendorProfileViewController.swift in Sources */,
 				D8A32ED62A41742D0070CF4A /* VendorsListViewController.swift in Sources */,
 				D8022E062A557969009A879B /* ConfirmPasswordViewController.swift in Sources */,
+				D867B6D72A83A61D006E3D2C /* PurchaseManagementTableViewCell.swift in Sources */,
 				4AA5F6082A45B21800006003 /* ChatViewController.swift in Sources */,
 				4AA5F60A2A45B25A00006003 /* BrowserViewController.swift in Sources */,
 				D8BBD2ED2A6905F10095ADF7 /* String+Extension.swift in Sources */,
 				D88845A62A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift in Sources */,
 				4AA127CC2A55513200F1BA31 /* OtpViewController.swift in Sources */,
-				D8A32ED22A41742D0070CF4A /* SideMenuModel.swift in Sources */,
 				4AB2DFE52A4EF4630008D5AA /* Subscription.swift in Sources */,
-				D8A99CD02A40304200B9803D /* AnimatedTabOptionsImplementation.swift in Sources */,
 				D8BCEA402A401C9200EAF04B /* AppDelegate.swift in Sources */,
 				D8A32ED52A41742D0070CF4A /* CameraViewController.swift in Sources */,
-				D8A32ED12A41742D0070CF4A /* SideMenuViewController.swift in Sources */,
 				D8BBD2EF2A69060A0095ADF7 /* PasswordRules.swift in Sources */,
 				4AB036762A4C53F40086A1B8 /* VendorsDetailsViewController.swift in Sources */,
 				D80531692A42DFE60080DC16 /* CommonAlertVC.swift in Sources */,
@@ -636,9 +670,7 @@
 				D8BBD2E92A6905BF0095ADF7 /* PasswordStrengthManager.swift in Sources */,
 				4AA172B72A53F5C800C4834A /* SignUpViewController.swift in Sources */,
 				D8BCEA422A401C9200EAF04B /* SceneDelegate.swift in Sources */,
-				D8A32ED42A41742D0070CF4A /* SideMenuCell.swift in Sources */,
 				D8A32EDA2A41742D0070CF4A /* SettingsViewController.swift in Sources */,
-				D8C71C302A610E2300FEC62B /* GlobalConstants.swift in Sources */,
 				D8ED9ACD2A42BAF400101711 /* ReminderViewController.swift in Sources */,
 				4AB036742A4C36E00086A1B8 /* User.xcdatamodeld in Sources */,
 			);

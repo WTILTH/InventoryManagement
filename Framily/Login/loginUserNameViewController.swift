@@ -1,13 +1,18 @@
 //
 //  signUpUser.swift
-//  Framily
-//
+//  Inventory Mangement
+//  Requirement ID :RI/2
 //  Created by Varun kumar on 21/07/23.
-//
-
+//  Module : Login 
 import UIKit
 import CoreData
-
+/*Version History
+Draft|| Date        || Author         || Description
+0.1   | 14-Aug-2023  | Varun Kumar     | UX
+0.2   | 14-Aug-2023  | Tharun Kumar    | API Integration
+Changes:
+ 
+ */
 class loginUserNameViewController: UIViewController {
 
     @IBOutlet weak var loginBtn: UIButton!
@@ -18,6 +23,7 @@ class loginUserNameViewController: UIViewController {
     @IBOutlet weak var signUpUserPopUp: UIView!
     @IBOutlet weak var forgotPasswordBtn: UIButton!
     @IBOutlet weak var loginWithEmailPhoneBtn: UIButton!
+    
     //var transparentOverlay: UIView?
     var shouldDisableButtons = false
     var managedObjectContext: NSManagedObjectContext!
@@ -29,7 +35,7 @@ class loginUserNameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        printSavedData()
+        //printSavedData()
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         signUpUserPopUp.frame = CGRect(x: 0, y: view.frame.size.height, width: view.frame.size.width, height: 200)
         signUpUserPopUp.layer.cornerRadius = 40.0
@@ -51,7 +57,6 @@ class loginUserNameViewController: UIViewController {
         // transparentOverlay?.alpha = 0 // Initially transparent
         // view.addSubview(transparentOverlay!)
         
-        // Add tap gesture recognizer to the transparent overlay view
         let tapGestureRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         signUpUserPopUp?.addGestureRecognizer(tapGestureRecognizer1)
         if shouldDisableButtons {
@@ -67,33 +72,27 @@ class loginUserNameViewController: UIViewController {
             }
         }
     }
+    // MARK: - handleTap: This function is to handle the pop up view
             @objc func handleTap() {
-                // Dismiss the keyboard when the user taps on the transparent overlay
                 view.endEditing(true)
-                // Dismiss the pop-up view
                 if let currentPopUpView = currentPopUpView {
                     dismissPopUpView(currentPopUpView)
                 }
             }
-
-            // Function to show the pop-up view
+    //MARK: - showPopUpView: Function to show the pop-up view
     func showPopUpView(_ popUpView: UIView) {
-        // Dismiss any currently visible pop-up views
         if let currentPopUpView = currentPopUpView {
             dismissPopUpView(currentPopUpView)
         }
         currentPopUpView = popUpView
-        
-        // Make the transparent overlay visible when the pop-up is shown
         signUpUserPopUp?.alpha = 1
         
         UIView.animate(withDuration: 0.3) {
             popUpView.frame = CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200)
         }
     }
-            // Function to dismiss the pop-up view
+    // MARK: - dismissPopUpView: Function to dismiss the pop-up view
             func dismissPopUpView(_ popUpView: UIView) {
-                // Hide the transparent overlay when the pop-up is dismissed
                 signUpUserPopUp?.alpha = 0
 
                 UIView.animate(withDuration: 0.3) {
@@ -101,14 +100,13 @@ class loginUserNameViewController: UIViewController {
                 }
                 currentPopUpView = nil
             }
+    // MARK: - touchesBegan: Dismiss the keyboard when the user taps outside of any text field
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer)
-{
-   
+    // MARK: - imageTapped: Function to toggle password visibility when the eye icon is tapped
+    @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer){
    let tappedImage = tapGestureRecognizer.view as! UIImageView
-   
    if iconClick
    {
        iconClick = false
@@ -121,46 +119,140 @@ class loginUserNameViewController: UIViewController {
        passwordTxt.isSecureTextEntry = true
    }
 }
-   /* func showPopUpView(_ popUpView: UIView) {
-        // Dismiss any currently visible pop-up views
-        if let currentPopUpView = currentPopUpView {
-            dismissPopUpView(currentPopUpView)
-        }
-        currentPopUpView = popUpView
-
-        UIView.animate(withDuration: 0.3) {
-            popUpView.frame = CGRect(x: 0, y: self.view.frame.size.height - 200, width: self.view.frame.size.width, height: 200)
-        }
-    }
-
-    func dismissPopUpView(_ popUpView: UIView) {
-        UIView.animate(withDuration: 0.3) {
-            popUpView.frame = CGRect(x: 0, y: self.view.frame.size.height, width: self.view.frame.size.width, height: 200)
-        }
-        currentPopUpView = nil
-    }*/
-
+    // MARK: - showPopUpButtonTapped: Function to handle the "Show Pop-Up" button tap
     @IBAction func showPopUpButtonTapped(_ sender: UIButton) {
        if sender == signUpUserBtn {
-            // Show pop-up view 1
             showPopUpView(signUpUserPopUp)
         }
     }
+    // MARK: - dismissPopUpButtonTapped: Function to handle the "Dismiss Pop-Up" button tap
         @IBAction func dismissPopUpButtonTapped(_ sender: UIButton) {
           if sender.superview == signUpUserPopUp {
-                // Dismiss pop-up view 1
                 dismissPopUpView(signUpUserPopUp)
             }
         }
+    // MARK: - forgotPasswordBtnPressed: Function to handle the "Forgot Password" button tap
     @IBAction func forgotPasswordBtnPressed(_ sender: Any) {
 
-        guard let signinInput = groupNameTxt.text, !signinInput.isEmpty
+        guard let groupName = groupNameTxt.text, !groupName.isEmpty
         else {
             showCustomAlertWith(message: "Please enter your groupName", descMsg: "")
 
             return
        }
+        guard let userName = userNameTxt.text, !userName.isEmpty
+        else {
+            showCustomAlertWith(message: "Please enter your user name", descMsg: "")
+            return
+        }
+        forgotPasswordUserAPI(groupName: groupName, userName: userName)
     }
+    // MARK: - loginUser: Function to send a forgot Password request to the API
+    func forgotPasswordUserAPI(groupName: String, userName: String) {
+        let apiURL = URL(string: "https://192.168.29.7:8080/forgotPassword")!
+    
+    var request = URLRequest(url: apiURL)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    let parameters: [String: Any] = [
+        "groupName": groupName,
+        "userName": userName
+    ]
+    
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+    } catch {
+        print("Error creating request body: \(error)")
+        return
+    }
+    
+    let credentials = "arun:arun1"
+    let credentialsData = credentials.data(using: .utf8)!
+    let base64Credentials = credentialsData.base64EncodedString()
+    request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+    
+    let session = URLSession.shared
+    let task = session.dataTask(with: request) { data, response, error in
+        if let error = error {
+            print("Error: \(error)")
+            // Handle network error appropriately
+            return
+        }
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            let statusCode = httpResponse.statusCode
+            print("HTTP Status Code: \(statusCode)")
+            
+            if (200...299).contains(statusCode) {
+                if let responseData = data {
+                    do {
+                        let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                        print("Response: \(jsonObject)")
+                        
+                        if let responseDict = jsonObject as? [String: Any] {
+                            if let success = responseDict["success"] as? Bool, success {
+                                DispatchQueue.main.async {
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let otpViewController = storyboard.instantiateViewController(withIdentifier: "ForgetPasswordViewControllers") as! ForgetPasswordViewController
+                                    otpViewController.responseData = responseDict
+                                    self.navigationController?.pushViewController(otpViewController, animated: true)
+                                }
+                            } else if let errorMessage = responseDict["errorMessage"] as? String {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: "Server Error", descMsg: errorMessage)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: "Server Error", descMsg: "There was a problem with the server. Please try again later.")
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showCustomAlertWith(message: "Server Error", descMsg: "There was a problem with the server. Please try again later.")
+                            }
+                        }
+                        
+                    } catch {
+                        print("Error parsing response data: \(error)")
+                    }
+                }
+            } else if (400...499).contains(statusCode) {
+                if let responseData = data {
+                               do {
+                                   let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                                   print("Response: \(jsonObject)")
+                                   
+                                   if let responseDict = jsonObject as? [String: Any], let body = responseDict["body"] as? String {
+                                       DispatchQueue.main.async {
+                                           self.showCustomAlertWith(message: body, descMsg: "")
+                                       }
+                                   } else {
+                                       DispatchQueue.main.async {
+                                           self.showCustomAlertWith(message: "An error occurred while processing the response.", descMsg: "")
+                                       }
+                                   }
+                                   
+                               } catch {
+                                   print("Error parsing response data: \(error)")
+                                   DispatchQueue.main.async {
+                                       self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
+                                   }
+                               }
+                           }
+                       } else {
+                           print("Invalid HTTP response: \(httpResponse)")
+                           DispatchQueue.main.async {
+                               self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                           }
+                       }
+                   }
+               }
+               
+               task.resume()
+               print("Sending signup request to API...")
+           }
+    // MARK: - loginInButtonPressed: Function to handle the "Login" button tap
     @IBAction func loginInButtonPressed(_ sender: Any) {
         guard let groupName = groupNameTxt.text, !groupName.isEmpty else {
             showCustomAlertWith(message: "Please enter groupName", descMsg: "")
@@ -178,16 +270,15 @@ class loginUserNameViewController: UIViewController {
         }
         
         print("Sending signup request to API...")
-        signUpUser(groupName: groupName, userName: userName, password: password)
+        loginUser(groupName: groupName, userName: userName, password: password)
     }
-
+    // MARK: - verifyPassword: Function to verify if the entered password matches
     private func verifyPassword(_ password: String, storedHash: String?) -> Bool {
         return password == storedHash
     }
-    
-    
-    func signUpUser(groupName: String, userName: String, password: String) {
-        let apiURL = URL(string: "http://192.168.29.7:8080/usernameLogin")!
+    // MARK: - loginUser: Function to send a login request to the API
+    func loginUser(groupName: String, userName: String, password: String) {
+        let apiURL = URL(string: "https://192.168.29.7:8080/usernameLogin")!
         var request = URLRequest(url: apiURL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -214,48 +305,64 @@ class loginUserNameViewController: UIViewController {
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error: \(error)")
-                DispatchQueue.main.async {
-                    self.showCustomAlertWith(message: "Network Error", descMsg: "There was a network error. Please check your connection and try again.")
-                }
+                // Handle network error appropriately
                 return
             }
             
-            if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
-                if let responseData = data {
-                    do {
-                        let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
-                        print("Response: \(jsonObject)")
-                        
-                        if let responseDict = jsonObject as? [String: Any] {
-                            if let success = responseDict["success"] as? Bool, success {
+            if let httpResponse = response as? HTTPURLResponse {
+                let statusCode = httpResponse.statusCode
+                print("HTTP Status Code: \(statusCode)")
+                
+                if (200...299).contains(statusCode) {
+                    if let responseData = data {
+                        do {
+                            let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                            print("Response: \(jsonObject)")
+                         
+                            if let responseDict = jsonObject as? [String: Any],
+                               let success = responseDict["success"] as? Bool, success {
+                               
                                 DispatchQueue.main.async {
                                     self.performSegue(withIdentifier: "signinToOtp", sender: nil)
                                 }
-                            } else if let errorMessage = responseDict["errorMessage"] as? String {
+                            } else {
                                 DispatchQueue.main.async {
-                                    self.showCustomAlertWith(message: "Server Error", descMsg: errorMessage)
+                                    self.showCustomAlertWith(message: "Server Error", descMsg: "There was a problem with the server. Please try again later.")
+                                }
+                            }
+                            
+                        } catch {
+                            print("Error parsing response data: \(error)")
+                        }
+                    }
+                } else if (400...499).contains(statusCode) {
+                    if let responseData = data {
+                        do {
+                            let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                            print("Response: \(jsonObject)")
+                            
+                            if let responseDict = jsonObject as? [String: Any], let body = responseDict["body"] as? String {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: body, descMsg: "")
                                 }
                             } else {
                                 DispatchQueue.main.async {
-                                    self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                                    self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
                                 }
                             }
-                        } else {
+                            
+                        } catch {
+                            print("Error parsing response data: \(error)")
                             DispatchQueue.main.async {
-                                self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                                self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
                             }
                         }
-                    } catch {
-                        print("Error parsing response data: \(error)")
-                        DispatchQueue.main.async {
-                            self.showCustomAlertWith(message: "Server Error", descMsg: "An error occurred while processing the response.")
-                        }
                     }
-                }
-            } else {
-                print("Invalid HTTP response: \(response?.description ?? "")")
-                DispatchQueue.main.async {
-                    self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                } else {
+                    print("Invalid HTTP response: \(httpResponse)")
+                    DispatchQueue.main.async {
+                        self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                    }
                 }
             }
         }
@@ -263,17 +370,16 @@ class loginUserNameViewController: UIViewController {
         task.resume()
         print("Sending signup request to API...")
     }
-
+    // MARK: - prepare: Disable all buttons after the segue from EmailOTPViewController , Where the resend button is clicked more than three times
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "LoginViewController" {
-            // Disable all buttons after the segue from EmailOTPViewController
             loginBtn.isEnabled = false
             signUpUserBtn.isEnabled = false
             forgotPasswordBtn.isEnabled = false
             loginWithEmailPhoneBtn.isEnabled = false
         }
     }
-    func printSavedData() {
+   /* func printSavedData() {
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
 
         do {
@@ -296,7 +402,7 @@ class loginUserNameViewController: UIViewController {
         } catch let error as NSError {
             print("Error fetching data: \(error), \(error.userInfo)")
         }
-    }
+    }*/
     
 
 }

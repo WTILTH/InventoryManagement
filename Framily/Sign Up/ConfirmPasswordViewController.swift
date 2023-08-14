@@ -1,13 +1,19 @@
 //
 //  ConfirmPasswordViewController.swift
-//  Framily
-//
+//  Inventory Mangement
+//  Requirement ID :RI/1
 //  Created by Varun kumar on 05/07/23.
 //
-
+//  Module : Sign Up
 import UIKit
 import CoreData
-
+/*Version History
+Draft|| Date        || Author         || Description
+0.1   | 14-Aug-2023  | Varun Kumar     | Logics
+0.2   | 14-Aug-2023  | Tharun Kumar    | UX and Validation
+Changes:
+ 
+ */
 class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
     
     @IBOutlet weak var newPasswordTxt: UITextField!
@@ -101,13 +107,10 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         imageIcon.image = UIImage(named: "closeEye")
         let contentView = UIView()
         contentView.addSubview(imageIcon)
-        
         contentView.frame = CGRect(x: 0, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
-        
         imageIcon.frame = CGRect(x: -10, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
         confirmPasswordTxt.rightView = contentView
         confirmPasswordTxt.rightViewMode = .always
-        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imageIcon.isUserInteractionEnabled = true
         imageIcon.addGestureRecognizer(tapGestureRecognizer)
@@ -135,28 +138,25 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         underlineLayer5.frame = CGRect(x: 0, y: confirmPasswordTxt.frame.size.height - 1, width: confirmPasswordTxt.frame.size.width, height: 1)
         underlineLayer5.backgroundColor = UIColor.white.cgColor
         confirmPasswordTxt.layer.addSublayer(underlineLayer5)*/
+        
     }
-    
-    
-    @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer)
-    {
-        
+    // MARK: - imageTapped: Function to toggle password visibility when the eye icon is tapped
+    @objc func imageTapped(tapGestureRecognizer:UITapGestureRecognizer){
         let tappedImage = tapGestureRecognizer.view as! UIImageView
-        
         if iconClick
         {
             iconClick = false
             tappedImage.image = UIImage(named: "openEye")
             confirmPasswordTxt.isSecureTextEntry = false
         }
-        
         else {
-            
             iconClick = true
             tappedImage.image = UIImage(named: "closeEye")
             confirmPasswordTxt.isSecureTextEntry = true
-            
         }
+    }
+    // MARK: - checkBox: check box function
+    @objc func checkBox(tapGestureRecognizer:UITapGestureRecognizer){
         customCheckbox.line             = .thin
         customCheckbox.bgColorSelected  = UIColor(red: 46/255, green: 119/255, blue: 217/255, alpha: 1)
         customCheckbox.bgColor          = UIColor.gray
@@ -171,19 +171,19 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             print("Custom checkbox is \(isOn ? "ON" : "OFF")")
         }
     }
-    
+    // MARK: - touchesBegan: Dismiss the keyboard when the user taps outside of any text field
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
+    // MARK: - infoUserNameBtnPressed: Function to show the alert when the user the clicks the button
     @IBAction func infoUserNameBtnPressed(_ sender: Any) {
         let alert = showCustomAlertWith(message: "User Name", descMsg: "The user name can be edited.")
-        
     }
+    // MARK: - infoPasswordBtnPressed: Function to show the password crediential in alert when the user the clicks the button
     @IBAction func infoPasswordBtnPressed(_ sender: Any) {
         let alertController = showCustomAlertWith(message: "Password credentials", descMsg: "Min. 8 to 14 characters long, A combination of uppercase letters, lowercase letters, numbers, and symbols.")
-        
     }
+    // MARK: - submitButtonTapped: Function to handle the "Login" button tap
     @objc func submitButtonTapped() {
         errorLbl.text = ""
         errorLbl.isHidden = false
@@ -253,7 +253,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                         
                         printSavedData()*/
                     print("Sending signup request to API...")
-                    signUpUser(groupName: groupName, firstName: firstName, lastName: lastName, userName: userName, password: password, responseData: responseData)
+                    confirmPasswordAPI(groupName: groupName, firstName: firstName, lastName: lastName, userName: userName, password: password, responseData: responseData)
                       /*  let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
                         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
                             self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
@@ -274,12 +274,13 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                 errorLbl.text = "Passwords do not match."
             }
         }
-    func signUpUser(groupName: String, firstName: String, lastName: String,userName: String,password: String, responseData: [String: Any]?) {
-                let apiURL = URL(string: "http://192.168.29.7:8080/userRegister")!
-            
-                var request = URLRequest(url: apiURL)
-                request.httpMethod = "POST"
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    // MARK: - confirmPasswordAPI: Function to send a sign-up request to the API
+    func confirmPasswordAPI(groupName: String, firstName: String, lastName: String,userName: String,password: String, responseData: [String: Any]?) {
+        let apiURL = URL(string: "https://192.168.29.7:8080/userRegister")!
+        
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let deviceID = UIDevice.current.identifierForVendor?.uuidString
         let sessionID = UUID().uuidString
@@ -309,9 +310,9 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         ]
 
         let requestData: [String: Any] = [
-                "userRegistrationRequest": userRegistrationRequest,
-                "deviceRegistrationRequest": deviceRegistrationRequest,
-            ]
+            "userRegistrationRequest": userRegistrationRequest,
+            "deviceRegistrationRequest": deviceRegistrationRequest,
+        ]
       
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestData, options: [])
@@ -319,56 +320,82 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             print("Error creating request body: \(error)")
             return
         }
-        if let dataString = String(data: request.httpBody ?? Data(), encoding: .utf8) {
-            print("Data being sent to the API: \(dataString)")
-        }
-                let credentials = "arun:arun1"
-                    let credentialsData = credentials.data(using: .utf8)!
-                    let base64Credentials = credentialsData.base64EncodedString()
-                    request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
-                    let session = URLSession.shared
-                    let task = session.dataTask(with: request) { data, response, error in
-                        if let error = error {
-                            print("Error: \(error)")
-                            
-                            return
-                        }
-                        
-                        if let httpResponse = response as? HTTPURLResponse,
-                           (200...299).contains(httpResponse.statusCode) {
-                            
-                            if let responseData = data {
-                                do {
-                                    let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
-                                    print("Response: \(jsonObject)")
-                                 
-                                    if let responseDict = jsonObject as? [String: Any],
-                                       let success = responseDict["success"] as? Bool, success {
-                                       
-                                        DispatchQueue.main.async {
-                                            self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
-                                        }
-                                    } else {
-                                        
-                                        DispatchQueue.main.async {
-                                                        
-                                            self.showCustomAlertWith(message:" Server Error", descMsg: "There was a problem with the server. Please try again later.")
-                                                    }
-                                    }
-                                    
-                                }catch {
-                                    print("Error parsing response data: \(error)")
+        
+        let credentials = "arun:arun1"
+        let credentialsData = credentials.data(using: .utf8)!
+        let base64Credentials = credentialsData.base64EncodedString()
+        request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                // Handle network error appropriately
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                let statusCode = httpResponse.statusCode
+                print("HTTP Status Code: \(statusCode)")
+                
+                if (200...299).contains(statusCode) {
+                    if let responseData = data {
+                        do {
+                            let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                            print("Response: \(jsonObject)")
+                         
+                            if let responseDict = jsonObject as? [String: Any],
+                               let success = responseDict["success"] as? Bool, success {
+                               
+                                DispatchQueue.main.async {
+                                    self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: "Server Error", descMsg: "There was a problem with the server. Please try again later.")
                                 }
                             }
-                        } else {
-                            print("Invalid HTTP response: \(response?.description ?? "")")
                             
+                        } catch {
+                            print("Error parsing response data: \(error)")
                         }
                     }
-                    task.resume()
-                print("Sending signup request to API...")
+                } else if (400...499).contains(statusCode) {
+                    if let responseData = data {
+                        do {
+                            let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                            print("Response: \(jsonObject)")
+                            
+                            if let responseDict = jsonObject as? [String: Any], let body = responseDict["body"] as? String {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: body, descMsg: "")
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
+                                }
+                            }
+                            
+                        } catch {
+                            print("Error parsing response data: \(error)")
+                            DispatchQueue.main.async {
+                                self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
+                            }
+                        }
+                    }
+                } else {
+                    print("Invalid HTTP response: \(httpResponse)")
+                    DispatchQueue.main.async {
+                        self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                    }
                 }
-    
+            }
+        }
+        
+        task.resume()
+        print("Sending signup request to API...")
+    }
+    // MARK: - validatePasswords: Function to validate the password
     func validatePasswords() -> Bool {
         guard let newPassword = newPasswordTxt.text,
               let confirmPassword = confirmPasswordTxt.text else {
@@ -389,9 +416,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         
         return true
     }
-    
-    @IBAction func confirmPssword(_ sender: Any) {
-    }
+    // MARK: - passwordEditingChanged: Function to show the strenth meter based on the password typed in the the text field
     @objc func passwordEditingChanged(_ textField: UITextField) {
         if textField == newPasswordTxt {
             if let password = textField.text, !password.isEmpty {
@@ -414,13 +439,13 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             }
         }
     }
-        
+        // MARK: - prepare: Function to segue
         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             if segue.identifier == "passwordToLogin"{
                 
             }
         }
-        
+        // MARK: - textField: Function to get the text fields edited
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             if textField == firstNameTxt {
                 
@@ -441,7 +466,6 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                             self?.errorLbl.alpha = CGFloat(validationId.alpha)
                             self?.errorLbl.text = validationId.text
                         })
-                        
                         let progressInfo = PasswordStrengthManager.setProgressView(strength: validationId.strength)
                         self.isPasswordValid = progressInfo.shouldValid
                         self.strengthProgressView.setProgress(progressInfo.percentage, animated: true)
@@ -455,35 +479,29 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             
             return true
         }
+    // MARK: - generateUsername: Functin to generate the user name from the data entered in the first name
     func generateUsername() {
             if let firstName = firstNameTxt.text?.trimmingCharacters(in: .whitespacesAndNewlines), !firstName.isEmpty {
-                
                 let randomNumber = String(format: "%02d", Int(arc4random_uniform(100)))
                 let username = "\(firstName)\(randomNumber)"
-         
                 userNameTxt.text = username
             } else {
-                
-                userNameTxt.text = ""
+               userNameTxt.text = ""
             }
         }
-        func printSavedData() {
+       /* func printSavedData() {
             let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-            
             do {
                 let savedUsers = try managedContext.fetch(fetchRequest)
                 for user in savedUsers {
-                    
                     print("Group Name: \(user.groupName ?? "")")
                     print("First Name: \(user.firstName ?? "")")
                     print("Last Name: \(user.lastName ?? "")")
                     print("User Name: \(user.userName ?? "")")
                     print("Password: \(user.password ?? "")")
-                    
-                    
                 }
             } catch let error as NSError {
                 print("Error fetching data: \(error), \(error.userInfo)")
             }
-        }
+        }*/
 }

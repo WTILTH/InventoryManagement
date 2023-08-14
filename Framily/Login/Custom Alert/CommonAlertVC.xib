@@ -113,7 +113,7 @@
                 <constraint firstItem="Rkx-vf-edJ" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="jdk-Hz-ZbU"/>
                 <constraint firstItem="Rkx-vf-edJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="centerX" multiplier="25:187.5" id="ppp-uu-heJ"/>
             </constraints>
-            <point key="canvasLocation" x="-706" y="61"/>
+            <point key="canvasLocation" x="-694" y="72"/>
         </view>
     </objects>
     <resources>
