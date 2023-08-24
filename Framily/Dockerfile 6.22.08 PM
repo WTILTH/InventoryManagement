@@ -1,0 +1,17 @@
+# Use an official Swift runtime as the base image
+FROM swift:5.4
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the entire contents of your Swift application into the container
+COPY . /app
+
+# Build your Swift application
+RUN swift build
+
+# Expose the port your application listens on
+EXPOSE 8080
+
+# Command to run your Swift application when the container starts
+CMD [".build/debug/Framilyios"]

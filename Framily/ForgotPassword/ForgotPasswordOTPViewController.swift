@@ -8,6 +8,7 @@
 import UIKit
 import UserNotifications
 import CoreData
+import CryptoKit
 /*Version History
 Draft|| Date        || Author         || Description
  0.1   | 14-Aug-2023  | Varun Kumar     | Validations
@@ -26,7 +27,6 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var FPPOtpTxt2: UITextField!
     @IBOutlet weak var FPPOtpTxt3: UITextField!
     @IBOutlet weak var generateOtp2: UIButton!
-    @IBOutlet weak var ForgotPasswordOTPView: UIView!
     @IBOutlet weak var FPOTPnextBtn: UIButton!
     @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
@@ -47,78 +47,18 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         
         print(responseData)
         startTimer()
-        ForgotPasswordOTPView.layer.cornerRadius = 20.0
+       
         view.backgroundColor = BackgroundManager.shared.backgroundColor
-        FPEOtpTxt1.backgroundColor = UIColor.clear
-       FPEOtpTxt1.borderStyle = .none
-        FPEOtpTxt2.backgroundColor = UIColor.clear
-       FPEOtpTxt2.borderStyle = .none
-        FPEOtpTxt3.backgroundColor = UIColor.clear
-       FPEOtpTxt3.borderStyle = .none
-        FPPOtpTxt1.backgroundColor = UIColor.clear
-       FPPOtpTxt1.borderStyle = .none
-        FPPOtpTxt2.backgroundColor = UIColor.clear
-       FPPOtpTxt2.borderStyle = .none
-        FPPOtpTxt3.backgroundColor = UIColor.clear
-       FPPOtpTxt3.borderStyle = .none
+
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
         let shadowOffset = CGSize(width: 0, height: 3)
         let shadowRadius: CGFloat = 5
         
-        ForgotPasswordOTPView.layer.shadowColor = shadowColor
-        ForgotPasswordOTPView.layer.shadowOpacity = shadowOpacity
-       ForgotPasswordOTPView.layer.shadowOffset = shadowOffset
-        ForgotPasswordOTPView.layer.shadowRadius = shadowRadius
-        
-        generateOtp1.layer.shadowColor = shadowColor
-        generateOtp1.layer.shadowOpacity = shadowOpacity
-        generateOtp1.layer.shadowOffset = shadowOffset
-        generateOtp1.layer.shadowRadius = shadowRadius
-        
-        generateOtp2.layer.shadowColor = shadowColor
-        generateOtp2.layer.shadowOpacity = shadowOpacity
-        generateOtp2.layer.shadowOffset = shadowOffset
-        generateOtp2.layer.shadowRadius = shadowRadius
-        
-        continueBtn.layer.shadowColor = shadowColor
-        continueBtn.layer.shadowOpacity = shadowOpacity
-        continueBtn.layer.shadowOffset = shadowOffset
-        continueBtn.layer.shadowRadius = shadowRadius
-        
-        FPEOtpTxt1.layer.shadowColor = shadowColor
-        FPEOtpTxt1.layer.shadowOpacity = shadowOpacity
-        FPEOtpTxt1.layer.shadowOffset = shadowOffset
-        FPEOtpTxt1.layer.shadowRadius = shadowRadius
-        
-        FPEOtpTxt2.layer.shadowColor = shadowColor
-        FPEOtpTxt2.layer.shadowOpacity = shadowOpacity
-        FPEOtpTxt2.layer.shadowOffset = shadowOffset
-        FPEOtpTxt2.layer.shadowRadius = shadowRadius
-        
-        FPEOtpTxt3.layer.shadowColor = shadowColor
-        FPEOtpTxt3.layer.shadowOpacity = shadowOpacity
-        FPEOtpTxt3.layer.shadowOffset = shadowOffset
-        FPEOtpTxt3.layer.shadowRadius = shadowRadius
-        
-        FPPOtpTxt1.layer.shadowColor = shadowColor
-        FPPOtpTxt1.layer.shadowOpacity = shadowOpacity
-        FPPOtpTxt1.layer.shadowOffset = shadowOffset
-        FPPOtpTxt1.layer.shadowRadius = shadowRadius
-        
-        FPPOtpTxt2.layer.shadowColor = shadowColor
-        FPPOtpTxt2.layer.shadowOpacity = shadowOpacity
-        FPPOtpTxt2.layer.shadowOffset = shadowOffset
-        FPPOtpTxt2.layer.shadowRadius = shadowRadius
-        
-        FPPOtpTxt3.layer.shadowColor = shadowColor
-        FPPOtpTxt3.layer.shadowOpacity = shadowOpacity
-        FPPOtpTxt3.layer.shadowOffset = shadowOffset
-        FPPOtpTxt3.layer.shadowRadius = shadowRadius
-        
         generateOtp1.layer.cornerRadius = 10
         generateOtp2.layer.cornerRadius = 10
         continueBtn.layer.cornerRadius = 10
+        FPOTPnextBtn.layer.cornerRadius = 10.0
         
         FPEOtpTxt1.delegate = self
         FPEOtpTxt2.delegate = self
@@ -133,10 +73,11 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         FPPOtpTxt1.keyboardType = .numberPad
         FPPOtpTxt2.keyboardType = .numberPad
         FPPOtpTxt3.keyboardType = .numberPad
-        FPOTPnextBtn.layer.cornerRadius = 10.0
-        /*FPEOtpTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        FPEOtpTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPEOtpTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        FPEOtpTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)*/
+        FPEOtpTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
         FPPOtpTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPPOtpTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         FPPOtpTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -148,31 +89,6 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
         FPPOtpTxt1.addGestureRecognizer(tapGesture2)
         
         otpDigits1 = Array(arrayLiteral: String(correctOTP1))
-        
-        let underlineLayer = CALayer()
-        underlineLayer.frame = CGRect(x: 0, y: FPEOtpTxt1.frame.size.height - 1, width: FPEOtpTxt1.frame.size.width, height: 1)
-        underlineLayer.backgroundColor = UIColor.white.cgColor
-        FPEOtpTxt1.layer.addSublayer(underlineLayer)
-        let underlineLayer1 = CALayer()
-        underlineLayer1.frame = CGRect(x: 0, y: FPEOtpTxt2.frame.size.height - 1, width: FPEOtpTxt2.frame.size.width, height: 1)
-        underlineLayer1.backgroundColor = UIColor.white.cgColor
-        FPEOtpTxt2.layer.addSublayer(underlineLayer1)
-        let underlineLayer2 = CALayer()
-        underlineLayer2.frame = CGRect(x: 0, y: FPEOtpTxt3.frame.size.height - 1, width: FPEOtpTxt3.frame.size.width, height: 1)
-        underlineLayer2.backgroundColor = UIColor.white.cgColor
-        FPEOtpTxt3.layer.addSublayer(underlineLayer2)
-        let underlineLayer3 = CALayer()
-        underlineLayer3.frame = CGRect(x: 0, y: FPPOtpTxt1.frame.size.height - 1, width: FPPOtpTxt1.frame.size.width, height: 1)
-        underlineLayer3.backgroundColor = UIColor.white.cgColor
-        FPPOtpTxt1.layer.addSublayer(underlineLayer3)
-        let underlineLayer4 = CALayer()
-        underlineLayer4.frame = CGRect(x: 0, y: FPPOtpTxt2.frame.size.height - 1, width: FPPOtpTxt2.frame.size.width, height: 1)
-        underlineLayer4.backgroundColor = UIColor.white.cgColor
-        FPPOtpTxt2.layer.addSublayer(underlineLayer4)
-        let underlineLayer5 = CALayer()
-        underlineLayer5.frame = CGRect(x: 0, y: FPPOtpTxt3.frame.size.height - 1, width: FPPOtpTxt3.frame.size.width, height: 1)
-        underlineLayer5.backgroundColor = UIColor.white.cgColor
-        FPPOtpTxt3.layer.addSublayer(underlineLayer5)
         
     }
     // MARK: - touchesBegan: Dismiss the keyboard when the user taps outside of any text field
@@ -254,7 +170,7 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
            // clearAllTextFields()
             return
         }
-        performSegue(withIdentifier: "FPOtpToConfirmPass", sender: nil)
+        handleOTPVerificationAndNavigate()
     }
     // MARK: - generateOTP1: Function to Generate OTP for Email
     func generateOTP1() {
@@ -268,67 +184,50 @@ class ForgotPasswordOtpViewController: UIViewController, UITextFieldDelegate {
     }
     // MARK: - textField: Function to Limit each OTP text field to allow only one character
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let text = textField.text else { return true }
-        let newLength = text.count + string.count - range.length
-         if newLength <= 1 {
-            if let char = string.cString(using: String.Encoding.utf8) {
-                let isBackSpace = strcmp(char, "\\b")
-                if isBackSpace == -92 {
-                    return true
-                } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
-                    switch textField {
-                    case FPEOtpTxt1:
-                        FPEOtpTxt2.becomeFirstResponder()
-                    case FPEOtpTxt2:
-                        FPEOtpTxt3.becomeFirstResponder()
-                    case FPEOtpTxt3:
-                        FPEOtpTxt3.resignFirstResponder()
-                    default:
-                     break
-                    }
-                    textField.text = string
-                    return false
-                }
-            }
+        let maxLength = 1
+
+        if string.isEmpty {
+            return true
         }
-        return false
+
+        let newLength = (textField.text?.count ?? 0) + string.count - range.length
+        return newLength <= maxLength
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
     }
     // MARK: - textFieldDidChange: Function to Handle text field editing to navigate between OTP text fields
-   @objc func textFieldDidChange(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        
-        if text.count == 1 {
-            switch textField {
-            case FPEOtpTxt1:
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        let maxLength = 1
+
+        if let text = textField.text, text.count >= maxLength {
+            if textField == FPEOtpTxt1 {
                 FPEOtpTxt2.becomeFirstResponder()
-            case FPEOtpTxt2:
+            } else if textField == FPEOtpTxt2 {
                 FPEOtpTxt3.becomeFirstResponder()
-            case FPEOtpTxt3:
-                FPPOtpTxt1.becomeFirstResponder()
-            case FPPOtpTxt1:
+            } else if textField == FPEOtpTxt3 {
+                FPEOtpTxt3.resignFirstResponder()
+            } else if textField == FPPOtpTxt1 {
                 FPPOtpTxt2.becomeFirstResponder()
-            case FPPOtpTxt2:
+            } else if textField == FPPOtpTxt2 {
                 FPPOtpTxt3.becomeFirstResponder()
-            case FPPOtpTxt3:
+            } else if textField == FPPOtpTxt3 {
                 FPPOtpTxt3.resignFirstResponder()
-            default:
-                break
-              }
-            } else if text.isEmpty {
-                switch textField {
-                case FPEOtpTxt2:
-                    FPEOtpTxt1.becomeFirstResponder()
-                case FPEOtpTxt3:
-                    FPEOtpTxt2.becomeFirstResponder()
-                case FPPOtpTxt2:
-                    FPPOtpTxt1.becomeFirstResponder()
-                case FPPOtpTxt3:
-                    FPPOtpTxt2.becomeFirstResponder()
-                default:
-                    break
-                }
+            }
+        } else if textField.text?.isEmpty ?? false {
+            if textField == FPEOtpTxt2 {
+                FPEOtpTxt1.becomeFirstResponder()
+            } else if textField == FPEOtpTxt3 {
+                FPEOtpTxt2.becomeFirstResponder()
+            } else if textField == FPPOtpTxt2 {
+                FPPOtpTxt1.becomeFirstResponder()
+            } else if textField == FPPOtpTxt3 {
+                FPPOtpTxt2.becomeFirstResponder()
             }
         }
+    }
     
    /* @objc func firstTextFieldTapped() {
         guard let firstDigit = correctOTP1.first else { return }

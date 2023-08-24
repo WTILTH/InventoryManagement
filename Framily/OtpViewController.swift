@@ -40,35 +40,7 @@ class OtpViewController: UIViewController, UITextFieldDelegate{
         let shadowOpacity: Float = 1.5
         let shadowOffset = CGSize(width: 0, height: 2)
         let shadowRadius: CGFloat = 4
-        
-        generateOtpBtn.layer.shadowColor = shadowColor
-        generateOtpBtn.layer.shadowOpacity = shadowOpacity
-        generateOtpBtn.layer.shadowOffset = shadowOffset
-        generateOtpBtn.layer.shadowRadius = shadowRadius
-        
-        loginBtn.layer.shadowColor = shadowColor
-        loginBtn.layer.shadowOpacity = shadowOpacity
-        loginBtn.layer.shadowOffset = shadowOffset
-        loginBtn.layer.shadowRadius = shadowRadius
-        otpTextField1.layer.shadowColor = shadowColor
-        otpTextField1.layer.shadowOpacity = shadowOpacity
-        otpTextField1.layer.shadowOffset = shadowOffset
-        otpTextField1.layer.shadowRadius = shadowRadius
-        
-        otpTextField2.layer.shadowColor = shadowColor
-        otpTextField2.layer.shadowOpacity = shadowOpacity
-        otpTextField2.layer.shadowOffset = shadowOffset
-        otpTextField2.layer.shadowRadius = shadowRadius
-        
-        otpTextField3.layer.shadowColor = shadowColor
-        otpTextField3.layer.shadowOpacity = shadowOpacity
-        otpTextField3.layer.shadowOffset = shadowOffset
-        otpTextField3.layer.shadowRadius = shadowRadius
-        
-        otpTextField4.layer.shadowColor = shadowColor
-        otpTextField4.layer.shadowOpacity = shadowOpacity
-        otpTextField4.layer.shadowOffset = shadowOffset
-        otpTextField4.layer.shadowRadius = shadowRadius
+    
         
         generateOtpBtn.layer.cornerRadius = 10
         loginBtn.layer.cornerRadius = 10
@@ -162,40 +134,44 @@ class OtpViewController: UIViewController, UITextFieldDelegate{
     }
     // MARK: - textField: Function to limit the input length of OTP text fields to one digit
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let text = textField.text else { return true }
-        let newLength = text.count + string.count - range.length
-        return newLength <= 1
+        let maxLength = 1
+
+        if string.isEmpty {
+            return true
+        }
+
+        let newLength = (textField.text?.count ?? 0) + string.count - range.length
+        return newLength <= maxLength
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
     }
     // MARK: - textFieldDidChange: Function to handle changes in OTP text fields
     @objc func textFieldDidChange(_ textField: UITextField) {
-        guard let text = textField.text else { return }
+        let maxLength = 1
         
-        if text.count == 1 {
-            switch textField {
-            case otpTextField1:
+        if let text = textField.text, text.count >= maxLength {
+            if textField == otpTextField1 {
                 otpTextField2.becomeFirstResponder()
-            case otpTextField2:
+            } else if textField == otpTextField2 {
                 otpTextField3.becomeFirstResponder()
-            case otpTextField3:
+            } else if textField == otpTextField3 {
                 otpTextField4.becomeFirstResponder()
-            case otpTextField4:
+            } else if textField == otpTextField4 {
                 otpTextField4.resignFirstResponder()
-            default:
-                break
-            }
-        } else if text.isEmpty {
-            switch textField {
-            case otpTextField2:
-                otpTextField1.becomeFirstResponder()
-            case otpTextField3:
-                otpTextField2.becomeFirstResponder()
-            case otpTextField4:
-                otpTextField3.becomeFirstResponder()
-            default:
-                break
+                }
+            } else if textField.text?.isEmpty ?? false {
+                if textField == otpTextField2 {
+                    otpTextField1.becomeFirstResponder()
+                } else if textField == otpTextField3 {
+                    otpTextField2.becomeFirstResponder()
+                } else if textField == otpTextField4 {
+                    otpTextField3.becomeFirstResponder()
+                }
             }
         }
-    }
     // MARK: - showOTPNotification: Function to show a notification with the generated OTP
     func showOTPNotification() {
         let content = UNMutableNotificationContent()

@@ -9,6 +9,7 @@ import UIKit
 import Foundation
 import CoreData
 import DialCountries
+import CryptoKit
 /*Version History
 Draft|| Date        || Author         || Description
 0.1   | 14-Aug-2023  | Varun Kumar     | UX
@@ -16,7 +17,7 @@ Draft|| Date        || Author         || Description
 Changes:
  
  */
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, URLSessionDelegate  {
     
     var countryCodes = [[String]]()
     @IBOutlet weak var phoneNoTxt: UITextField!
@@ -31,10 +32,10 @@ class SignUpViewController: UIViewController {
    // let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
-       /* let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: companyNameTxt.frame.height))
-                companyNameTxt.leftView = paddingView
-                companyNameTxt.leftViewMode = .always
-        let paddingView1 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: phoneNoTxt.frame.height))
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: countryCodeTxtField.frame.height))
+                countryCodeTxtField.leftView = paddingView
+                countryCodeTxtField.leftViewMode = .always
+        /*let paddingView1 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: phoneNoTxt.frame.height))
                 phoneNoTxt.leftView = paddingView
                 phoneNoTxt.leftViewMode = .always
         let paddingView2 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: countryCodeTxtField.frame.height))
@@ -44,7 +45,7 @@ class SignUpViewController: UIViewController {
               //  emailIDTxt.leftView = paddingView
                 emailIDTxt.leftViewMode = .always*/
         countryCodeTxtField.text = "+91"
-        self.navigationController?.navigationBar.topItem?.title = "Sign Up"
+        //self.navigationController?.navigationBar.topItem?.title = "Sign Up"
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showDialCountriesController))
         countryCodeTxtField.addGestureRecognizer(tapGesture)
         countryCodeTxtField.isUserInteractionEnabled = true
@@ -68,10 +69,10 @@ class SignUpViewController: UIViewController {
         let shadowOffset = CGSize(width: 0, height: 3)
         let shadowRadius: CGFloat = 5
         
-        nextBtn.layer.shadowColor = shadowColor
+        /*nextBtn.layer.shadowColor = shadowColor
         nextBtn.layer.shadowOpacity = shadowOpacity
        nextBtn.layer.shadowOffset = shadowOffset
-        nextBtn.layer.shadowRadius = shadowRadius
+        nextBtn.layer.shadowRadius = shadowRadius*/
        /* let underlineLayer = CALayer()
         underlineLayer.frame = CGRect(x: 0, y: companyNameTxt.frame.size.height - 1, width: companyNameTxt.frame.size.width, height: 1)
         underlineLayer.backgroundColor = UIColor.white.cgColor
@@ -140,42 +141,59 @@ class SignUpViewController: UIViewController {
     }
     // MARK: - signUpUserAPI: Function to send a sign-up request to the API
     func signUpUserAPI(companyName: String, countryCode: String, phoneNumber: String, emailID: String) {
-        let apiURL = URL(string: "https://192.168.29.7:8080/companyRegister")!
+        let apiURL = URL(string: "https://192.168.29.7:8080/newCompanyRegister")!
+        
         var request = URLRequest(url: apiURL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let currentDate = Date()
+        let dateFormatter = ISO8601DateFormatter()
+        let formattedDate = dateFormatter.string(from: currentDate)
+        
         let parameters: [String: Any] = [
             "companyName": companyName,
             "countryCode": countryCode,
             "phoneNumber": phoneNumber,
             "emailID": emailID
+           
         ]
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+                do {
+            let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+
+   
+            request.httpBody = jsonData
         } catch {
             print("Error creating request body: \(error)")
             return
         }
+        
         let credentials = "arun:arun1"
         let credentialsData = credentials.data(using: .utf8)!
         let base64Credentials = credentialsData.base64EncodedString()
         request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
         
-        let session = URLSession.shared
+        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error: \(error)")
                 // Handle network error appropriately
                 return
             }
+            
             if let httpResponse = response as? HTTPURLResponse {
                 let statusCode = httpResponse.statusCode
                 print("HTTP Status Code: \(statusCode)")
+                
                 if (200...299).contains(statusCode) {
                     if let responseData = data {
+                        print("Response Data: \(responseData)")
+                                           
                         do {
-                            let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
-                            print("Response: \(jsonObject)")
+  
+                                    let jsonObject = try JSONSerialization.jsonObject(with: responseData/*decryptedData*/, options: [])
+                                    print("Response: \(jsonObject)")
+                            
                             if let responseDict = jsonObject as? [String: Any] {
                                 if let success = responseDict["success"] as? Bool, success {
                                     DispatchQueue.main.async {
@@ -205,57 +223,40 @@ class SignUpViewController: UIViewController {
                     }
                 } else if (400...499).contains(statusCode) {
                     if let responseData = data {
-                                   do {
-                                       let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
-                                       print("Response: \(jsonObject)")
-                                       
-                                       if let responseDict = jsonObject as? [String: Any], let body = responseDict["body"] as? String {
-                                           DispatchQueue.main.async {
-                                               self.showCustomAlertWith(message: body, descMsg: "")
-                                           }
-                                       } else {
-                                           DispatchQueue.main.async {
-                                               self.showCustomAlertWith(message: "An error occurred while processing the response.", descMsg: "")
-                                           }
-                                       }
-                                   } catch {
-                                       print("Error parsing response data: \(error)")
-                                       DispatchQueue.main.async {
-                                           self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
-                                       }
-                                   }
-                               }
-                           } else {
-                               print("Invalid HTTP response: \(httpResponse)")
-                               DispatchQueue.main.async {
-                                   self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
-                               }
-                           }
-                       }
-                   }
-                   
-                   task.resume()
-                   print("Sending signup request to API...")
-               }
- /*   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "SignUpToEmailOTP" {
-            if let otpVC = segue.destination as? EmailOTPViewController {
-                let newUser = sender as? User
-                otpVC.user = newUser
+                        do {
+                                    let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                                    print("Response: \(jsonObject)")
+                            
+                            if let responseDict = jsonObject as? [String: Any], let body = responseDict["body"] as? String {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: body, descMsg: "")
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
+                                }
+                            }
+                            
+                        } catch {
+                            print("Error parsing response data: \(error)")
+                            DispatchQueue.main.async {
+                                self.showCustomAlertWith(message: "Client Error", descMsg: "An error occurred while processing the response.")
+                            }
+                        }
+                    }
+                } else {
+                    print("Invalid HTTP response: \(httpResponse)")
+                    DispatchQueue.main.async {
+                        self.showCustomAlertWith(message: "Server Error", descMsg: "An unknown error occurred.")
+                    }
+                }
             }
         }
-        else if segue.identifier == "OTPToConfirmPassword" {
-            if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
-                let newUser = sender as? User
-                confirmPasswordVC.user = newUser
-                confirmPasswordVC.companyName = newUser?.companyName
-                confirmPasswordVC.phoneNumber = newUser?.phoneNumber
-                confirmPasswordVC.countryCode = newUser?.countryCode
-                confirmPasswordVC.emailID = newUser?.emailID
         
-            }
-        }
-    }*/
+        task.resume()
+        print("Sending signup request to API...")
+    }
+    
     // MARK: - resetStatusLabels: Function to reset the status labels for input validation
     func resetStatusLabels() {
         companyNameStatusLabel.text = ""
@@ -270,12 +271,45 @@ class SignUpViewController: UIViewController {
     }
     // MARK: - isValidPhoneNumber: Function to validate a phone number using regular expressions
     func isValidPhoneNumber(_ phoneNumber: String) -> Bool {
-            let phoneRegex = "[0-9]{10}"
-            let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
-            return phonePredicate.evaluate(with: phoneNumber)
-        }
+        let phoneRegex = "[0-9]{10}"
+        let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex)
+        return phonePredicate.evaluate(with: phoneNumber)
+    }
     
-  }
+    
+    // MARK: - urlSession: Function for SSL Pinning
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+            if let serverTrust = challenge.protectionSpace.serverTrust {
+                var secresult = SecTrustResultType.invalid
+                let status = SecTrustEvaluate(serverTrust, &secresult)
+                
+                if(errSecSuccess == status) {
+                    if let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+                        let serverCertificateData = SecCertificateCopyData(serverCertificate)
+                        let data = CFDataGetBytePtr(serverCertificateData);
+                        let size = CFDataGetLength(serverCertificateData);
+                        let cert1 = NSData(bytes: data, length: size)
+                        let file_der = Bundle.main.path(forResource: "aarthy", ofType: "cer")
+                        
+                        if let file = file_der {
+                            if let cert2 = NSData(contentsOfFile: file) {
+                                if cert1.isEqual(to: cert2 as Data) {
+                                    print("SSL Pinning Successful")
+                                    
+                                    completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: serverTrust))
+                                    return
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
+    }
+}
    // MARK: - This class is for third party country code selector: DialCountries
 extension SignUpViewController: DialCountriesControllerDelegate {
     func didSelected(with country: Country) {

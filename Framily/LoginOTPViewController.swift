@@ -27,7 +27,6 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var LoginTimerLabel: UILabel!
     @IBOutlet weak var LoginResendButton: UIButton!
     @IBOutlet weak var LoginNextBtn: UIButton!
-    @IBOutlet weak var LoginEmailOTPView: UIView!
     
     var shouldDisableButtons = false
     var resendAttempts = 0
@@ -43,73 +42,27 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = BackgroundManager.shared.backgroundColor
-        LoginEmailOTPView.layer.cornerRadius = 20.0
-        LoginEmailOTPTxt1.backgroundColor = UIColor.clear
-        LoginEmailOTPTxt1.borderStyle = .none
-        LoginEmailOTPTxt2.backgroundColor = UIColor.clear
-        LoginEmailOTPTxt2.borderStyle = .none
-        LoginEmailOTPTxt3.backgroundColor = UIColor.clear
-        LoginEmailOTPTxt3.borderStyle = .none
-        LoginPhoneNumberTxt1.backgroundColor = UIColor.clear
-        LoginPhoneNumberTxt1.borderStyle = .none
-        LoginPhoneNumberTxt2.backgroundColor = UIColor.clear
-        LoginPhoneNumberTxt2.borderStyle = .none
-        LoginPhoneNumberTxt3.backgroundColor = UIColor.clear
-        LoginPhoneNumberTxt3.borderStyle = .none
+    
+        
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
         let shadowOffset = CGSize(width: 0, height: 3)
         let shadowRadius: CGFloat = 5
-        LoginNextBtn.layer.shadowColor = shadowColor
-        LoginNextBtn.layer.shadowOpacity = shadowOpacity
-        LoginNextBtn.layer.shadowOffset = shadowOffset
-        LoginNextBtn.layer.shadowRadius = shadowRadius
-        LoginEmailOTPView.layer.shadowColor = shadowColor
-        LoginEmailOTPView.layer.shadowOpacity = shadowOpacity
-        LoginEmailOTPView.layer.shadowOffset = shadowOffset
-        LoginEmailOTPView.layer.shadowRadius = shadowRadius
-        LoginEmailOTPTxt1.layer.shadowColor = shadowColor
-        LoginEmailOTPTxt1.layer.shadowOpacity = shadowOpacity
-        LoginEmailOTPTxt1.layer.shadowOffset = shadowOffset
-        LoginEmailOTPTxt1.layer.shadowRadius = shadowRadius
-        LoginEmailOTPTxt2.layer.shadowColor = shadowColor
-        LoginEmailOTPTxt2.layer.shadowOpacity = shadowOpacity
-        LoginEmailOTPTxt2.layer.shadowOffset = shadowOffset
-        LoginEmailOTPTxt2.layer.shadowRadius = shadowRadius
-        LoginEmailOTPTxt3.layer.shadowColor = shadowColor
-        LoginEmailOTPTxt3.layer.shadowOpacity = shadowOpacity
-        LoginEmailOTPTxt3.layer.shadowOffset = shadowOffset
-        LoginEmailOTPTxt3.layer.shadowRadius = shadowRadius
-        LoginPhoneNumberTxt1.layer.shadowColor = shadowColor
-        LoginPhoneNumberTxt1.layer.shadowOpacity = shadowOpacity
-        LoginPhoneNumberTxt1.layer.shadowOffset = shadowOffset
-        LoginPhoneNumberTxt1.layer.shadowRadius = shadowRadius
-        LoginPhoneNumberTxt2.layer.shadowColor = shadowColor
-        LoginPhoneNumberTxt2.layer.shadowOpacity = shadowOpacity
-        LoginPhoneNumberTxt2.layer.shadowOffset = shadowOffset
-        LoginPhoneNumberTxt2.layer.shadowRadius = shadowRadius
-        LoginPhoneNumberTxt3.layer.shadowColor = shadowColor
-        LoginPhoneNumberTxt3.layer.shadowOpacity = shadowOpacity
-        LoginPhoneNumberTxt3.layer.shadowOffset = shadowOffset
-        LoginPhoneNumberTxt3.layer.shadowRadius = shadowRadius
         
         LoginEmailOTPTxt1.delegate = self
         LoginEmailOTPTxt2.delegate = self
         LoginEmailOTPTxt3.delegate = self
+        
         LoginPhoneNumberTxt1.delegate = self
         LoginPhoneNumberTxt2.delegate = self
         LoginPhoneNumberTxt3.delegate = self
         
-      /*  emailOTPTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
-        emailOTPTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
-        emailOTPTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)*/
+        LoginEmailOTPTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        LoginEmailOTPTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        LoginEmailOTPTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         LoginPhoneNumberTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
         LoginPhoneNumberTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
         LoginPhoneNumberTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
       /*  let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(firstTextFieldTapped))
@@ -119,38 +72,10 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         
         
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(secondTextFieldTapped))
-        
         LoginPhoneNumberTxt1.addGestureRecognizer(tapGesture2)
-        
-        
-        
         otpDigits1 = Array(arrayLiteral: String(correctOTP1))
        
         startTimer()
-        let underlineLayer = CALayer()
-        underlineLayer.frame = CGRect(x: 0, y: LoginEmailOTPTxt1.frame.size.height - 1, width: LoginEmailOTPTxt1.frame.size.width, height: 1)
-        underlineLayer.backgroundColor = UIColor.white.cgColor
-        LoginEmailOTPTxt1.layer.addSublayer(underlineLayer)
-        let underlineLayer1 = CALayer()
-        underlineLayer1.frame = CGRect(x: 0, y: LoginEmailOTPTxt2.frame.size.height - 1, width: LoginEmailOTPTxt2.frame.size.width, height: 1)
-        underlineLayer1.backgroundColor = UIColor.white.cgColor
-        LoginEmailOTPTxt2.layer.addSublayer(underlineLayer1)
-        let underlineLayer2 = CALayer()
-        underlineLayer2.frame = CGRect(x: 0, y: LoginEmailOTPTxt3.frame.size.height - 1, width: LoginEmailOTPTxt3.frame.size.width, height: 1)
-        underlineLayer2.backgroundColor = UIColor.white.cgColor
-        LoginEmailOTPTxt3.layer.addSublayer(underlineLayer2)
-        let underlineLayer3 = CALayer()
-        underlineLayer3.frame = CGRect(x: 0, y: LoginPhoneNumberTxt1.frame.size.height - 1, width: LoginPhoneNumberTxt1.frame.size.width, height: 1)
-        underlineLayer3.backgroundColor = UIColor.white.cgColor
-        LoginPhoneNumberTxt1.layer.addSublayer(underlineLayer3)
-        let underlineLayer4 = CALayer()
-        underlineLayer4.frame = CGRect(x: 0, y: LoginPhoneNumberTxt2.frame.size.height - 1, width: LoginPhoneNumberTxt2.frame.size.width, height: 1)
-        underlineLayer4.backgroundColor = UIColor.white.cgColor
-        LoginPhoneNumberTxt2.layer.addSublayer(underlineLayer4)
-        let underlineLayer5 = CALayer()
-        underlineLayer5.frame = CGRect(x: 0, y: LoginPhoneNumberTxt3.frame.size.height - 1, width: LoginPhoneNumberTxt3.frame.size.width, height: 1)
-        underlineLayer5.backgroundColor = UIColor.white.cgColor
-        LoginPhoneNumberTxt3.layer.addSublayer(underlineLayer5)
         
     }
     // MARK: - touchesBegan: Dismiss the keyboard when the user taps outside of any text field
@@ -168,9 +93,7 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
         timeRemaining -= 1
         LoginTimerLabel.text = "\(timeRemaining) seconds remaining"
         if timeRemaining <= 0 {
-            
             timer?.invalidate()
-            
             LoginResendButton.isEnabled = true
         }
     }
@@ -240,68 +163,48 @@ class LoginOTPViewController: UIViewController, UITextFieldDelegate {
     }
     // MARK: - textField: Function to Limit each OTP text field to allow only one character
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            guard let text = textField.text else { return true }
-            let newLength = text.count + string.count - range.length
+        let maxLength = 1
 
-            if newLength <= 1 {
-                // Check if the entered character is a number (you can adjust this condition as needed)
-                if let char = string.cString(using: String.Encoding.utf8) {
-                    let isBackSpace = strcmp(char, "\\b")
-                    if isBackSpace == -92 { // Backspace was pressed, allow the text change
-                        return true
-                    } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
-                        // If it's a number, move to the next text field
-                        switch textField {
-                        case LoginEmailOTPTxt1:
-                            LoginEmailOTPTxt2.becomeFirstResponder()
-                        case LoginEmailOTPTxt2:
-                            LoginEmailOTPTxt3.becomeFirstResponder()
-                        case LoginEmailOTPTxt3:
-                            LoginEmailOTPTxt3.resignFirstResponder()
-                        default:
-                            break
-                        }
-                        textField.text = string // Manually set the text field with the entered character
-                        return false // Return false to prevent the default behavior of shouldChangeCharactersIn
-                     }
-                   }
-                }
-        return false
+        if string.isEmpty {
+            return true
         }
+
+        let newLength = (textField.text?.count ?? 0) + string.count - range.length
+        return newLength <= maxLength
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+    }
+
     // MARK: - textFieldDidChange: Function to Handle text field editing to navigate between OTP text fields
     @objc func textFieldDidChange(_ textField: UITextField) {
-        
-        guard let text = textField.text else { return }
-        
-        if text.count == 1 {
-            switch textField {
-            case LoginEmailOTPTxt1:
+        let maxLength = 1
+
+        if let text = textField.text, text.count >= maxLength {
+            if textField == LoginEmailOTPTxt1 {
                 LoginEmailOTPTxt2.becomeFirstResponder()
-            case LoginEmailOTPTxt2:
+            } else if textField == LoginEmailOTPTxt2 {
                 LoginEmailOTPTxt3.becomeFirstResponder()
-            case LoginEmailOTPTxt3:
-                LoginPhoneNumberTxt1.becomeFirstResponder()
-            case LoginPhoneNumberTxt1:
+            } else if textField == LoginEmailOTPTxt3 {
+                LoginEmailOTPTxt3.resignFirstResponder()
+            } else if textField == LoginPhoneNumberTxt1 {
                 LoginPhoneNumberTxt2.becomeFirstResponder()
-            case LoginPhoneNumberTxt2:
+            } else if textField == LoginPhoneNumberTxt2 {
                 LoginPhoneNumberTxt3.becomeFirstResponder()
-            case LoginPhoneNumberTxt3:
+            } else if textField == LoginPhoneNumberTxt3 {
                 LoginPhoneNumberTxt3.resignFirstResponder()
-            default:
-                break
             }
-        } else if text.isEmpty {
-            switch textField {
-            case LoginEmailOTPTxt2:
-            LoginEmailOTPTxt1.becomeFirstResponder()
-            case LoginEmailOTPTxt3:
+        } else if textField.text?.isEmpty ?? false {
+            if textField == LoginEmailOTPTxt2 {
+                LoginEmailOTPTxt1.becomeFirstResponder()
+            } else if textField == LoginEmailOTPTxt3 {
                 LoginEmailOTPTxt2.becomeFirstResponder()
-            case LoginPhoneNumberTxt2:
+            } else if textField == LoginPhoneNumberTxt2 {
                 LoginPhoneNumberTxt1.becomeFirstResponder()
-            case LoginPhoneNumberTxt3:
+            } else if textField == LoginPhoneNumberTxt3 {
                 LoginPhoneNumberTxt2.becomeFirstResponder()
-            default:
-                break
             }
         }
     }

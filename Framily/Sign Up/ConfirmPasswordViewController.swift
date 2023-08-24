@@ -7,6 +7,8 @@
 //  Module : Sign Up
 import UIKit
 import CoreData
+import CommonCrypto
+import CryptoKit
 /*Version History
 Draft|| Date        || Author         || Description
 0.1   | 14-Aug-2023  | Varun Kumar     | Logics
@@ -14,7 +16,7 @@ Draft|| Date        || Author         || Description
 Changes:
  
  */
-class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
+class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate, URLSessionDelegate {
     
     @IBOutlet weak var newPasswordTxt: UITextField!
     @IBOutlet weak var groupNameTxt: UITextField!
@@ -99,10 +101,12 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         let shadowOpacity: Float = 1.5
         let shadowOffset = CGSize(width: 0, height: 2)
         let shadowRadius: CGFloat = 4
+        
         loginBtn.layer.shadowColor = shadowColor
         loginBtn.layer.shadowOpacity = shadowOpacity
         loginBtn.layer.shadowOffset = shadowOffset
         loginBtn.layer.shadowRadius = shadowRadius
+        
         loginBtn.addTarget(self, action: #selector(submitButtonTapped), for: .touchUpInside)
         imageIcon.image = UIImage(named: "closeEye")
         let contentView = UIView()
@@ -216,13 +220,7 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                 errorLbl.text = "Please enter confirm Password"
                 return
             }
-            
-         //   guard let user = user else {
-          //      errorLbl.text = "All fields must be filled."
-          //      return
-          //  }
-            
-            // Check if passwords match
+        
             if password == confirmPassword {
                 
                 if validatePasswords() {
@@ -233,37 +231,9 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                         return
                     }
                     
-                 /*   // Save the user details
-                    user.groupName = groupName
-                    user.firstName = firstName
-                    user.lastName = lastName
-                    user.userName = userName
-                    user.password = newPassword
-                    
-                    do {
-                        try managedContext.save()
-                        print("Data saved successfully!")
-                        
-                        confirmPasswordTxt.text = ""
-                        userNameTxt.text = ""
-                        newPasswordTxt.text = ""
-                        lastNameTxt.text = ""
-                        firstNameTxt.text = ""
-                        groupNameTxt.text = ""
-                        
-                        printSavedData()*/
                     print("Sending signup request to API...")
                     confirmPasswordAPI(groupName: groupName, firstName: firstName, lastName: lastName, userName: userName, password: password, responseData: responseData)
-                      /*  let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
-                        }
-                        alertController.addAction(okAction)
-                        present(alertController, animated: true, completion: nil)
-                        
-                    } catch let error as NSError {
-                        print("Error saving data: \(error), \(error.userInfo)")
-                    }*/
+ 
                 } else {
                     errorLbl.isHidden = false
                     errorLbl.text = "Passwords do not match the criteria."
@@ -276,8 +246,8 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         }
     // MARK: - confirmPasswordAPI: Function to send a sign-up request to the API
     func confirmPasswordAPI(groupName: String, firstName: String, lastName: String,userName: String,password: String, responseData: [String: Any]?) {
-        let apiURL = URL(string: "https://192.168.29.7:8080/userRegister")!
         
+        let apiURL = URL(string: "https://192.168.29.7:8080/userRegister")!
         var request = URLRequest(url: apiURL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -292,7 +262,30 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             emailID = body["emailID"] as? String ?? ""
             phoneNumber = body["phoneNumber"] as? String ?? ""
         }
-
+        let currentDate = Date()
+        let dateFormatter = ISO8601DateFormatter()
+        let modifiedDate = dateFormatter.string(from: currentDate)
+        let currentTime = Calendar.current.dateComponents([.hour, .minute, .second], from: currentDate)
+        let formattedTime = String(format: "%02d:%02d:%02d", currentTime.hour!, currentTime.minute!, currentTime.second!)
+        
+        let aesKeyHex = "7b4f66379aed7e506ad4c75dc0a78575"
+        let ivHex = "03373b15eb9a98ff0279c98b0b5635e5"
+        
+        guard let aesKeyData = Data(hex: aesKeyHex),
+              let ivData = Data(hex: ivHex) else {
+            print("Invalid AES key or IV format")
+            return
+        }
+        
+        let Password: String
+        if let encryptedPasswordData = password.data(using: .utf8),
+           let encryptedPassword = encryptAES_CBC(data: encryptedPasswordData, key: aesKeyData, iv: ivData) {
+            Password = encryptedPassword.base64EncodedString()
+        } else {
+            print("Password encryption failed")
+            return
+        }
+        
         let userRegistrationRequest: [String: Any] = [
             "emailID": emailID,
             "phoneNumber": phoneNumber,
@@ -300,47 +293,51 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
             "firstName": firstName,
             "lastName": lastName,
             "userName": userName,
-            "password": password,
+            "password": Password
         ]
 
         let deviceRegistrationRequest: [String: Any] = [
             "sessionID": sessionID,
             "platform": platform,
             "deviceID": deviceID,
+            "currentDate": modifiedDate + " " + formattedTime,
+            "modifiedDate": modifiedDate + " " + formattedTime
         ]
 
         let requestData: [String: Any] = [
             "userRegistrationRequest": userRegistrationRequest,
-            "deviceRegistrationRequest": deviceRegistrationRequest,
+            "deviceRegistrationRequest": deviceRegistrationRequest
         ]
-      
+
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: requestData, options: [])
+            let jsonData = try JSONSerialization.data(withJSONObject: requestData, options: [])
+            request.httpBody = jsonData
+        
         } catch {
             print("Error creating request body: \(error)")
             return
         }
-        
-        let credentials = "arun:arun1"
-        let credentialsData = credentials.data(using: .utf8)!
-        let base64Credentials = credentialsData.base64EncodedString()
-        request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
-        
-        let session = URLSession.shared
+    
+    let credentials = "arun:arun1"
+    let credentialsData = credentials.data(using: .utf8)!
+    let base64Credentials = credentialsData.base64EncodedString()
+    request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+    
+        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error: \(error)")
                 // Handle network error appropriately
                 return
             }
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            let statusCode = httpResponse.statusCode
+            print("HTTP Status Code: \(statusCode)")
             
-            if let httpResponse = response as? HTTPURLResponse {
-                let statusCode = httpResponse.statusCode
-                print("HTTP Status Code: \(statusCode)")
-                
-                if (200...299).contains(statusCode) {
-                    if let responseData = data {
-                        do {
+            if (200...299).contains(statusCode) {
+                if let responseData = data {
+                    do {
                             let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
                             print("Response: \(jsonObject)")
                          
@@ -363,12 +360,19 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                 } else if (400...499).contains(statusCode) {
                     if let responseData = data {
                         do {
+
                             let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
                             print("Response: \(jsonObject)")
                             
-                            if let responseDict = jsonObject as? [String: Any], let body = responseDict["body"] as? String {
+                            if let responseDict = jsonObject as? [String: Any], let body = responseDict["message"] as? String {
                                 DispatchQueue.main.async {
                                     self.showCustomAlertWith(message: body, descMsg: "")
+                                    
+                                    if let availableUserNames = responseDict["availableUserNames"] as? [String] {
+                                        if let firstUserName = availableUserNames.first {
+                                            self.userNameTxt.text = firstUserName
+                                        }
+                                    }
                                 }
                             } else {
                                 DispatchQueue.main.async {
@@ -395,6 +399,9 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
         task.resume()
         print("Sending signup request to API...")
     }
+    
+
+    
     // MARK: - validatePasswords: Function to validate the password
     func validatePasswords() -> Bool {
         guard let newPassword = newPasswordTxt.text,
@@ -489,19 +496,103 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate{
                userNameTxt.text = ""
             }
         }
-       /* func printSavedData() {
-            let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
-            do {
-                let savedUsers = try managedContext.fetch(fetchRequest)
-                for user in savedUsers {
-                    print("Group Name: \(user.groupName ?? "")")
-                    print("First Name: \(user.firstName ?? "")")
-                    print("Last Name: \(user.lastName ?? "")")
-                    print("User Name: \(user.userName ?? "")")
-                    print("Password: \(user.password ?? "")")
+
+    // MARK: - urlSession: Function for SSL Pinning
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+           if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+            if let serverTrust = challenge.protectionSpace.serverTrust {
+                var secresult = SecTrustResultType.invalid
+                let status = SecTrustEvaluate(serverTrust, &secresult)
+
+                if(errSecSuccess == status) {
+                    if let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+                        let serverCertificateData = SecCertificateCopyData(serverCertificate)
+                        let data = CFDataGetBytePtr(serverCertificateData);
+                        let size = CFDataGetLength(serverCertificateData);
+                        let cert1 = NSData(bytes: data, length: size)
+                        let file_der = Bundle.main.path(forResource: "aarthy", ofType: "cer")
+
+                        if let file = file_der {
+                            if let cert2 = NSData(contentsOfFile: file) {
+                                if cert1.isEqual(to: cert2 as Data) {
+                                    print("SSL Pinning Successful")
+                                    
+                                    completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: serverTrust))
+                                    return
+                                }
+                            }
+                        }
+                    }
                 }
-            } catch let error as NSError {
-                print("Error fetching data: \(error), \(error.userInfo)")
             }
-        }*/
+        }
+        
+        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
+    }
+    
+    func encryptAES_CBC(data: Data, key: Data, iv: Data) -> Data? {
+        let bufferSize = data.count + kCCBlockSizeAES128
+        var buffer = Data(count: bufferSize)
+
+        var numBytesEncrypted: size_t = 0
+
+        let cryptStatus = key.withUnsafeBytes { keyBytes in
+            iv.withUnsafeBytes { ivBytes in
+                data.withUnsafeBytes { dataBytes in
+                    buffer.withUnsafeMutableBytes { bufferBytes in
+                        CCCrypt(
+                            UInt32(kCCEncrypt),
+                            UInt32(kCCAlgorithmAES),
+                            UInt32(kCCOptionPKCS7Padding),
+                            keyBytes.baseAddress, key.count,
+                            ivBytes.baseAddress,
+                            dataBytes.baseAddress, data.count,
+                            bufferBytes.baseAddress, bufferSize,
+                            &numBytesEncrypted
+                        )
+                    }
+                }
+            }
+        }
+
+        if cryptStatus == kCCSuccess {
+            buffer.count = numBytesEncrypted
+            return buffer
+        }
+
+        return nil
+    }
+
+    func decryptAES_CBC(data: Data, key: Data, iv: Data) -> Data? {
+        let bufferSize = data.count + kCCBlockSizeAES128
+        var buffer = Data(count: bufferSize)
+
+        var numBytesDecrypted: size_t = 0
+
+        let cryptStatus = key.withUnsafeBytes { keyBytes in
+            iv.withUnsafeBytes { ivBytes in
+                data.withUnsafeBytes { dataBytes in
+                    buffer.withUnsafeMutableBytes { bufferBytes in
+                        CCCrypt(
+                            UInt32(kCCDecrypt),
+                            UInt32(kCCAlgorithmAES),
+                            UInt32(kCCOptionPKCS7Padding),
+                            keyBytes.baseAddress, key.count,
+                            ivBytes.baseAddress,
+                            dataBytes.baseAddress, data.count,
+                            bufferBytes.baseAddress, bufferSize,
+                            &numBytesDecrypted
+                        )
+                    }
+                }
+            }
+        }
+
+        if cryptStatus == kCCSuccess {
+            buffer.count = numBytesDecrypted
+            return buffer
+        }
+
+        return nil
+    }
 }

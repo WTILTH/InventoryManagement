@@ -6,6 +6,9 @@
 //  Module : Login 
 import UIKit
 import CoreData
+import CryptoKit
+import Security
+import CommonCrypto
 /*Version History
 Draft|| Date        || Author         || Description
 0.1   | 14-Aug-2023  | Varun Kumar     | UX
@@ -13,7 +16,7 @@ Draft|| Date        || Author         || Description
 Changes:
  
  */
-class loginUserNameViewController: UIViewController {
+class loginUserNameViewController: UIViewController, URLSessionDelegate {
 
     @IBOutlet weak var loginBtn: UIButton!
     @IBOutlet weak var passwordTxt: UITextField!
@@ -22,6 +25,7 @@ class loginUserNameViewController: UIViewController {
     @IBOutlet weak var groupNameTxt: UITextField!
     @IBOutlet weak var signUpUserPopUp: UIView!
     @IBOutlet weak var forgotPasswordBtn: UIButton!
+    @IBOutlet weak var groupNameImage: UIImageView!
     @IBOutlet weak var loginWithEmailPhoneBtn: UIButton!
     
     //var transparentOverlay: UIView?
@@ -32,18 +36,24 @@ class loginUserNameViewController: UIViewController {
     let imageIcon = UIImageView()
     var currentPopUpView: UIView?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //printSavedData()
+       // navigationItem.title = ""
+       // groupNameImage.isUserInteractionEnabled = false
         view.backgroundColor = BackgroundManager.shared.backgroundColor
         signUpUserPopUp.frame = CGRect(x: 0, y: view.frame.size.height, width: view.frame.size.width, height: 200)
         signUpUserPopUp.layer.cornerRadius = 40.0
+        groupNameTxt.layer.cornerRadius = 5
+        userNameTxt.layer.cornerRadius = 5
+        passwordTxt.layer.cornerRadius = 5
         imageIcon.image = UIImage(named: "closeEye")
         let contentView = UIView()
         contentView.addSubview(imageIcon)
         
-        contentView.frame = CGRect(x: 0, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
+        contentView.frame = CGRect(x: 0, y: 0, width: UIImage(named: "openEye")!.size.width, height: UIImage(named: "openEye")!.size.width)
         
         imageIcon.frame = CGRect(x: -10, y: 0, width: UIImage(named: "closeEye")!.size.width, height: UIImage(named: "closeEye")!.size.width)
         passwordTxt.rightView = contentView
@@ -133,7 +143,6 @@ class loginUserNameViewController: UIViewController {
         }
     // MARK: - forgotPasswordBtnPressed: Function to handle the "Forgot Password" button tap
     @IBAction func forgotPasswordBtnPressed(_ sender: Any) {
-
         guard let groupName = groupNameTxt.text, !groupName.isEmpty
         else {
             showCustomAlertWith(message: "Please enter your groupName", descMsg: "")
@@ -149,36 +158,47 @@ class loginUserNameViewController: UIViewController {
     }
     // MARK: - loginUser: Function to send a forgot Password request to the API
     func forgotPasswordUserAPI(groupName: String, userName: String) {
-        let apiURL = URL(string: "https://192.168.29.7:8080/forgotPassword")!
+        let apiURL = URL(string: "https://192.168.29.7:8080/userNameForgotPassword")!
+        
+        
+        var request = URLRequest(url: apiURL)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let currentDate = Date()
+        let dateFormatter = ISO8601DateFormatter()
+        let formattedDate = dateFormatter.string(from: currentDate)
+        
+        let currentTime = Calendar.current.dateComponents([.hour, .minute, .second], from: currentDate)
+        let formattedTime = String(format: "%02d:%02d:%02d", currentTime.hour!, currentTime.minute!, currentTime.second!)
+        
+        let parameters: [String: Any] = [
+            "groupName": groupName,
+            "userName": userName,
+            "currentDate": formattedDate + " " + formattedTime,
+            "modifiedDate": formattedDate
+        ]
     
-    var request = URLRequest(url: apiURL)
-    request.httpMethod = "POST"
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    
-    let parameters: [String: Any] = [
-        "groupName": groupName,
-        "userName": userName
-    ]
-    
-    do {
-        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
-    } catch {
-        print("Error creating request body: \(error)")
-        return
-    }
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            request.httpBody = jsonData
+        } catch {
+            print("Error creating request body: \(error)")
+            return
+        }
     
     let credentials = "arun:arun1"
     let credentialsData = credentials.data(using: .utf8)!
     let base64Credentials = credentialsData.base64EncodedString()
     request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
     
-    let session = URLSession.shared
-    let task = session.dataTask(with: request) { data, response, error in
-        if let error = error {
-            print("Error: \(error)")
-            // Handle network error appropriately
-            return
-        }
+        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                // Handle network error appropriately
+                return
+            }
         
         if let httpResponse = response as? HTTPURLResponse {
             let statusCode = httpResponse.statusCode
@@ -187,6 +207,7 @@ class loginUserNameViewController: UIViewController {
             if (200...299).contains(statusCode) {
                 if let responseData = data {
                     do {
+                        
                         let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
                         print("Response: \(jsonObject)")
                         
@@ -220,6 +241,7 @@ class loginUserNameViewController: UIViewController {
             } else if (400...499).contains(statusCode) {
                 if let responseData = data {
                                do {
+                                   
                                    let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
                                    print("Response: \(jsonObject)")
                                    
@@ -278,19 +300,48 @@ class loginUserNameViewController: UIViewController {
     }
     // MARK: - loginUser: Function to send a login request to the API
     func loginUser(groupName: String, userName: String, password: String) {
+        
         let apiURL = URL(string: "https://192.168.29.7:8080/usernameLogin")!
         var request = URLRequest(url: apiURL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
+        let currentDate = Date()
+        let dateFormatter = ISO8601DateFormatter()
+        let modifiedDate = dateFormatter.string(from: currentDate)
+        let currentTime = Calendar.current.dateComponents([.hour, .minute, .second], from: currentDate)
+        let formattedTime = String(format: "%02d:%02d:%02d", currentTime.hour!, currentTime.minute!, currentTime.second!)
+        let deviceID = UIDevice.current.identifierForVendor?.uuidString
+        
+        let aesKeyHex = "7b4f66379aed7e506ad4c75dc0a78575"
+        let ivHex = "03373b15eb9a98ff0279c98b0b5635e5"
+        
+        guard let aesKeyData = Data(hex: aesKeyHex),
+              let ivData = Data(hex: ivHex) else {
+            print("Invalid AES key or IV format")
+            return
+        }
+        
+        
+        let Password: String
+        if let encryptedPasswordData = password.data(using: .utf8),
+           let encryptedPassword = encryptAES_CBC(data: encryptedPasswordData, key: aesKeyData, iv: ivData) {
+            Password = encryptedPassword.base64EncodedString()
+        } else {
+            print("Password encryption failed")
+            return
+        }
+        
         let parameters: [String: Any] = [
             "groupName": groupName,
             "userName": userName,
-            "password": password
+            "password": Password,
+            "deviceID": deviceID
         ]
         
         do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+            request.httpBody = jsonData
         } catch {
             print("Error creating request body: \(error)")
             return
@@ -301,11 +352,11 @@ class loginUserNameViewController: UIViewController {
         let base64Credentials = credentialsData.base64EncodedString()
         request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
         
-        let session = URLSession.shared
+        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error: \(error)")
-                // Handle network error appropriately
+               
                 return
             }
             
@@ -318,10 +369,10 @@ class loginUserNameViewController: UIViewController {
                         do {
                             let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
                             print("Response: \(jsonObject)")
-                         
+                            
                             if let responseDict = jsonObject as? [String: Any],
                                let success = responseDict["success"] as? Bool, success {
-                               
+                                
                                 DispatchQueue.main.async {
                                     self.performSegue(withIdentifier: "signinToOtp", sender: nil)
                                 }
@@ -379,30 +430,181 @@ class loginUserNameViewController: UIViewController {
             loginWithEmailPhoneBtn.isEnabled = false
         }
     }
-   /* func printSavedData() {
-        let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
 
-        do {
-            let savedUsers = try managedContext.fetch(fetchRequest)
-            for user in savedUsers {
-                print("User Data:")
-            print("Phone Number: \(user.phoneNumber ?? "")")
-                print("Country Code: \(user.countryCode ?? "")")
-        print("Company Name: \(user.companyName ?? "")")
-            print("Email ID: \(user.emailID ?? "")")
-            print("Device ID: \(user.deviceID ?? "")")
-            print("Session ID: \(user.sessionID ?? "")")
-            print("Group Name: \(user.groupName ?? "")")
-            print("First Name: \(user.firstName ?? "")")
-            print("Last Name: \(user.lastName ?? "")")
-            print("User Name: \(user.userName ?? "")")
-            print("Password: \(user.password ?? "")")
-                print("--*------*-----*-----*---")
+    // MARK: - urlSession: Function for SSL Pinning
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+           if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust) {
+            if let serverTrust = challenge.protectionSpace.serverTrust {
+                var secresult = SecTrustResultType.invalid
+                let status = SecTrustEvaluate(serverTrust, &secresult)
+
+                if(errSecSuccess == status) {
+                    if let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+                        let serverCertificateData = SecCertificateCopyData(serverCertificate)
+                        let data = CFDataGetBytePtr(serverCertificateData);
+                        let size = CFDataGetLength(serverCertificateData);
+                        let cert1 = NSData(bytes: data, length: size)
+                        let file_der = Bundle.main.path(forResource: "aarthy", ofType: "cer")
+
+                        if let file = file_der {
+                            if let cert2 = NSData(contentsOfFile: file) {
+                                if cert1.isEqual(to: cert2 as Data) {
+                                    print("SSL Pinning Successful")
+                                    
+                                    completionHandler(URLSession.AuthChallengeDisposition.useCredential, URLCredential(trust: serverTrust))
+                                    return
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        } catch let error as NSError {
-            print("Error fetching data: \(error), \(error.userInfo)")
         }
-    }*/
-    
+        
+        completionHandler(URLSession.AuthChallengeDisposition.cancelAuthenticationChallenge, nil)
+    }
 
+    func encryptAES_CBC(data: Data, key: Data, iv: Data) -> Data? {
+        let bufferSize = data.count + kCCBlockSizeAES128
+        var buffer = Data(count: bufferSize)
+
+        var numBytesEncrypted: size_t = 0
+
+        let cryptStatus = key.withUnsafeBytes { keyBytes in
+            iv.withUnsafeBytes { ivBytes in
+                data.withUnsafeBytes { dataBytes in
+                    buffer.withUnsafeMutableBytes { bufferBytes in
+                        CCCrypt(
+                            UInt32(kCCEncrypt),
+                            UInt32(kCCAlgorithmAES),
+                            UInt32(kCCOptionPKCS7Padding),
+                            keyBytes.baseAddress, key.count,
+                            ivBytes.baseAddress,
+                            dataBytes.baseAddress, data.count,
+                            bufferBytes.baseAddress, bufferSize,
+                            &numBytesEncrypted
+                        )
+                    }
+                }
+            }
+        }
+
+        if cryptStatus == kCCSuccess {
+            buffer.count = numBytesEncrypted
+            return buffer
+        }
+
+        return nil
+    }
+
+    func decryptAES_CBC(data: Data, key: Data, iv: Data) -> Data? {
+        let bufferSize = data.count + kCCBlockSizeAES128
+        var buffer = Data(count: bufferSize)
+
+        var numBytesDecrypted: size_t = 0
+
+        let cryptStatus = key.withUnsafeBytes { keyBytes in
+            iv.withUnsafeBytes { ivBytes in
+                data.withUnsafeBytes { dataBytes in
+                    buffer.withUnsafeMutableBytes { bufferBytes in
+                        CCCrypt(
+                            UInt32(kCCDecrypt),
+                            UInt32(kCCAlgorithmAES),
+                            UInt32(kCCOptionPKCS7Padding),
+                            keyBytes.baseAddress, key.count,
+                            ivBytes.baseAddress,
+                            dataBytes.baseAddress, data.count,
+                            bufferBytes.baseAddress, bufferSize,
+                            &numBytesDecrypted
+                        )
+                    }
+                }
+            }
+        }
+
+        if cryptStatus == kCCSuccess {
+            buffer.count = numBytesDecrypted
+            return buffer
+        }
+
+        return nil
+    }
 }
+extension Data {
+    
+    init?(hex string: String) {
+        var hexSanitized = string.replacingOccurrences(of: " ", with: "")
+        hexSanitized = hexSanitized.replacingOccurrences(of: "<", with: "")
+        hexSanitized = hexSanitized.replacingOccurrences(of: ">", with: "")
+        
+        var data = Data(capacity: hexSanitized.count / 2)
+        
+        var index = hexSanitized.startIndex
+        while index < hexSanitized.endIndex {
+            let byteString = hexSanitized[index..<hexSanitized.index(index, offsetBy: 2)]
+            if let byte = UInt8(byteString, radix: 16) {
+                data.append(byte)
+            } else {
+                return nil
+            }
+            index = hexSanitized.index(index, offsetBy: 2)
+        }
+        
+        self = data
+    }
+}
+/*   override func viewDidLoad() {
+        super.viewDidLoad()
+
+        
+        PopUpView.layer.cornerRadius = 20.0
+           self.navigationItem.setHidesBackButton(true, animated: false)
+
+          PopUpView.bounds = CGRect(x: 0, y: 0, width: 338, height: 397)
+           
+    }
+    @IBAction func iBtn(_ sender: Any) {
+        
+        animateIn(desiredView: PopUpView)
+        
+    }
+       
+    @IBOutlet var PopUpView: UIView!
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    func animateIn(desiredView: UIView) {
+        
+        let backgroundView = self.view!
+        
+        backgroundView.addSubview(desiredView)
+        
+        desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        desiredView.alpha = 0
+        desiredView.center = backgroundView.center
+        
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            desiredView.alpha = 1
+        })
+        
+    }
+    func animateOut(desiredView: UIView) {
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            desiredView.alpha = 0
+        }, completion: { _ in
+            desiredView.removeFromSuperview()
+            
+            
+        })
+    }
+    
+}*/

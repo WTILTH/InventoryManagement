@@ -1086,3 +1086,197 @@ struct UserCredentials {
   }//
   */
  */
+/*   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+       if segue.identifier == "SignUpToEmailOTP" {
+           if let otpVC = segue.destination as? EmailOTPViewController {
+               let newUser = sender as? User
+               otpVC.user = newUser
+           }
+       }
+       else if segue.identifier == "OTPToConfirmPassword" {
+           if let confirmPasswordVC = segue.destination as? ConfirmPasswordViewController {
+               let newUser = sender as? User
+               confirmPasswordVC.user = newUser
+               confirmPasswordVC.companyName = newUser?.companyName
+               confirmPasswordVC.phoneNumber = newUser?.phoneNumber
+               confirmPasswordVC.countryCode = newUser?.countryCode
+               confirmPasswordVC.emailID = newUser?.emailID
+       
+           }
+       }
+   }*/
+/* func printSavedData() {
+     let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+
+     do {
+         let savedUsers = try managedContext.fetch(fetchRequest)
+         for user in savedUsers {
+             print("User Data:")
+         print("Phone Number: \(user.phoneNumber ?? "")")
+             print("Country Code: \(user.countryCode ?? "")")
+     print("Company Name: \(user.companyName ?? "")")
+         print("Email ID: \(user.emailID ?? "")")
+         print("Device ID: \(user.deviceID ?? "")")
+         print("Session ID: \(user.sessionID ?? "")")
+         print("Group Name: \(user.groupName ?? "")")
+         print("First Name: \(user.firstName ?? "")")
+         print("Last Name: \(user.lastName ?? "")")
+         print("User Name: \(user.userName ?? "")")
+         print("Password: \(user.password ?? "")")
+             print("--*------*-----*-----*---")
+         }
+     } catch let error as NSError {
+         print("Error fetching data: \(error), \(error.userInfo)")
+     }
+ }*/
+/* private func setupCoreDataStack() {
+     guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+         return
+     }
+     managedObjectContext = appDelegate.persistentContainer.viewContext
+     
+ }*/
+/*let underlineLayer = CALayer()
+ underlineLayer.frame = CGRect(x: 0, y: emailIdText.frame.size.height - 1, width: emailIdText.frame.size.width, height: 1)
+ underlineLayer.backgroundColor = UIColor.white.cgColor
+ emailIdText.layer.addSublayer(underlineLayer)
+ let underlineLayer1 = CALayer()
+ underlineLayer1.frame = CGRect(x: 0, y: passwordText.frame.size.height - 1, width: passwordText.frame.size.width, height: 1)
+ underlineLayer1.backgroundColor = UIColor.white.cgColor
+ passwordText.layer.addSublayer(underlineLayer1)*/
+/*@objc func submitButtonTapped() {
+ errorLbl.text = ""
+ errorLbl.isHidden = false
+     guard let groupName = groupNameTxt.text, !groupName.isEmpty else {
+         errorLbl.text = "Please enter group Name"
+         return
+     }
+     
+     guard let firstName = firstNameTxt.text, !firstName.isEmpty else {
+         errorLbl.text = "Please enter first Name"
+         return
+     }
+     
+     guard let lastName = lastNameTxt.text, !lastName.isEmpty else {
+         errorLbl.text = "Please enter last Name"
+         return
+     }
+     
+     guard let userName = userNameTxt.text, !userName.isEmpty else {
+         errorLbl.text = "Please enter user Name"
+         return
+     }
+     
+     guard let password = newPasswordTxt.text, !password.isEmpty else {
+         errorLbl.text = "Please enter new Password"
+         return
+     }
+     
+     guard let confirmPassword = confirmPasswordTxt.text, !confirmPassword.isEmpty else {
+         errorLbl.text = "Please enter confirm Password"
+         return
+     }
+     
+  //   guard let user = user else {
+   //      errorLbl.text = "All fields must be filled."
+   //      return
+   //  }
+     
+     // Check if passwords match
+     if password == confirmPassword {
+         
+         if validatePasswords() {
+             
+             if !customCheckbox.isOn {
+                 errorLbl.isHidden = false
+                 errorLbl.text = "Please read and accept the terms and conditions."
+                 return
+             }
+             
+          /*   // Save the user details
+             user.groupName = groupName
+             user.firstName = firstName
+             user.lastName = lastName
+             user.userName = userName
+             user.password = newPassword
+             
+             do {
+                 try managedContext.save()
+                 print("Data saved successfully!")
+                 
+                 confirmPasswordTxt.text = ""
+                 userNameTxt.text = ""
+                 newPasswordTxt.text = ""
+                 lastNameTxt.text = ""
+                 firstNameTxt.text = ""
+                 groupNameTxt.text = ""
+                 
+                 printSavedData()*/
+             print("Sending signup request to API...")
+             confirmPasswordAPI(groupName: groupName, firstName: firstName, lastName: lastName, userName: userName, password: password, responseData: responseData)
+               /*  let alertController = UIAlertController(title: "Success", message: "Successfully created an account.", preferredStyle: .alert)
+                 let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                     self.performSegue(withIdentifier: "passwordToLogin", sender: nil)
+                 }
+                 alertController.addAction(okAction)
+                 present(alertController, animated: true, completion: nil)
+                 
+             } catch let error as NSError {
+                 print("Error saving data: \(error), \(error.userInfo)")
+             }*/
+         } else {
+             errorLbl.isHidden = false
+             errorLbl.text = "Passwords do not match the criteria."
+         }
+         
+     } else {
+         errorLbl.isHidden = false
+         errorLbl.text = "Passwords do not match."
+     }
+ }*/
+/*@IBAction func updateButtonTapped(_ sender: Any) {
+   if validatePasswords() {
+   errorLabel.isHidden = true
+   
+   guard let newPassword = FPConfirmPasswordTxt.text,
+   let user = user else {
+   return
+   }
+   
+   
+   guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+   return
+   }
+   
+   let managedContext = appDelegate.persistentContainer.viewContext
+   let fetchRequest: NSFetchRequest<User> = User.fetchRequest()
+   
+   do {
+   let users = try managedContext.fetch(fetchRequest)
+   
+   
+   let passwordExists = users.contains { $0.password == newPassword }
+   
+   if passwordExists {
+   showCustomAlertWith(message: "Password Already Exists", descMsg: "Please choose a different password.")
+   } else {
+   
+   user.password = newPassword
+   
+   do {
+   try managedContext.save()
+   
+   performSegue(withIdentifier: "FPtoMAIN", sender: nil)
+   showCustomAlertWith(message: "Password Updated", descMsg: "")
+   } catch {
+   print("Failed to update password: \(error)")
+   }
+   }
+   } catch {
+   print("Failed to fetch user data: \(error)")
+   }
+   } else {
+   errorLabel.isHidden = false
+   errorLabel.text = "Passwords do not match"
+   }
+   }*/

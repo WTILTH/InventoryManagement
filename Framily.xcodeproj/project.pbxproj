@@ -25,6 +25,7 @@
 		D8022E062A557969009A879B /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */; };
 		D80531692A42DFE60080DC16 /* CommonAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80531672A42DFE60080DC16 /* CommonAlertVC.swift */; };
 		D805316B2A42E0030080DC16 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D805316A2A42E0030080DC16 /* UIViewExtension.swift */; };
+		D84FBC802A8E4F9D0019076A /* Dockerfile 6.22.08 PM in Resources */ = {isa = PBXBuildFile; fileRef = D84FBC7F2A8E4F9D0019076A /* Dockerfile 6.22.08 PM */; };
 		D867B6CE2A8385BE006E3D2C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6CD2A8385BE006E3D2C /* HomeViewController.swift */; };
 		D867B6D02A838614006E3D2C /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6CF2A838614006E3D2C /* ManagementViewController.swift */; };
 		D867B6D22A83A1A4006E3D2C /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6D12A83A1A4006E3D2C /* TabViewController.swift */; };
@@ -63,6 +64,7 @@
 		D8E30E902A6F9209004B0610 /* SignUpExistingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E30E8F2A6F9209004B0610 /* SignUpExistingViewController.swift */; };
 		D8E30E942A6FBB13004B0610 /* LoginOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E30E932A6FBB13004B0610 /* LoginOTPViewController.swift */; };
 		D8ED9ACD2A42BAF400101711 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ED9ACC2A42BAF400101711 /* ReminderViewController.swift */; };
+		D8F43CA62A8CFBCD0018DD00 /* aarthy.cer in Resources */ = {isa = PBXBuildFile; fileRef = D8F43CA52A8CFBCD0018DD00 /* aarthy.cer */; };
 		D8F80DCD2A6A7ABF00171D49 /* loginUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F80DCC2A6A7ABF00171D49 /* loginUserNameViewController.swift */; };
 		DAE65722BF12505024FDC5F6 /* Pods_FramilyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC738E3737A225F5845DECE /* Pods_FramilyTests.framework */; };
 /* End PBXBuildFile section */
@@ -109,6 +111,7 @@
 		D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		D80531672A42DFE60080DC16 /* CommonAlertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonAlertVC.swift; sourceTree = "<group>"; };
 		D805316A2A42E0030080DC16 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		D84FBC7F2A8E4F9D0019076A /* Dockerfile 6.22.08 PM */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Dockerfile 6.22.08 PM"; sourceTree = "<group>"; };
 		D867B6CD2A8385BE006E3D2C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D867B6CF2A838614006E3D2C /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
 		D867B6D12A83A1A4006E3D2C /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +154,7 @@
 		D8E30E8F2A6F9209004B0610 /* SignUpExistingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpExistingViewController.swift; sourceTree = "<group>"; };
 		D8E30E932A6FBB13004B0610 /* LoginOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOTPViewController.swift; sourceTree = "<group>"; };
 		D8ED9ACC2A42BAF400101711 /* ReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
+		D8F43CA52A8CFBCD0018DD00 /* aarthy.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = aarthy.cer; sourceTree = SOURCE_ROOT; };
 		D8F80DCC2A6A7ABF00171D49 /* loginUserNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginUserNameViewController.swift; sourceTree = "<group>"; };
 		F74347344A4D2F5F36AE8823 /* Pods-FramilyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FramilyTests.release.xcconfig"; path = "Target Support Files/Pods-FramilyTests/Pods-FramilyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -241,8 +245,8 @@
 		D88845A92A5BF4A800219226 /* Sign Up */ = {
 			isa = PBXGroup;
 			children = (
-				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
 				D8E30E8F2A6F9209004B0610 /* SignUpExistingViewController.swift */,
+				4AA172B62A53F5C800C4834A /* SignUpViewController.swift */,
 				D8022E032A557953009A879B /* EmailOTPViewController.swift */,
 				D8022E052A557969009A879B /* ConfirmPasswordViewController.swift */,
 				D8B9B8AC2A7B8B440007F372 /* Password Strength View */,
@@ -338,6 +342,8 @@
 		D8BCEA3E2A401C9200EAF04B /* Framily */ = {
 			isa = PBXGroup;
 			children = (
+				D84FBC7F2A8E4F9D0019076A /* Dockerfile 6.22.08 PM */,
+				D8F43CA52A8CFBCD0018DD00 /* aarthy.cer */,
 				4AA5F6052A45AAC500006003 /* GoogleService-Info.plist */,
 				4AB036722A4C36E00086A1B8 /* User.xcdatamodeld */,
 				D8C71C332A61514A00FEC62B /* AppearanceManager.swift */,
@@ -494,9 +500,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D84FBC802A8E4F9D0019076A /* Dockerfile 6.22.08 PM in Resources */,
 				D8BCEA4F2A401C9200EAF04B /* LaunchScreen.storyboard in Resources */,
 				D867B6F72A83BD94006E3D2C /* VendorManagementTableViewCell.xib in Resources */,
 				4AA896D32A4AD49E00C32E13 /* CommonAlertVC.xib in Resources */,
+				D8F43CA62A8CFBCD0018DD00 /* aarthy.cer in Resources */,
 				D8BCEA4C2A401C9200EAF04B /* Assets.xcassets in Resources */,
 				D8BCEA472A401C9200EAF04B /* Main.storyboard in Resources */,
 				4AA5F6062A45AAC500006003 /* GoogleService-Info.plist in Resources */,

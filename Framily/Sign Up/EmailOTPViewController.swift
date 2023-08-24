@@ -28,7 +28,6 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var resendButton: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
-    @IBOutlet weak var emailOTPView: UIView!
     
     var responseData: [String: Any]?
     var shouldDisableButtons = false
@@ -45,73 +44,26 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = BackgroundManager.shared.backgroundColor
-        emailOTPView.layer.cornerRadius = 20.0
-        emailOTPTxt1.backgroundColor = UIColor.clear
-        emailOTPTxt1.borderStyle = .none
-        emailOTPTxt2.backgroundColor = UIColor.clear
-        emailOTPTxt2.borderStyle = .none
-        emailOTPTxt3.backgroundColor = UIColor.clear
-        emailOTPTxt3.borderStyle = .none
-        phoneNumberTxt1.backgroundColor = UIColor.clear
-        phoneNumberTxt1.borderStyle = .none
-        phoneNumberTxt2.backgroundColor = UIColor.clear
-        phoneNumberTxt2.borderStyle = .none
-        phoneNumberTxt3.backgroundColor = UIColor.clear
-        phoneNumberTxt3.borderStyle = .none
+        
         let shadowColor = UIColor.black.cgColor
         let shadowOpacity: Float = 2.0
         let shadowOffset = CGSize(width: 0, height: 3)
         let shadowRadius: CGFloat = 5
-        nextBtn.layer.shadowColor = shadowColor
-        nextBtn.layer.shadowOpacity = shadowOpacity
-        nextBtn.layer.shadowOffset = shadowOffset
-        nextBtn.layer.shadowRadius = shadowRadius
-        emailOTPView.layer.shadowColor = shadowColor
-        emailOTPView.layer.shadowOpacity = shadowOpacity
-        emailOTPView.layer.shadowOffset = shadowOffset
-        emailOTPView.layer.shadowRadius = shadowRadius
-        emailOTPTxt1.layer.shadowColor = shadowColor
-        emailOTPTxt1.layer.shadowOpacity = shadowOpacity
-        emailOTPTxt1.layer.shadowOffset = shadowOffset
-        emailOTPTxt1.layer.shadowRadius = shadowRadius
-        emailOTPTxt2.layer.shadowColor = shadowColor
-        emailOTPTxt2.layer.shadowOpacity = shadowOpacity
-        emailOTPTxt2.layer.shadowOffset = shadowOffset
-        emailOTPTxt2.layer.shadowRadius = shadowRadius
-        emailOTPTxt3.layer.shadowColor = shadowColor
-        emailOTPTxt3.layer.shadowOpacity = shadowOpacity
-        emailOTPTxt3.layer.shadowOffset = shadowOffset
-        emailOTPTxt3.layer.shadowRadius = shadowRadius
-        phoneNumberTxt1.layer.shadowColor = shadowColor
-        phoneNumberTxt1.layer.shadowOpacity = shadowOpacity
-        phoneNumberTxt1.layer.shadowOffset = shadowOffset
-        phoneNumberTxt1.layer.shadowRadius = shadowRadius
-        phoneNumberTxt2.layer.shadowColor = shadowColor
-        phoneNumberTxt2.layer.shadowOpacity = shadowOpacity
-        phoneNumberTxt2.layer.shadowOffset = shadowOffset
-        phoneNumberTxt2.layer.shadowRadius = shadowRadius
-        phoneNumberTxt3.layer.shadowColor = shadowColor
-        phoneNumberTxt3.layer.shadowOpacity = shadowOpacity
-        phoneNumberTxt3.layer.shadowOffset = shadowOffset
-        phoneNumberTxt3.layer.shadowRadius = shadowRadius
         
         emailOTPTxt1.delegate = self
         emailOTPTxt2.delegate = self
         emailOTPTxt3.delegate = self
+        
         phoneNumberTxt1.delegate = self
         phoneNumberTxt2.delegate = self
         phoneNumberTxt3.delegate = self
         
-      /*  emailOTPTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
+        emailOTPTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         emailOTPTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
-        emailOTPTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)*/
+        emailOTPTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         phoneNumberTxt1.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
         phoneNumberTxt2.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        
         phoneNumberTxt3.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
       /*  let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(firstTextFieldTapped))
@@ -121,38 +73,12 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         
         
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(secondTextFieldTapped))
-        
         phoneNumberTxt1.addGestureRecognizer(tapGesture2)
-        
-        
-        
         otpDigits1 = Array(arrayLiteral: String(correctOTP1))
        
         startTimer()
-        let underlineLayer = CALayer()
-        underlineLayer.frame = CGRect(x: 0, y: emailOTPTxt1.frame.size.height - 1, width: emailOTPTxt1.frame.size.width, height: 1)
-        underlineLayer.backgroundColor = UIColor.white.cgColor
-        emailOTPTxt1.layer.addSublayer(underlineLayer)
-        let underlineLayer1 = CALayer()
-        underlineLayer1.frame = CGRect(x: 0, y: emailOTPTxt2.frame.size.height - 1, width: emailOTPTxt2.frame.size.width, height: 1)
-        underlineLayer1.backgroundColor = UIColor.white.cgColor
-        emailOTPTxt2.layer.addSublayer(underlineLayer1)
-        let underlineLayer2 = CALayer()
-        underlineLayer2.frame = CGRect(x: 0, y: emailOTPTxt3.frame.size.height - 1, width: emailOTPTxt3.frame.size.width, height: 1)
-        underlineLayer2.backgroundColor = UIColor.white.cgColor
-        emailOTPTxt3.layer.addSublayer(underlineLayer2)
-        let underlineLayer3 = CALayer()
-        underlineLayer3.frame = CGRect(x: 0, y: phoneNumberTxt1.frame.size.height - 1, width: phoneNumberTxt1.frame.size.width, height: 1)
-        underlineLayer3.backgroundColor = UIColor.white.cgColor
-        phoneNumberTxt1.layer.addSublayer(underlineLayer3)
-        let underlineLayer4 = CALayer()
-        underlineLayer4.frame = CGRect(x: 0, y: phoneNumberTxt2.frame.size.height - 1, width: phoneNumberTxt2.frame.size.width, height: 1)
-        underlineLayer4.backgroundColor = UIColor.white.cgColor
-        phoneNumberTxt2.layer.addSublayer(underlineLayer4)
-        let underlineLayer5 = CALayer()
-        underlineLayer5.frame = CGRect(x: 0, y: phoneNumberTxt3.frame.size.height - 1, width: phoneNumberTxt3.frame.size.width, height: 1)
-        underlineLayer5.backgroundColor = UIColor.white.cgColor
-        phoneNumberTxt3.layer.addSublayer(underlineLayer5)
+        
+        
     }
     // MARK: - handleOTPVerificationAndNavigate: Function to Transfer the data passed from EmailOTPViewController to the ConfirmPasswordViewController
     func handleOTPVerificationAndNavigate() {
@@ -262,93 +188,54 @@ class EmailOTPViewController: UIViewController, UITextFieldDelegate {
         let otpDigits = (0..<3).map { _ in String(Int.random(in: 0...9)) }
         correctOTP2 = otpDigits.joined()
     }
-    // MARK: - textField: Function to Limit each OTP text field to allow only one character
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-            guard let text = textField.text else { return true }
-            let newLength = text.count + string.count - range.length
-            if newLength <= 1 {
-                if let char = string.cString(using: String.Encoding.utf8) {
-                    let isBackSpace = strcmp(char, "\\b")
-                    if isBackSpace == -92 {
-                    if newLength == 0 {
-                            switch textField {
-                            case emailOTPTxt2:
-                                emailOTPTxt1.becomeFirstResponder()
-                            case emailOTPTxt3:
-                                emailOTPTxt2.becomeFirstResponder()
-                            case phoneNumberTxt2:
-                                phoneNumberTxt1.becomeFirstResponder()
-                            case phoneNumberTxt3:
-                                phoneNumberTxt2.becomeFirstResponder()
-                            default:
-                            break
-                            }
-                        }
-                        textField.text = ""
-                        return false
-                    } else if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
-                        switch textField {
-                        case emailOTPTxt1:
-                            emailOTPTxt2.becomeFirstResponder()
-                        case emailOTPTxt2:
-                        emailOTPTxt3.becomeFirstResponder()
-                        case emailOTPTxt3:
-                            emailOTPTxt3.resignFirstResponder()
-                            phoneNumberTxt1.becomeFirstResponder()
-                        case phoneNumberTxt1:
-                            phoneNumberTxt2.becomeFirstResponder()
-                        case phoneNumberTxt2:
-                            phoneNumberTxt3.becomeFirstResponder()
-                        case phoneNumberTxt3:
-                            phoneNumberTxt3.resignFirstResponder()
-                        default:
-                            break
-                        }
-                        textField.text = string
-                        return false
-                }
-                }
-                return newLength <= 1         }
-            return false
-        }
     // MARK: - textFieldDidChange: Function to Handle text field editing to navigate between OTP text fields
-        @objc func textFieldDidChange(_ textField: UITextField) {
-            guard let text = textField.text else { return }
-            let newLength = text.count
-            if newLength == 1 {
-                switch textField {
-                case emailOTPTxt1:
-                    emailOTPTxt2.becomeFirstResponder()
-                case emailOTPTxt2:
-                    emailOTPTxt3.becomeFirstResponder()
-                case emailOTPTxt3:
-                    emailOTPTxt3.resignFirstResponder()
-                    phoneNumberTxt1.becomeFirstResponder()
-                case phoneNumberTxt1:
-                    phoneNumberTxt2.becomeFirstResponder()
-                case phoneNumberTxt2:
-                    phoneNumberTxt3.becomeFirstResponder()
-                case phoneNumberTxt3:
-                    phoneNumberTxt3.resignFirstResponder()
-            default:
-                    break
-                }
-            textField.text = text
-            } else if newLength == 0 {
-                switch textField {
-                case emailOTPTxt2:
-                    emailOTPTxt1.becomeFirstResponder()
-                case emailOTPTxt3:
-                    emailOTPTxt2.becomeFirstResponder()
-                case phoneNumberTxt2:
-                    phoneNumberTxt1.becomeFirstResponder()
-                case phoneNumberTxt3:
-                    phoneNumberTxt2.becomeFirstResponder()
-                default:
-                    break
-                }
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        let maxLength = 1
+
+        if let text = textField.text, text.count >= maxLength {
+            if textField == emailOTPTxt1 {
+                emailOTPTxt2.becomeFirstResponder()
+            } else if textField == emailOTPTxt2 {
+                emailOTPTxt3.becomeFirstResponder()
+            } else if textField == emailOTPTxt3 {
+                emailOTPTxt3.resignFirstResponder()
+            } else if textField == phoneNumberTxt1 {
+                phoneNumberTxt2.becomeFirstResponder()
+            } else if textField == phoneNumberTxt2 {
+                phoneNumberTxt3.becomeFirstResponder()
+            } else if textField == phoneNumberTxt3 {
+                phoneNumberTxt3.resignFirstResponder()
+            }
+        } else if textField.text?.isEmpty ?? false {
+            if textField == emailOTPTxt2 {
+                emailOTPTxt1.becomeFirstResponder()
+            } else if textField == emailOTPTxt3 {
+                emailOTPTxt2.becomeFirstResponder()
+            } else if textField == phoneNumberTxt2 {
+                phoneNumberTxt1.becomeFirstResponder()
+            } else if textField == phoneNumberTxt3 {
+                phoneNumberTxt2.becomeFirstResponder()
             }
         }
+    }
+
+    // MARK: - textField: Function to Limit each OTP text field to allow only one character
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let maxLength = 1
+
+        if string.isEmpty {
+            return true
+        }
+
+        let newLength = (textField.text?.count ?? 0) + string.count - range.length
+        return newLength <= maxLength
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+    }
     
  /*   @objc func firstTextFieldTapped() {
         
