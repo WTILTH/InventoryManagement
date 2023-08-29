@@ -213,12 +213,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate, URLSessionDele
         if inputText.contains("@"), isValidEmail(inputText) {
             
             print("Sending login request for email: \(inputText)...")
-            forgotPasswordAPI(emailID: inputText, phoneNumber: nil)
+            forgotPasswordAPI(emailId: inputText, phoneNumber: nil)
             
         } else if inputText.rangeOfCharacter(from: .decimalDigits) != nil {
           
             print("Sending login request for phone number: \(inputText)...")
-            forgotPasswordAPI(emailID: nil, phoneNumber: inputText)
+            forgotPasswordAPI(emailId: nil, phoneNumber: inputText)
             
         } else {
             showCustomAlertWith(message: "Invalid login", descMsg: "Please enter a valid email address or phone number.")
@@ -226,7 +226,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, URLSessionDele
     }
     
     
-    func forgotPasswordAPI(emailID: String?,phoneNumber:String?) {
+    func forgotPasswordAPI(emailId: String?,phoneNumber:String?) {
         let apiURL = URL(string: "https://192.168.29.7:8080/emailOrPhoneForgotPassword")!
         
         var request = URLRequest(url: apiURL)
@@ -234,7 +234,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, URLSessionDele
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let parameters: [String: Any] = [
-            "emailID": emailID,
+            "emailId": emailId,
             "phoneNumber": phoneNumber
         ]
 
@@ -350,19 +350,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate, URLSessionDele
         if inputText.contains("@"), isValidEmail(inputText) {
             
             print("Sending login request for email: \(inputText)...")
-            loginAPI(emailID: inputText, phoneNumber: nil, password: password)
+            loginAPI(emailId: inputText, phoneNumber: nil, password: password)
             
         } else if inputText.rangeOfCharacter(from: .decimalDigits) != nil {
           
             print("Sending login request for phone number: \(inputText)...")
-            loginAPI(emailID: nil, phoneNumber: inputText, password: password)
+            loginAPI(emailId: nil, phoneNumber: inputText, password: password)
             
         } else {
             showCustomAlertWith(message: "Invalid login", descMsg: "Please enter a valid email address or phone number.")
         }
     }
     // MARK: - loginUser: Function to send a login request to the API
-    func loginAPI(emailID: String?,phoneNumber: String?, password: String) {
+    func loginAPI(emailId: String?,phoneNumber: String?, password: String) {
         
         let apiURL = URL(string: "https://192.168.29.7:8080/emailOrPhoneLogin")!
         var request = URLRequest(url: apiURL)
@@ -377,7 +377,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, URLSessionDele
         let currentTime = Calendar.current.dateComponents([.hour, .minute, .second], from: currentDate)
         let formattedTime = String(format: "%02d:%02d:%02d", currentTime.hour!, currentTime.minute!, currentTime.second!)
                      
-        let deviceID = UIDevice.current.identifierForVendor?.uuidString
+        let deviceId = UIDevice.current.identifierForVendor?.uuidString
         
         let aesKeyHex = "7b4f66379aed7e506ad4c75dc0a78575"
         let ivHex = "03373b15eb9a98ff0279c98b0b5635e5"
@@ -399,10 +399,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate, URLSessionDele
         }
         
         let parameters: [String: Any] = [
-            "emailID": emailID,
+            "emailId": emailId,
             "phoneNumber": phoneNumber,
             "password": Password,
-            "deviceID": deviceID,
+            "deviceId": deviceId,
             "currentDate": formattedDate + " " + formattedTime
             ]
        

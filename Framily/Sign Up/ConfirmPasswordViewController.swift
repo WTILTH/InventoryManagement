@@ -252,15 +252,17 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate, URLS
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let deviceID = UIDevice.current.identifierForVendor?.uuidString
-        let sessionID = UUID().uuidString
+        let deviceId = UIDevice.current.identifierForVendor?.uuidString
+        let sessionId = UUID().uuidString
         let platform = UIDevice.current.model
         
-        var emailID: String = ""
+        var emailId: String = ""
         var phoneNumber: String = ""
+        var countryCode: String = ""
         if let responseData = responseData, let body = responseData["body"] as? [String: Any] {
-            emailID = body["emailID"] as? String ?? ""
+            emailId = body["emailId"] as? String ?? ""
             phoneNumber = body["phoneNumber"] as? String ?? ""
+            countryCode = body["countryCode"] as? String ?? ""
         }
         let currentDate = Date()
         let dateFormatter = ISO8601DateFormatter()
@@ -287,7 +289,8 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate, URLS
         }
         
         let userRegistrationRequest: [String: Any] = [
-            "emailID": emailID,
+            "emailId": emailId,
+            "countryCode": countryCode,
             "phoneNumber": phoneNumber,
             "groupName": groupName,
             "firstName": firstName,
@@ -297,9 +300,9 @@ class ConfirmPasswordViewController: UIViewController ,UITextFieldDelegate, URLS
         ]
 
         let deviceRegistrationRequest: [String: Any] = [
-            "sessionID": sessionID,
+            "sessionId": sessionId,
             "platform": platform,
-            "deviceID": deviceID,
+            "deviceId": deviceId,
             "currentDate": modifiedDate + " " + formattedTime,
             "modifiedDate": modifiedDate + " " + formattedTime
         ]

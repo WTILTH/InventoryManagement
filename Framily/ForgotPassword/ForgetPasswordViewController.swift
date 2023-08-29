@@ -22,7 +22,7 @@ class ForgetPasswordViewController: UIViewController,UITextFieldDelegate, URLSes
     @IBOutlet weak var FPEmailIDTxt: UITextField!
     @IBOutlet weak var FPPhoneNumberTxt: UITextField!
     
-    var emailID: String?
+    var emailId: String?
     var phoneNumber: String?
     var responseData: [String: Any]?
     //var users: [User] = []
@@ -55,11 +55,11 @@ class ForgetPasswordViewController: UIViewController,UITextFieldDelegate, URLSes
          }*/
         
         if let responseData = responseData, let body = responseData["body"] as? [String: Any] {
-            emailID = body["emailID"] as? String ?? ""
+            emailId = body["emailId"] as? String ?? ""
             phoneNumber = body["phoneNumber"] as? String ?? ""
             
             FPEmailIDTxt.attributedPlaceholder = NSAttributedString(
-                string: emailID!,
+                string: emailId!,
                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
             )
             
@@ -68,7 +68,7 @@ class ForgetPasswordViewController: UIViewController,UITextFieldDelegate, URLSes
                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
             )
             
-            FPEmailIDTxt.placeholder = emailID
+            FPEmailIDTxt.placeholder = emailId
             FPPhoneNumberTxt.placeholder = phoneNumber
             
             
@@ -103,7 +103,7 @@ class ForgetPasswordViewController: UIViewController,UITextFieldDelegate, URLSes
             return
         }
         
-        if let responseDataEmail = emailID, let responseDataPhoneNumber = phoneNumber {
+        if let responseDataEmail = emailId, let responseDataPhoneNumber = phoneNumber {
             if enteredEmailID == responseDataEmail && enteredPhoneNumber == responseDataPhoneNumber {
                 handleOTPVerificationAndNavigate()
             } else {

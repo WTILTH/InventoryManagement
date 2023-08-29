@@ -79,14 +79,14 @@ class SignUpExistingViewController: UIViewController, URLSessionDelegate  {
             return
         }
         
-        guard let emailID = existingEmailIDTxt.text, !emailID.isEmpty else {
+        guard let emailId = existingEmailIDTxt.text, !emailId.isEmpty else {
             existingGroupNameStatusLabel.text = ""
             existingCountryCodeTxtStatusLabel.text = ""
             existingEmailIDStatusLabel.text = "Please enter email ID"
             return
         }
         
-        if !isValidEmail(emailID) {
+        if !isValidEmail(emailId) {
             existingEmailIDStatusLabel.text = "Invalid email"
             return
         }
@@ -109,11 +109,11 @@ class SignUpExistingViewController: UIViewController, URLSessionDelegate  {
         }
  
         print("Sending signup request to API...")
-        signUpExistingUserAPI(groupName: groupName, countryCode: countryCode, phoneNumber: phoneNumber, emailID: emailID)
+        signUpExistingUserAPI(groupName: groupName, countryCode: countryCode, phoneNumber: phoneNumber, emailId: emailId)
         
     }
     // MARK: - signUpExistingUserAPI: Function to send a sign-up request to the API
-    func signUpExistingUserAPI(groupName: String, countryCode: String, phoneNumber: String, emailID: String) {
+    func signUpExistingUserAPI(groupName: String, countryCode: String, phoneNumber: String, emailId: String) {
         let apiURL = URL(string: "https://192.168.29.7:8080/existCompanyRegister")!
     
     var request = URLRequest(url: apiURL)
@@ -128,7 +128,7 @@ class SignUpExistingViewController: UIViewController, URLSessionDelegate  {
         "groupName": groupName,
         "countryCode": countryCode,
         "phoneNumber": phoneNumber,
-        "emailID": emailID
+        "emailId": emailId
         
     ]
 

@@ -1280,3 +1280,100 @@ struct UserCredentials {
    errorLabel.text = "Passwords do not match"
    }
    }*/
+// MARK: - GET Method in api
+/*func getUserInfoAPI() {
+    let apiURL = URL(string: "http://192.168.29.7:8082/activeVendor")!
+    
+    var request = URLRequest(url: apiURL)
+    request.httpMethod = "GET"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    let credentials = "arun:arun1"
+    let credentialsData = credentials.data(using: .utf8)!
+    let base64Credentials = credentialsData.base64EncodedString()
+    request.setValue("Basic \(base64Credentials)", forHTTPHeaderField: "Authorization")
+    
+    let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+    let task = session.dataTask(with: request) { data, response, error in
+        if let error = error {
+            print("Error: \(error)")
+            // Handle network error appropriately
+            return
+        }
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            let statusCode = httpResponse.statusCode
+            print("HTTP Status Code: \(statusCode)")
+            
+            if (200...299).contains(statusCode) {
+                if let responseData = data {
+                    do {
+           
+                        
+                        let jsonObject = try JSONSerialization.jsonObject(with: responseData, options: [])
+                        print("Response: \(jsonObject)")
+                        
+                        if let responseDict = jsonObject as? [String: Any] {
+                            if let success = responseDict["success"] as? Bool, success {
+                                DispatchQueue.main.async {
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let otpViewController = storyboard.instantiateViewController(withIdentifier: "ViewControllers") as! ViewController
+                                    otpViewController.responseData = responseDict
+                                    self.navigationController?.pushViewController(otpViewController, animated: true)
+                                }
+                            } else if let errorMessage = responseDict["errorMessage"] as? String {
+                                DispatchQueue.main.async {
+                                    self.showAlert(title: "Server Error", message: errorMessage)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    self.showAlert(title: "Server Error", message: "There was a problem with the server. Please try again later.")
+                                }
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                               self.showAlert(title: "Server Error", message: "There was a problem with the server. Please try again later.")
+                            }
+                        }
+                        
+                    } catch {
+                        print("Error parsing response data: \(error)")
+                    }
+                }
+            } else if (400...499).contains(statusCode) {
+                if let responseData = data {
+                    do {
+                          
+                                
+                                let jsonObject = try JSONSerialization.jsonObject(with: responseData/*decryptedData*/, options: [])
+                                print("Response: \(jsonObject)")
+                        
+                        if let responseDict = jsonObject as? [String: Any], let body = responseDict["body"] as? String {
+                            DispatchQueue.main.async {
+                                self.showAlert(title: body, message: "")
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                self.showAlert(title: "Client Error", message: "An error occurred while processing the response.")
+                            }
+                        }
+                        
+                    } catch {
+                        print("Error parsing response data: \(error)")
+                        DispatchQueue.main.async {
+                            self.showAlert(title: "Client Error", message: "An error occurred while processing the response.")
+                        }
+                    }
+                }
+            } else {
+                print("Invalid HTTP response: \(httpResponse)")
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Server Error", message: "An unknown error occurred.")
+                }
+            }
+        }
+    }
+    
+    task.resume()
+    print("Sending signup request to API...")
+}*/

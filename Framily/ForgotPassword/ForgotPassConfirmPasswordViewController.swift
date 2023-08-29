@@ -29,7 +29,7 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
     var user: User?
     var iconClick = false
     var modifiedDate: String = ""
-    var emailID: String = ""
+    var emailId: String = ""
    // let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -45,7 +45,7 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
         
         print(responseData)
         if let responseData = responseData, let body = responseData["body"] as? [String: Any] {
-            emailID = body["emailID"] as? String ?? ""
+            emailId = body["emailId"] as? String ?? ""
         }
         FPConfirmPasswordTxt.delegate = self
        // FPCreatePasswordTxt.backgroundColor = UIColor.clear
@@ -130,16 +130,16 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
        
 
         print("Sending signup request to API...")
-        passwordAPI(emailID: emailID, confirmPassword: confirmPassword, modifiedDate: modifiedDate)
+        passwordAPI(emailId: emailId, confirmPassword: confirmPassword, modifiedDate: modifiedDate)
        // performSegue(withIdentifier: "FPtoMAIN", sender: nil)
          
         
     }
     // MARK: - passwordAPI: Function to send a sign-up request to the API
-    func passwordAPI(emailID: String, confirmPassword: String, modifiedDate: String) {
+    func passwordAPI(emailId: String, confirmPassword: String, modifiedDate: String) {
         let apiURL = URL(string: "https://192.168.29.7:8080/passwordUpdate")!
         var request = URLRequest(url: apiURL)
-        request.httpMethod = "POST"
+        request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
        
@@ -159,19 +159,19 @@ class ForgotPasswordConfirmPassViewController: UIViewController ,UITextFieldDele
         }
         
         
-        let Password: String
+        let password: String
         if let encryptedPasswordData = confirmPassword.data(using: .utf8),
            let encryptedPassword = encryptAES_CBC(data: encryptedPasswordData, key: aesKeyData, iv: ivData) {
-            Password = encryptedPassword.base64EncodedString()
+            password = encryptedPassword.base64EncodedString()
         } else {
             print("Password encryption failed")
             return
         }
         
         let parameters: [String: Any] = [
-            "emailID": emailID,
-            "password": Password,
-            "modifiedDate": modifiedDate + " " + formattedTime
+            "emailId": emailId,
+            "password": password,
+            //"modifiedDate": modifiedDate + " " + formattedTime
         ]
 
         do {

@@ -36,6 +36,7 @@
 		D867B6F52A83BA99006E3D2C /* VendorManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6F42A83BA99006E3D2C /* VendorManagementTableViewCell.swift */; };
 		D867B6F72A83BD94006E3D2C /* VendorManagementTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D867B6F62A83BD94006E3D2C /* VendorManagementTableViewCell.xib */; };
 		D867B6F92A83BDC4006E3D2C /* VendorProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D867B6F82A83BDC4006E3D2C /* VendorProfileViewController.swift */; };
+		D883E05A2A98BC0900470618 /* OrganizationalDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883E0592A98BC0900470618 /* OrganizationalDetailsViewController.swift */; };
 		D88845A42A5BE8C300219226 /* ForgetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */; };
 		D88845A62A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */; };
 		D88845A82A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */; };
@@ -122,6 +123,7 @@
 		D867B6F42A83BA99006E3D2C /* VendorManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorManagementTableViewCell.swift; sourceTree = "<group>"; };
 		D867B6F62A83BD94006E3D2C /* VendorManagementTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VendorManagementTableViewCell.xib; sourceTree = "<group>"; };
 		D867B6F82A83BDC4006E3D2C /* VendorProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorProfileViewController.swift; sourceTree = "<group>"; };
+		D883E0592A98BC0900470618 /* OrganizationalDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationalDetailsViewController.swift; sourceTree = "<group>"; };
 		D88845A32A5BE8C300219226 /* ForgetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordViewController.swift; sourceTree = "<group>"; };
 		D88845A52A5BEC0E00219226 /* ForgotPasswordOTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordOTPViewController.swift; sourceTree = "<group>"; };
 		D88845A72A5BEE2800219226 /* ForgotPassConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassConfirmPasswordViewController.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 				D8E30E932A6FBB13004B0610 /* LoginOTPViewController.swift */,
 				D88845A92A5BF4A800219226 /* Sign Up */,
 				D8AC7F712A56CABA00433D9C /* ForgotPassword */,
+				D883E0592A98BC0900470618 /* OrganizationalDetailsViewController.swift */,
 				D867B6D12A83A1A4006E3D2C /* TabViewController.swift */,
 				D867B6CD2A8385BE006E3D2C /* HomeViewController.swift */,
 				D867B6CF2A838614006E3D2C /* ManagementViewController.swift */,
@@ -671,6 +674,7 @@
 				4AB2DFE52A4EF4630008D5AA /* Subscription.swift in Sources */,
 				D8BCEA402A401C9200EAF04B /* AppDelegate.swift in Sources */,
 				D8A32ED52A41742D0070CF4A /* CameraViewController.swift in Sources */,
+				D883E05A2A98BC0900470618 /* OrganizationalDetailsViewController.swift in Sources */,
 				D8BBD2EF2A69060A0095ADF7 /* PasswordRules.swift in Sources */,
 				4AB036762A4C53F40086A1B8 /* VendorsDetailsViewController.swift in Sources */,
 				D80531692A42DFE60080DC16 /* CommonAlertVC.swift in Sources */,
